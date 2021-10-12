@@ -17,15 +17,31 @@ Vue.directive('focus', {
     }
 
     const newSessionName = "New...";
+    const sessionsStorageKey = "doRoundsSessions";
+    const localStorage = window.localStorage;
 
-    function Session(name) {
+    function persistAll() {
+        var sessionsWithoutNew = [];
+        foundSessions.forEach((s) => {
+            if (s.name !== newSessionName) {
+                sessionsWithoutNew.push(s);
+            }
+        });
+        const serialized = JSON.stringify(sessionsWithoutNew);
+        localStorage.setItem(sessionsStorageKey, serialized);
+    }
+
+    function Session(name, addBlankLine) {
         var self = {};
         if (name) {
             self.name = name;
         } else {
             self.name = newSessionName;
         }
-        self.lines = [Line()];
+        self.lines = [];
+        if (addBlankLine) {
+            self.lines.push(Line());
+        }
         self.newLine = function () {
             self.lines.push(Line());
         };
@@ -74,6 +90,7 @@ Vue.directive('focus', {
             self.isSaving = false;
             self.name = self.newName;
             foundSessions.push(Session());
+            persistAll();
         };
         self.cancelSave = function () {
             self.isSaving = false;
@@ -82,11 +99,29 @@ Vue.directive('focus', {
         return self;
     }
 
-    var foundSessions = []; // TODO: load from localDB
-    var newPlaceholderSession = Session();
+    var foundSessions = [];
 
-    foundSessions.push(newPlaceholderSession);
-    
+    const savedSessions = localStorage.getItem(sessionsStorageKey);
+    if (savedSessions !== null) {
+        var deserialized = JSON.parse(savedSessions);
+        deserialized.forEach((ss) => {
+            var newSession = Session(ss.name, false);
+            ss.lines.forEach((sl) => {
+                var eachNewLine = Line();
+                eachNewLine.name = sl.name;
+                eachNewLine.initiative = sl.initiative;
+                eachNewLine.ac = sl.ac;
+                eachNewLine.hitbonus = sl.hitbonus;
+
+                newSession.lines.push(eachNewLine);
+            });
+            foundSessions.push(newSession);
+        });
+    } else {
+        var newPlaceholderSession = Session();
+        foundSessions.push(newPlaceholderSession);
+    }
+
     var app = new Vue({
         el: '#app',
         data: {
