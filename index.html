@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <link rel="stylesheet" href="takes.css">
+    <title>Do Rounds</title>
+</head>
+
+<body>
+    <div id="app" class="container">
+        <h1>Do Rounds</h1>
+        <h2 class="subtitle">a tool for 5e DMs to make enconters easier</h2>
+        <div class="columns">
+            <div class="column col-3">
+                <select class="form-select" @change="currentSessionChanged($event)" v-if="!currentSession.isSaving">
+                    <option v-for="(session, index) in sessions" v-bind:value="{ number: index}" >{{ session.name }}</option>
+                </select>
+                <input class="form-input" v-if="currentSession.isSaving"
+                       v-model="currentSession.newName" v-on:keyup.13="currentSession.finishSave"
+                       v-on:keyup.esc="currentSession.cancelSave" v-focus>
+            </div>
+            <div class="column col-1">
+                <button class="btn" v-if="currentIsUnsaved()" v-on:click="currentSession.startSave"
+                        aria-label="Save Session">Save</button>
+                <button class="btn" v-on:click="currentSession.sortLines" aria-label="Sort Lines" title="Sort Lines">
+                    <i class="icon icon-resize-vert"></i>
+                </button>
+            </div>
+            <div class="column col-9"></div>
+            <div class="column col-12">
+                <div class="form-horizontal" v-for="(line, index) in currentSession.lines">
+                    <div class="form-group">
+                        <div class="column col-1">
+                            <input class="form-input" type="text" v-model.number="line.initiative"
+                                aria-label="Initiative" v-focus autocomplete="off" placeholder="Init." />
+                        </div>
+                        <div class="column col-2">
+                            <input class="form-input" type="text" v-model="line.name" aria-label="Name"
+                                autocomplete="off" placeholder="Name" />
+                        </div>
+                        <div class="column col-1">
+                            <input class="form-input" type="number" v-model="line.ac" aria-label="Armor Class"
+                                autocomplete="0ff" placeholder="AC" />
+                        </div>
+                        <div class="column col-1">
+                            <input class="form-input" type="number" v-model="line.hitbonus" aria-label="To Hit Bonus"
+                                autocomplete="off" placeholder="+hit" />
+                        </div>
+                        <div class="column col-2" v-if="currentSession.isLastLine(index)">
+                            <button class="btn line-button" v-on:click="currentSession.newLine" role="button"
+                                aria-label="Add New Line" title="Add New Line">
+                                <i class="icon icon-plus"></i>
+                            </button>
+                            <button class="btn line-button" v-on:click="currentSession.cloneLine" role="button"
+                                aria-label="Clone to New Line" title="Clone to New Line">
+                                <i class="icon icon-arrow-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="takes.js"></script>
+</body>
+
+</html>
