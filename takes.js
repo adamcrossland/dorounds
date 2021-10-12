@@ -94,7 +94,11 @@ Vue.directive('focus', {
         };
         self.cancelSave = function () {
             self.isSaving = false;
-        }
+        };
+        self.deleteLine = function (index) {
+            self.lines.splice(index, 1);
+            persistAll();
+        };
 
         return self;
     }

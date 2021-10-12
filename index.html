@@ -52,15 +52,19 @@
                             <input class="form-input" type="number" v-model="line.hitbonus" aria-label="To Hit Bonus"
                                 autocomplete="off" placeholder="+hit" />
                         </div>
-                        <div class="column col-2" v-if="currentSession.isLastLine(index)">
-                            <button class="btn line-button" v-on:click="currentSession.newLine" role="button"
+                        <div class="column col-2">
+                            <button class="btn line-button" v-if="currentSession.isLastLine(index)" v-on:click="currentSession.newLine" role="button"
                                 aria-label="Add New Line" title="Add New Line">
                                 <i class="icon icon-plus"></i>
                             </button>
-                            <button class="btn line-button" v-on:click="currentSession.cloneLine" role="button"
+                            <button class="btn line-button" v-if="currentSession.isLastLine(index)" v-on:click="currentSession.cloneLine" role="button"
                                 aria-label="Clone to New Line" title="Clone to New Line">
                                 <i class="icon icon-arrow-down"></i>
                             </button>
+                            <button class="btn line-button" v-on:click="currentSession.deleteLine(index)" role="button"
+                                aria-label="Delete Line" title="Delete Line">
+                            <i class="icon icon-delete"></i>
+                        </button>
                         </div>
                     </div>
                 </div>
