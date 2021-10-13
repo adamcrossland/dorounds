@@ -130,11 +130,14 @@ Vue.directive('focus', {
         self.currentlyEditingName = false;
         self.toggleNameEditing = function () {
             self.currentlyEditingName = !self.currentlyEditingName;
+            if (!hasNewSession()) {
+                addNewSession();
+            }
             persistAll();
         };
         self.autoRollInitiative = function () {
             self.lines.forEach((line) => {
-                if (!line.initiative || line.initiative.length === 0 || line.initiative === "0") {
+                if (!line.initiative ||line.initiative.length === 0 || line.initiative === "0") {
                     line.initiative = Math.floor(Math.random() * 20) + 1;
                 }
             });
@@ -164,12 +167,28 @@ Vue.directive('focus', {
             });
             foundSessions.push(newSession);
         });
-        var newSession = Session(newSessionName);
-        newSession.lines.push(Line());
-        foundSessions.push(newSession);
+        addNewSession();
     } else {
         var newPlaceholderSession = Session();
         foundSessions.push(newPlaceholderSession);
+    }
+
+    function hasNewSession() {
+        var doesHave = false;
+        foundSessions.forEach((s) => {
+            if (s.name === newSessionName) {
+                doesHave = true;
+                return;
+            }
+        });
+
+        return doesHave;
+    }
+
+    function addNewSession() {
+        var newSession = Session(newSessionName);
+        newSession.lines.push(Line());
+        foundSessions.push(newSession);
     }
 
     var app = new Vue({
