@@ -182,6 +182,7 @@ Vue.directive('focus', {
         methods: {
             currentSessionChanged: function (event) {
                 this.currentSession = this.sessions[event.target.selectedIndex];
+                persistAll();
             },
             spaceKeyListener: function (evt) {
                 if (evt.keyCode === 32) {
