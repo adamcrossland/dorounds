@@ -67,6 +67,12 @@
                     </div>
                 </div>
             </div>
+            <div class="column col-2" v-if="!currentSession.currentlyPlaying">
+                <button class="btn" title="Auto-roll Initiative" aria-label="Auto-roll Initiative"
+                    v-on:click="currentSession.autoRollInitiative">
+                    Auto-roll
+                </button>
+            </div>
             <div class="column col-7"></div>
             <div class="column col-12">
                 <div class="form-horizontal" v-for="(line, index) in currentSession.lines">

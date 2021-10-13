@@ -132,6 +132,13 @@ Vue.directive('focus', {
             self.currentlyEditingName = !self.currentlyEditingName;
             persistAll();
         };
+        self.autoRollInitiative = function () {
+            self.lines.forEach((line) => {
+                if (!line.initiative || line.initiative.length === 0 || line.initiative === "0") {
+                    line.initiative = Math.floor(Math.random() * 20) + 1;
+                }
+            });
+        };
         return self;
     }
 
