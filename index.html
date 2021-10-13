@@ -26,16 +26,16 @@
                     v-on:keyup.13="currentSession.toggleNameEditing" v-focus>
             </div>
             <div class="column col-1">
-                <button class="btn" v-if="!currentSession.currentlyEditingName"
-                    v-on:click="currentSession.toggleNameEditing" aria-label="Save Session">Edit</button>
-                <button class="btn" v-if="currentSession.currentlyEditingName"
-                    v-on:click="currentSession.toggleNameEditing" aria-label="Save Session">Save</button>
+                <button class="btn" v-if="!currentSession.currentlyEditingName" title="Edit Name"
+                    v-on:click="currentSession.toggleNameEditing" aria-label="Edit Name">Edit</button>
+                <button class="btn" v-if="currentSession.currentlyEditingName" title="Save Name"
+                    v-on:click="currentSession.toggleNameEditing" aria-label="Save Name">Save</button>
                 <button class="btn" v-on:click="currentSession.sortLines" v-if="!currentSession.currentlyPlaying"
                     aria-label="Sort Lines" title="Sort Lines">
                     <i class="icon icon-resize-vert"></i>
                 </button>
             </div>
-            <div class="column col-2" v-if="!currentSession.currentlyPlaying">
+            <div class="column col-1">
                 <button class="btn" v-if="!currentSession.currentlyPlaying" title="Start Playing"
                     v-on:click="currentSession.togglePlaying" aria-label="Start Play">Start
                 </button>
