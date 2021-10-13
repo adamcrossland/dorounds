@@ -8,3 +8,8 @@ h2.subtitle {
     margin-top: -1em;
     margin-bottom: 2em;
 }
+
+div.disabled > div > input {
+    border-color:red;
+    background-color: lightgray;
+}

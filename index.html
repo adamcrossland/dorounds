@@ -19,23 +19,33 @@
         <div class="columns">
             <div class="column col-3">
                 <select class="form-select" @change="currentSessionChanged($event)" v-if="!currentSession.isSaving">
-                    <option v-for="(session, index) in sessions" v-bind:value="{ number: index}" >{{ session.name }}</option>
+                    <option v-for="(session, index) in sessions" v-bind:value="{ number: index}">{{ session.name }}
+                    </option>
                 </select>
-                <input class="form-input" v-if="currentSession.isSaving"
-                       v-model="currentSession.newName" v-on:keyup.13="currentSession.finishSave"
-                       v-on:keyup.esc="currentSession.cancelSave" v-focus>
+                <input class="form-input" v-if="currentSession.isSaving" v-model="currentSession.newName"
+                    v-on:keyup.13="currentSession.finishSave" v-on:keyup.esc="currentSession.cancelSave" v-focus>
             </div>
             <div class="column col-1">
-                <button class="btn" v-if="currentIsUnsaved()" v-on:click="currentSession.startSave"
-                        aria-label="Save Session">Save</button>
-                <button class="btn" v-on:click="currentSession.sortLines" aria-label="Sort Lines" title="Sort Lines">
+                <button class="btn" v-if="currentIsUnsaved() && !currentSession.currentlyPlaying"
+                    v-on:click="currentSession.startSave" aria-label="Save Session">Save</button>
+                <button class="btn" v-on:click="currentSession.sortLines" v-if="!currentSession.currentlyPlaying"
+                    aria-label="Sort Lines" title="Sort Lines">
                     <i class="icon icon-resize-vert"></i>
                 </button>
+                <button class="btn" v-if="!currentSession.currentlyPlaying" title="Start Playing"
+                    v-on:click="currentSession.togglePlaying" aria-label="Start Play">Start
+                </button>
+                <button class="btn" v-if="currentSession.currentlyPlaying" title="Stop Playing"
+                    v-on:click="currentSession.togglePlaying" aria-label="Start Play">Stop
+                </button>
             </div>
-            <div class="column col-9"></div>
+            <div class="column col-2">
+                <span v-if="currentSession.currentlyPlaying">Round {{ currentSession.currentRound }}</span>
+            </div>
+            <div class="column col-7"></div>
             <div class="column col-12">
                 <div class="form-horizontal" v-for="(line, index) in currentSession.lines">
-                    <div class="form-group">
+                    <div class="form-group" v-bind:class="{ 'disabled': currentSession.currentlyPlaying && line.disabled }">
                         <div class="column col-1">
                             <input class="form-input" type="text" v-model.number="line.initiative"
                                 aria-label="Initiative" v-focus autocomplete="off" placeholder="Init." />
@@ -53,18 +63,35 @@
                                 autocomplete="off" placeholder="+hit" />
                         </div>
                         <div class="column col-2">
-                            <button class="btn line-button" v-if="currentSession.isLastLine(index)" v-on:click="currentSession.newLine" role="button"
-                                aria-label="Add New Line" title="Add New Line">
+                            <button class="btn line-button"
+                                v-if="currentSession.isLastLine(index) && !currentSession.currentlyPlaying"
+                                v-on:click="currentSession.newLine" role="button" aria-label="Add New Line"
+                                title="Add New Line">
                                 <i class="icon icon-plus"></i>
                             </button>
-                            <button class="btn line-button" v-if="currentSession.isLastLine(index)" v-on:click="currentSession.cloneLine" role="button"
-                                aria-label="Clone to New Line" title="Clone to New Line">
+                            <button class="btn line-button"
+                                v-if="currentSession.isLastLine(index) && !currentSession.currentlyPlaying"
+                                v-on:click="currentSession.cloneLine" role="button" aria-label="Clone to New Line"
+                                title="Clone to New Line">
                                 <i class="icon icon-arrow-down"></i>
                             </button>
-                            <button class="btn line-button" v-on:click="currentSession.deleteLine(index)" role="button"
-                                aria-label="Delete Line" title="Delete Line">
-                            <i class="icon icon-delete"></i>
-                        </button>
+                            <button class="btn line-button" v-if="currentSession.currentlyPlaying && !line.disabled"
+                                v-on:click="currentSession.toggleLinedisabled(index)" role="button"
+                                aria-label="Disable Line" title="Disable Line">
+                                <i class="icon icon-cross"></i>
+                            </button>
+                            <button class="btn line-button" v-if="currentSession.currentlyPlaying && line.disabled"
+                                v-on:click="currentSession.toggleLinedisabled(index)" role="button"
+                                aria-label="Enable Line" title="Enable Line">
+                                <i class="icon icon-plus"></i>
+                            </button>
+                            <button class="btn line-button" v-if="!currentSession.currentlyPlaying"
+                                v-on:click="currentSession.deleteLine(index)" role="button" aria-label="Delete Line"
+                                title="Delete Line">
+                                <i class="icon icon-delete"></i>
+                            </button>
+                            <i class="icon icon-arrow-left"
+                                v-show="currentSession.currentlyPlaying && currentSession.activeLine == index"></i>
                         </div>
                     </div>
                 </div>

@@ -12,6 +12,7 @@ Vue.directive('focus', {
         self.initiative = null;
         self.ac = "";
         self.hitbonus = "";
+        self.disabled = false;
 
         return self;
     }
@@ -99,7 +100,27 @@ Vue.directive('focus', {
             self.lines.splice(index, 1);
             persistAll();
         };
+        self.currentlyPlaying = false;
+        self.togglePlaying = function () {
+            self.currentlyPlaying = !self.currentlyPlaying;
+            persistAll();
+        };
+        self.currentRound = 1;
+        self.toggleLinedisabled = function (index) {
+            self.lines[index].disabled = !self.lines[index].disabled;
+        };
+        self.activeLine = 0;
+        self.anyLinesActive = function () {
+            var anyActive = false;
+            for (var i = 0; i < self.lines.length; i++) {
+                if (!self.lines[i].disabled) {
+                    anyActive = true;
+                    break;
+                }
+            }
 
+            return anyActive;
+        };
         return self;
     }
 
@@ -110,12 +131,16 @@ Vue.directive('focus', {
         var deserialized = JSON.parse(savedSessions);
         deserialized.forEach((ss) => {
             var newSession = Session(ss.name, false);
+            newSession.currentlyPlaying = ss.currentlyPlaying || false;
+            newSession.currentRound = ss.currentRound || 1;
+            newSession.activeLine = ss.activeLine || 0;
             ss.lines.forEach((sl) => {
                 var eachNewLine = Line();
                 eachNewLine.name = sl.name;
                 eachNewLine.initiative = sl.initiative;
                 eachNewLine.ac = sl.ac;
                 eachNewLine.hitbonus = sl.hitbonus;
+                eachNewLine.disabled = sl.disabled || false;
 
                 newSession.lines.push(eachNewLine);
             });
@@ -135,13 +160,37 @@ Vue.directive('focus', {
         methods: {
             currentSessionChanged: function (event) {
                 this.currentSession = this.sessions[event.target.selectedIndex];
+            },
+            spaceKeyListener: function (evt) {
+                if (evt.keyCode === 32) {
+                    if (this.currentSession.currentlyPlaying) {
+                        evt.preventDefault();
+                        do {
+                            this.currentSession.activeLine++;
+                            if (this.currentSession.activeLine == this.currentSession.lines.length) {
+                                this.currentSession.activeLine = 0;
+                                this.currentSession.currentRound++;
+                            }
+                        } while (this.currentSession.anyLinesActive() &&
+                            this.currentSession.lines[this.currentSession.activeLine].disabled);
+                        if (!this.currentSession.anyLinesActive()) {
+                            this.currentSession.togglePlaying();
+                        }
+                    }
+                }
             }
         },
         computed: {
             currentIsUnsaved: function () {
                 return this.currentSession.isUnsaved;
             }
+        },
+        created: function () {
+            document.addEventListener('keyup', this.spaceKeyListener);
+        },
+        destroyed: function () {
+            document.removeEventListener('keyup', this.spaceKeyListener);
         }
-    });    
+    });
 })();
 
