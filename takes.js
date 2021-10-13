@@ -191,6 +191,9 @@ Vue.directive('focus', {
                         }
                     }
                 }
+            },
+            saveData: function () {
+                persistAll();
             }
         },
         computed: {

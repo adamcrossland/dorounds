@@ -73,20 +73,20 @@
                     <div class="form-group"
                         v-bind:class="{ 'disabled': currentSession.currentlyPlaying && line.disabled }">
                         <div class="column col-1">
-                            <input class="form-input" type="text" v-model.number="line.initiative"
+                            <input class="form-input" type="text" v-model.number="line.initiative" @change="saveData"
                                 aria-label="Initiative" v-focus autocomplete="off" placeholder="Init." />
                         </div>
                         <div class="column col-2">
-                            <input class="form-input" type="text" v-model="line.name" aria-label="Name"
-                                autocomplete="off" placeholder="Name" />
+                            <input class="form-input" type="text" v-model="line.name" @change="saveData"
+                                aria-label="Name" autocomplete="off" placeholder="Name" />
                         </div>
                         <div class="column col-1">
-                            <input class="form-input" type="number" v-model="line.ac" aria-label="Armor Class"
-                                autocomplete="0ff" placeholder="AC" />
+                            <input class="form-input" type="number" v-model="line.ac" @change="saveData"
+                                aria-label="Armor Class" autocomplete="0ff" placeholder="AC" />
                         </div>
                         <div class="column col-1">
-                            <input class="form-input" type="number" v-model="line.hitbonus" aria-label="To Hit Bonus"
-                                autocomplete="off" placeholder="+hit" />
+                            <input class="form-input" type="number" v-model="line.hitbonus" @change="saveData"
+                                aria-label="To Hit Bonus" autocomplete="off" placeholder="+hit" />
                         </div>
                         <div class="column col-2">
                             <button class="btn line-button"
