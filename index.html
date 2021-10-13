@@ -40,12 +40,34 @@
                 </button>
             </div>
             <div class="column col-2">
-                <span v-if="currentSession.currentlyPlaying">Round {{ currentSession.currentRound }}</span>
+                <div class="form-horizontal round-number">
+                    <div class="form-group">
+                        <span v-if="currentSession.currentlyPlaying">Round&nbsp;</span>
+                        <span class="round-number"
+                            v-if="currentSession.currentlyPlaying && !currentSession.currentlyEditingRound">{{
+                            currentSession.currentRound }}</span>
+                        <input class="form-input round-number" type="number" min="1" aria-label="Round Number"
+                            v-if="currentSession.currentlyPlaying && currentSession.currentlyEditingRound"
+                            v-model="currentSession.currentRound" v-focus
+                            v-on:keyup.enter="currentSession.toggleRoundEditing" />
+                        <button class="btn"
+                            v-if="currentSession.currentlyPlaying && !currentSession.currentlyEditingRound"
+                            title="Edit Round" aria-label="Edit Round" v-on:click="currentSession.toggleRoundEditing">
+                            <i class="icon icon-edit"></i>
+                        </button>
+                        <button class="btn"
+                            v-if="currentSession.currentlyPlaying && currentSession.currentlyEditingRound"
+                            title="Save Round" aria-label="Save Round" v-on:click="currentSession.toggleRoundEditing">
+                            <i class="icon icon-edit"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="column col-7"></div>
             <div class="column col-12">
                 <div class="form-horizontal" v-for="(line, index) in currentSession.lines">
-                    <div class="form-group" v-bind:class="{ 'disabled': currentSession.currentlyPlaying && line.disabled }">
+                    <div class="form-group"
+                        v-bind:class="{ 'disabled': currentSession.currentlyPlaying && line.disabled }">
                         <div class="column col-1">
                             <input class="form-input" type="text" v-model.number="line.initiative"
                                 aria-label="Initiative" v-focus autocomplete="off" placeholder="Init." />

@@ -121,6 +121,11 @@ Vue.directive('focus', {
 
             return anyActive;
         };
+        self.currentlyEditingRound = false;
+        self.toggleRoundEditing = function () {
+            self.currentlyEditingRound = !self.currentlyEditingRound;
+            persistAll();
+        };
         return self;
     }
 

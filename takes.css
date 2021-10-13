@@ -13,3 +13,23 @@ div.disabled > div > input {
     border-color:red;
     background-color: lightgray;
 }
+
+input.round-number {
+    width: 3em;
+}
+
+span.round-number {
+    width: 3em;
+}
+
+div.round-number > div > button {
+    margin-top: -.4rem;
+}
+
+div.round-number > div > input {
+    margin-top: -.4rem;
+}
+
+div.round-number > div > span {
+    margin-top: -.25rem;
+}
