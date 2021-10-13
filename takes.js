@@ -94,7 +94,7 @@ Vue.directive('focus', {
             persistAll();
         };
         self.cancelSave = function () {
-            self.isSaving = false;
+            self.currentlyEditingName = false;
         };
         self.deleteLine = function (index) {
             self.lines.splice(index, 1);
@@ -126,6 +126,11 @@ Vue.directive('focus', {
             self.currentlyEditingRound = !self.currentlyEditingRound;
             persistAll();
         };
+        self.currentlyEditingName = false;
+        self.toggleNameEditing = function () {
+            self.currentlyEditingName = !self.currentlyEditingName;
+            persistAll();
+        };
         return self;
     }
 
@@ -151,6 +156,7 @@ Vue.directive('focus', {
             });
             foundSessions.push(newSession);
         });
+        foundSessions.push(Session(newSessionName));
     } else {
         var newPlaceholderSession = Session();
         foundSessions.push(newPlaceholderSession);

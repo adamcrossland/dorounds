@@ -17,21 +17,25 @@
         <h1>Do Rounds</h1>
         <h2 class="subtitle">a tool for 5e DMs to make enconters easier</h2>
         <div class="columns">
-            <div class="column col-3">
-                <select class="form-select" @change="currentSessionChanged($event)" v-if="!currentSession.isSaving">
+            <div class="column col-2">
+                <select class="form-select" @change="currentSessionChanged($event)" v-if="!currentSession.currentlyEditingName">
                     <option v-for="(session, index) in sessions" v-bind:value="{ number: index}">{{ session.name }}
                     </option>
                 </select>
-                <input class="form-input" v-if="currentSession.isSaving" v-model="currentSession.newName"
-                    v-on:keyup.13="currentSession.finishSave" v-on:keyup.esc="currentSession.cancelSave" v-focus>
+                <input class="form-input" v-if="currentSession.currentlyEditingName" v-model="currentSession.name"
+                    v-on:keyup.13="currentSession.toggleNameEditing" v-focus>
             </div>
             <div class="column col-1">
-                <button class="btn" v-if="currentIsUnsaved() && !currentSession.currentlyPlaying"
-                    v-on:click="currentSession.startSave" aria-label="Save Session">Save</button>
+                <button class="btn" v-if="!currentSession.currentlyEditingName"
+                    v-on:click="currentSession.toggleNameEditing" aria-label="Save Session">Edit</button>
+                <button class="btn" v-if="currentSession.currentlyEditingName"
+                    v-on:click="currentSession.toggleNameEditing" aria-label="Save Session">Save</button>
                 <button class="btn" v-on:click="currentSession.sortLines" v-if="!currentSession.currentlyPlaying"
                     aria-label="Sort Lines" title="Sort Lines">
                     <i class="icon icon-resize-vert"></i>
                 </button>
+            </div>
+            <div class="column col-2" v-if="!currentSession.currentlyPlaying">
                 <button class="btn" v-if="!currentSession.currentlyPlaying" title="Start Playing"
                     v-on:click="currentSession.togglePlaying" aria-label="Start Play">Start
                 </button>
@@ -39,7 +43,7 @@
                     v-on:click="currentSession.togglePlaying" aria-label="Start Play">Stop
                 </button>
             </div>
-            <div class="column col-2">
+            <div class="column col-2" v-if="currentSession.currentlyPlaying">
                 <div class="form-horizontal round-number">
                     <div class="form-group">
                         <span v-if="currentSession.currentlyPlaying">Round&nbsp;</span>
