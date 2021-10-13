@@ -78,24 +78,6 @@ Vue.directive('focus', {
             clonedLine.hitbonus = lastLine.hitbonus;
             self.lines.push(clonedLine);
         };
-        self.isUnsaved = function () {
-            var unsaved = self.name === newSessionName;
-            return unsaved;
-        };
-        self.isSaving = false;
-        self.newName = self.name;
-        self.startSave = function () {
-            self.isSaving = true;
-        };
-        self.finishSave = function () {
-            self.isSaving = false;
-            self.name = self.newName;
-            foundSessions.push(Session());
-            persistAll();
-        };
-        self.cancelSave = function () {
-            self.currentlyEditingName = false;
-        };
         self.deleteLine = function (index) {
             self.lines.splice(index, 1);
             persistAll();
@@ -221,11 +203,6 @@ Vue.directive('focus', {
             },
             saveData: function () {
                 persistAll();
-            }
-        },
-        computed: {
-            currentIsUnsaved: function () {
-                return this.currentSession.isUnsaved;
             }
         },
         created: function () {
