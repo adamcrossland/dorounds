@@ -108,6 +108,7 @@ Vue.directive('focus', {
         self.currentRound = 1;
         self.toggleLinedisabled = function (index) {
             self.lines[index].disabled = !self.lines[index].disabled;
+            persistAll();
         };
         self.activeLine = 0;
         self.anyLinesActive = function () {
