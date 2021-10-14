@@ -33,3 +33,8 @@ div.round-number > div > input {
 div.round-number > div > span {
     margin-top: -.25rem;
 }
+
+body.about {
+    width: 80%;
+    margin: 0 auto;
+}
