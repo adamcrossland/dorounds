@@ -25,7 +25,8 @@
         <h2 class="subtitle">a tool for 5e DMs to make enconters easier</h2>
         <div class="columns">
             <div class="column col-2">
-                <select class="form-select" @change="currentSessionChanged($event)" v-if="!currentSession.currentlyEditingName">
+                <select class="form-select" @change="currentSessionChanged($event)"
+                    v-if="!currentSession.currentlyEditingName">
                     <option v-for="(session, index) in sessions" v-bind:value="{ number: index}">{{ session.name }}
                     </option>
                 </select>
@@ -80,6 +81,11 @@
                     Auto-roll
                 </button>
             </div>
+            <div class="column col-6"></div>
+            <div class="column col-1 table-header">Initiative</div>
+            <div class="column col-2 table-header">Name</div>
+            <div class="column col-1 table-header">AC</div>
+            <div class="column col-1 table-header">To Hit Bonus</div>
             <div class="column col-7"></div>
             <div class="column col-12">
                 <div class="form-horizontal" v-for="(line, index) in currentSession.lines">

@@ -38,3 +38,9 @@ body.about {
     width: 80%;
     margin: 0 auto;
 }
+
+div.table-header {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 2em;
+}
