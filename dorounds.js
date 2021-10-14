@@ -151,8 +151,7 @@ Vue.directive('focus', {
         });
         addNewSession();
     } else {
-        var newPlaceholderSession = Session();
-        foundSessions.push(newPlaceholderSession);
+        addNewSession();
     }
 
     function hasNewSession() {
