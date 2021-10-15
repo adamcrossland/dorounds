@@ -44,8 +44,12 @@
                 </button>
                 <button class="btn" v-on:click="currentSession.clone" v-if="!currentSession.currentlyPlaying"
                     aria-label="Clone Session" title="Clone Session">
-                <i class="icon icon-arrow-down"></i>
-            </button>
+                    <i class="icon icon-arrow-down"></i>
+                </button>
+                <button class="btn line-button" v-if="!currentSession.currentlyPlaying"
+                    v-on:click="deleteCurrentSession" role="button" aria-label="Delete Session" title="Delete Session">
+                    <i class="icon icon-delete"></i>
+                </button>
             </div>
             <div class="column col-1">
                 <button class="btn" v-if="!currentSession.currentlyPlaying" title="Start Playing"
@@ -143,6 +147,27 @@
                                 v-show="currentSession.currentlyPlaying && currentSession.activeLine == index"></i>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="deleteSessionConfirmation" v-bind:class="{ active: deleteSessionDialogOpen }">
+            <a href="#close" class="modal-overlay" v-on:click="cancelDeleteSession" title="Close" aria-label="Close"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                    <div class="modal-title h5">Delete this Session?</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <div class="h6">
+                            Delete this Session? <b>This action cannot be
+                                undone.</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" v-on:click="confirmDeleteSession">Yes</button>
+                    <button class="btn btn-primary" v-on:click="cancelDeleteSession">No</button>
                 </div>
             </div>
         </div>

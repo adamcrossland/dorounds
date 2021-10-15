@@ -208,11 +208,14 @@ Vue.directive('focus', {
         el: '#app',
         data: {
             sessions: foundSessions,
-            currentSession: foundSessions[0]
+            currentSession: foundSessions[0],
+            currentSessionIdx : 0,
+            deleteSessionDialogOpen: false
         },
         methods: {
             currentSessionChanged: function (event) {
                 this.currentSession = this.sessions[event.target.selectedIndex];
+                this.currentSessionIdx = event.target.selectedIndex;
                 persistAll();
             },
             spaceKeyListener: function (evt) {
@@ -236,6 +239,17 @@ Vue.directive('focus', {
             },
             saveData: function () {
                 persistAll();
+            },
+            deleteCurrentSession: function () {
+                this.deleteSessionDialogOpen = true;
+            },
+            confirmDeleteSession: function () {
+                this.sessions.splice(this.currentSessionIdx, 1);
+                persistAll();
+                this.deleteSessionDialogOpen = false;
+            },
+            cancelDeleteSession: function () {
+                this.deleteSessionDialogOpen = false;
             }
         },
         created: function () {
