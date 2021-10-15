@@ -245,6 +245,11 @@ Vue.directive('focus', {
             },
             confirmDeleteSession: function () {
                 this.sessions.splice(this.currentSessionIdx, 1);
+                if (this.sessions.length === 0) {
+                    addNewSession();
+                }
+                this.currentSession = this.sessions[0];
+                this.currentSessionIdx = 0;
                 persistAll();
                 this.deleteSessionDialogOpen = false;
             },
