@@ -33,7 +33,7 @@
                 <input class="form-input" v-if="currentSession.currentlyEditingName" v-model="currentSession.name"
                     v-on:keyup.13="currentSession.toggleNameEditing" v-focus>
             </div>
-            <div class="column col-1">
+            <div class="column col-2">
                 <button class="btn" v-if="!currentSession.currentlyEditingName" title="Edit Name"
                     v-on:click="currentSession.toggleNameEditing" aria-label="Edit Name">Edit</button>
                 <button class="btn" v-if="currentSession.currentlyEditingName" title="Save Name"
@@ -42,6 +42,10 @@
                     aria-label="Sort Lines" title="Sort Lines">
                     <i class="icon icon-resize-vert"></i>
                 </button>
+                <button class="btn" v-on:click="currentSession.clone" v-if="!currentSession.currentlyPlaying"
+                    aria-label="Clone Session" title="Clone Session">
+                <i class="icon icon-arrow-down"></i>
+            </button>
             </div>
             <div class="column col-1">
                 <button class="btn" v-if="!currentSession.currentlyPlaying" title="Start Playing"
@@ -81,7 +85,7 @@
                     Auto-roll
                 </button>
             </div>
-            <div class="column col-6"></div>
+            <div class="column col-5"></div>
             <div class="column col-1 table-header">Initiative</div>
             <div class="column col-2 table-header">Name</div>
             <div class="column col-1 table-header">AC</div>

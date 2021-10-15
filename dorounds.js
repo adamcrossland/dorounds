@@ -14,6 +14,17 @@ Vue.directive('focus', {
         self.hitbonus = "";
         self.disabled = false;
 
+        self.copy = function () {
+            var copy = Line();
+            copy.name = self.name;
+            copy.initiative = self.initiative;
+            copy.ac = self.ac;
+            copy.hitbonus = self.hitbonus;
+            copy.disabled = self.disabled;
+
+            return copy;
+        };
+
         return self;
     }
 
@@ -123,6 +134,14 @@ Vue.directive('focus', {
                     line.initiative = Math.floor(Math.random() * 20) + 1;
                 }
             });
+        };
+        self.clone = function () {
+            var clonedSession = Session(`Copy of ${self.name}`, false);
+            self.lines.forEach(l => {
+                clonedSession.lines.push(l.copy());
+            });
+            
+            foundSessions.push(clonedSession);
         };
         return self;
     }
