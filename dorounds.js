@@ -155,6 +155,7 @@ Vue.directive('focus', {
             });
             
             foundSessions.push(clonedSession);
+            document.getElementById('sessionSelection').selectedIndex = foundSessions.length - 1;
         };
         return self;
     }
@@ -204,6 +205,8 @@ Vue.directive('focus', {
         foundSessions.push(newSession);
     }
 
+    var sessionSelectionDD = document.getElementById('sessionSelection');
+
     var app = new Vue({
         el: '#app',
         data: {
@@ -248,9 +251,8 @@ Vue.directive('focus', {
                 if (this.sessions.length === 0) {
                     addNewSession();
                 }
-                this.currentSession = this.sessions[0];
-                this.currentSessionIdx = 0;
-                persistAll();
+                this.currentSessionChanged({ target: { selectedIndex: 0 } });
+                document.getElementById('sessionSelection').selectedIndex = 0;
                 this.deleteSessionDialogOpen = false;
             },
             cancelDeleteSession: function () {

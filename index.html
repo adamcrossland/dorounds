@@ -25,9 +25,9 @@
         <h2 class="subtitle">a tool for 5e DMs to make enconters easier</h2>
         <div class="columns">
             <div class="column col-2">
-                <select class="form-select" @change="currentSessionChanged($event)"
-                    v-if="!currentSession.currentlyEditingName">
-                    <option v-for="(session, index) in sessions" v-bind:value="{ number: index}">{{ session.name }}
+                <select class="form-select" @change="currentSessionChanged($event)" v-model="currentSession"
+                    v-if="!currentSession.currentlyEditingName" id="sessionSelection">
+                    <option v-for="(session, index) in sessions" v-bind:value="session">{{ session.name }}
                     </option>
                 </select>
                 <input class="form-input" v-if="currentSession.currentlyEditingName" v-model="currentSession.name"
@@ -172,7 +172,7 @@
             </div>
         </div>
     </div>
-    <script src="vue.min.js"></script>
+    <script src="vue.js"></script>
     <script src="dorounds.js"></script>
 </body>
 
