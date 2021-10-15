@@ -205,8 +205,6 @@ Vue.directive('focus', {
         foundSessions.push(newSession);
     }
 
-    var sessionSelectionDD = document.getElementById('sessionSelection');
-
     var app = new Vue({
         el: '#app',
         data: {
@@ -252,7 +250,6 @@ Vue.directive('focus', {
                     addNewSession();
                 }
                 this.currentSessionChanged({ target: { selectedIndex: 0 } });
-                document.getElementById('sessionSelection').selectedIndex = 0;
                 this.deleteSessionDialogOpen = false;
             },
             cancelDeleteSession: function () {
