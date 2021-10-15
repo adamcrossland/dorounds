@@ -206,6 +206,7 @@ Vue.directive('focus', {
                 if (evt.keyCode === 32) {
                     if (this.currentSession.currentlyPlaying) {
                         evt.preventDefault();
+                        evt.stopImmediatePropagation();
                         do {
                             this.currentSession.activeLine++;
                             if (this.currentSession.activeLine == this.currentSession.lines.length) {
@@ -225,10 +226,10 @@ Vue.directive('focus', {
             }
         },
         created: function () {
-            document.addEventListener('keyup', this.spaceKeyListener);
+            document.addEventListener('keypress', this.spaceKeyListener);
         },
         destroyed: function () {
-            document.removeEventListener('keyup', this.spaceKeyListener);
+            document.removeEventListener('keypress', this.spaceKeyListener);
         }
     });
 })();
