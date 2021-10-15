@@ -43,6 +43,10 @@ Vue.directive('focus', {
         localStorage.setItem(sessionsStorageKey, serialized);
     }
 
+    function isNumeric(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+    
     function Session(name, addBlankLine) {
         var self = {};
         if (name) {
@@ -84,7 +88,16 @@ Vue.directive('focus', {
         self.cloneLine = function () {
             var clonedLine = Line();
             var lastLine = self.lines[self.lines.length - 1];
-            clonedLine.name = lastLine.name;
+            var nameParts = lastLine.name.split(' ');
+            if (nameParts.length > 0 && isNumeric(nameParts[nameParts.length - 1])) {
+                var asNumber = Number.parseInt(nameParts[nameParts.length - 1]);
+                asNumber++;
+                nameParts[nameParts.length - 1] = asNumber.toString();
+                clonedLine.name = nameParts.join(' ');
+            } else {
+                clonedLine.name = lastLine.name;
+            }
+            
             clonedLine.ac = lastLine.ac;
             clonedLine.hitbonus = lastLine.hitbonus;
             self.lines.push(clonedLine);
