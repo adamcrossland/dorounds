@@ -30,3 +30,8 @@ and use it to bring enjoyment to other RPG-loving folks.
 
 ## Roadmap
 Check out the TODO file in this repo for a list of features that the author intends to add. There's not too much there, and that's unlikely to change, as the author would like to avoid bloat and complexity. However, please feel free to add an Issue if you find a bug or feel that you have an idea for a new feature that would really improve it.
+
+## Credit
+This software uses [Vue.js](https://vuejs.org/) and [Spectre.css](https://picturepan2.github.io/spectre/index.html). The author is profoundly grateful to the folks who created these things
+and made them available to other creators. Software, like fantasy roleplaying, is at its best when
+it involves cooperation, creativity and selflessness. 
