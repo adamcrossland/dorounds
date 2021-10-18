@@ -10,6 +10,7 @@ Vue.directive('focus', {
         var self = {};
         self.name = "";
         self.initiative = null;
+        self.hp = 0;
         self.ac = "";
         self.hitbonus = "";
         self.disabled = false;
@@ -18,6 +19,7 @@ Vue.directive('focus', {
             var copy = Line();
             copy.name = self.name;
             copy.initiative = self.initiative;
+            copy.hp = self.hp;
             copy.ac = self.ac;
             copy.hitbonus = self.hitbonus;
             copy.disabled = self.disabled;
@@ -174,6 +176,7 @@ Vue.directive('focus', {
                 var eachNewLine = Line();
                 eachNewLine.name = sl.name;
                 eachNewLine.initiative = sl.initiative;
+                eachNewLine.hp = sl.hp;
                 eachNewLine.ac = sl.ac;
                 eachNewLine.hitbonus = sl.hitbonus;
                 eachNewLine.disabled = sl.disabled || false;
@@ -219,7 +222,7 @@ Vue.directive('focus', {
                 this.currentSessionIdx = event.target.selectedIndex;
                 persistAll();
             },
-            spaceKeyListener: function (evt) {
+            keyListener: function (evt) {
                 if (evt.keyCode === 32) {
                     if (this.currentSession.currentlyPlaying) {
                         evt.preventDefault();
@@ -234,6 +237,29 @@ Vue.directive('focus', {
                             this.currentSession.lines[this.currentSession.activeLine].disabled);
                         if (!this.currentSession.anyLinesActive()) {
                             this.currentSession.togglePlaying();
+                        }
+                    }
+                } 
+            },
+            arrowsKeyListener: function (evt) {
+                // Arrow keys only trigger on keydown, not keypress, thus the need
+                // for a separate handler.
+                if (evt.keyCode === 40) { // down arrow
+                    if (this.currentSession.currentlyPlaying) {
+                        evt.preventDefault();
+                        evt.stopImmediatePropagation();
+                        this.currentSession.lines[this.currentSession.activeLine].hp--;
+                        if (this.currentSession.lines[this.currentSession.activeLine].hp === 0) {
+                            this.currentSession.lines[this.currentSession.activeLine].disabled = true;
+                        }
+                    }
+                } else if (evt.keyCode === 38) { // down arrow
+                    if (this.currentSession.currentlyPlaying) {
+                        evt.preventDefault();
+                        evt.stopImmediatePropagation();
+                        this.currentSession.lines[this.currentSession.activeLine].hp++;
+                        if (this.currentSession.lines[this.currentSession.activeLine].hp > 0) {
+                            this.currentSession.lines[this.currentSession.activeLine].disabled = false;
                         }
                     }
                 }
@@ -257,10 +283,12 @@ Vue.directive('focus', {
             }
         },
         created: function () {
-            document.addEventListener('keypress', this.spaceKeyListener);
+            document.addEventListener('keypress', this.keyListener);
+            document.addEventListener('keydown', this.arrowsKeyListener)
         },
         destroyed: function () {
-            document.removeEventListener('keypress', this.spaceKeyListener);
+            document.removeEventListener('keypress', this.keyListener);
+            document.removeEventListener('keydown', this.arrowsKeyListener)
         }
     });
 })();

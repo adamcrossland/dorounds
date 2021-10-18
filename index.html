@@ -92,9 +92,10 @@
             <div class="column col-5"></div>
             <div class="column col-1 table-header">Initiative</div>
             <div class="column col-2 table-header">Name</div>
+            <div class="column col-1 table-header">HP</div>
             <div class="column col-1 table-header">AC</div>
             <div class="column col-1 table-header">To Hit Bonus</div>
-            <div class="column col-7"></div>
+            <div class="column col-6"></div>
             <div class="column col-12">
                 <div class="form-horizontal" v-for="(line, index) in currentSession.lines">
                     <div class="form-group"
@@ -108,8 +109,12 @@
                                 aria-label="Name" autocomplete="off" placeholder="Name" />
                         </div>
                         <div class="column col-1">
+                            <input class="form-input" type="number" v-model="line.hp" @change="saveData"
+                                aria-label="Hit Points" autocomplete="off" placeholder="HP" />
+                        </div>
+                        <div class="column col-1">
                             <input class="form-input" type="number" v-model="line.ac" @change="saveData"
-                                aria-label="Armor Class" autocomplete="0ff" placeholder="AC" />
+                                aria-label="Armor Class" autocomplete="off" placeholder="AC" />
                         </div>
                         <div class="column col-1">
                             <input class="form-input" type="number" v-model="line.hitbonus" @change="saveData"
