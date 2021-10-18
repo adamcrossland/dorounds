@@ -249,6 +249,18 @@ Vue.directive('focus', {
                         evt.preventDefault();
                         evt.stopImmediatePropagation();
                         this.currentSession.lines[this.currentSession.activeLine].hp--;
+                        if (this.currentSession.lines[this.currentSession.activeLine].hp === 0) {
+                            this.currentSession.lines[this.currentSession.activeLine].disabled = true;
+                        }
+                    }
+                } else if (evt.keyCode === 38) { // down arrow
+                    if (this.currentSession.currentlyPlaying) {
+                        evt.preventDefault();
+                        evt.stopImmediatePropagation();
+                        this.currentSession.lines[this.currentSession.activeLine].hp++;
+                        if (this.currentSession.lines[this.currentSession.activeLine].hp > 0) {
+                            this.currentSession.lines[this.currentSession.activeLine].disabled = false;
+                        }
                     }
                 }
             },
