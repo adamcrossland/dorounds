@@ -43,11 +43,11 @@
                     <i class="icon icon-resize-vert"></i>
                 </button>
                 <button class="btn" v-on:click="currentSession.clone" v-if="!currentSession.currentlyPlaying"
-                    aria-label="Clone Session" title="Clone Session">
+                    aria-label="Clone Encounter" title="Clone Encounter">
                     <i class="icon icon-arrow-down"></i>
                 </button>
                 <button class="btn line-button" v-if="!currentSession.currentlyPlaying"
-                    v-on:click="deleteCurrentSession" role="button" aria-label="Delete Session" title="Delete Session">
+                    v-on:click="deleteCurrentSession" role="button" aria-label="Delete Encounter" title="Delete Encounter">
                     <i class="icon icon-delete"></i>
                 </button>
             </div>
@@ -155,12 +155,12 @@
             <div class="modal-container">
                 <div class="modal-header">
                     <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
-                    <div class="modal-title h5">Delete this Session?</div>
+                    <div class="modal-title h5">Delete this Encounter?</div>
                 </div>
                 <div class="modal-body">
                     <div class="content">
                         <div class="h6">
-                            Delete this Session? <b>This action cannot be
+                            Delete this Encounter? <b>This action cannot be
                                 undone.</b>
                         </div>
                     </div>
