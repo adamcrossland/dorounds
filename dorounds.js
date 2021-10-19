@@ -164,30 +164,32 @@ Vue.directive('focus', {
 
     var foundSessions = [];
 
-    const savedSessions = localStorage.getItem(sessionsStorageKey);
-    if (savedSessions !== null) {
-        var deserialized = JSON.parse(savedSessions);
-        deserialized.forEach((ss) => {
-            var newSession = Session(ss.name, false);
-            newSession.currentlyPlaying = ss.currentlyPlaying || false;
-            newSession.currentRound = ss.currentRound || 1;
-            newSession.activeLine = ss.activeLine || 0;
-            ss.lines.forEach((sl) => {
-                var eachNewLine = Line();
-                eachNewLine.name = sl.name;
-                eachNewLine.initiative = sl.initiative;
-                eachNewLine.hp = sl.hp;
-                eachNewLine.ac = sl.ac;
-                eachNewLine.hitbonus = sl.hitbonus;
-                eachNewLine.disabled = sl.disabled || false;
+    function loadSavedData(loadTo) {
+        const savedSessions = localStorage.getItem(sessionsStorageKey);
+        if (savedSessions !== null) {
+            var deserialized = JSON.parse(savedSessions);
+            deserialized.forEach((ss) => {
+                var newSession = Session(ss.name, false);
+                newSession.currentlyPlaying = ss.currentlyPlaying || false;
+                newSession.currentRound = ss.currentRound || 1;
+                newSession.activeLine = ss.activeLine || 0;
+                ss.lines.forEach((sl) => {
+                    var eachNewLine = Line();
+                    eachNewLine.name = sl.name;
+                    eachNewLine.initiative = sl.initiative;
+                    eachNewLine.hp = sl.hp;
+                    eachNewLine.ac = sl.ac;
+                    eachNewLine.hitbonus = sl.hitbonus;
+                    eachNewLine.disabled = sl.disabled || false;
 
-                newSession.lines.push(eachNewLine);
+                    newSession.lines.push(eachNewLine);
+                });
+                loadTo.push(newSession);
             });
-            foundSessions.push(newSession);
-        });
-        addNewSession();
-    } else {
-        addNewSession();
+            addNewSession();
+        } else {
+            addNewSession();
+        }
     }
 
     function hasNewSession() {
@@ -208,6 +210,8 @@ Vue.directive('focus', {
         foundSessions.push(newSession);
     }
 
+    loadSavedData(foundSessions);
+
     var app = new Vue({
         el: '#app',
         data: {
@@ -216,7 +220,10 @@ Vue.directive('focus', {
             currentSessionIdx : 0,
             deleteSessionDialogOpen: false,
             dataExport: null,
-            exportDataDialogOpen: false
+            exportDataDialogOpen: false,
+            dataImport: "",
+            importDataDialogOpen: false,
+            dataImportError: null
         },
         methods: {
             currentSessionChanged: function (event) {
@@ -302,8 +309,27 @@ Vue.directive('focus', {
                 this.dataExport = null;
                 this.exportDataDialogOpen = false;
             },
+            showimportdata: function () {
+                this.importDataDialogOpen = true;
+            },
             importdata: function () {
-
+                try {
+                    const newSessions = atob(this.dataImport);
+                    JSON.parse(newSessions);
+                    while (this.sessions.length > 0) {
+                        this.sessions.pop();
+                    }
+                    localStorage.setItem(sessionsStorageKey, newSessions);
+                    loadSavedData(this.sessions);
+                    this.importDataDialogOpen = false;
+                    this.dataImport = "";
+                } catch (e) {
+                    this.dataImportError = `Error loading data: ${e}`;
+                }
+            },
+            closeImportDataDialog: function () {
+                this.dataImport = "";
+                this.importDataDialogOpen = false;
             }
         },
         created: function () {
@@ -315,5 +341,7 @@ Vue.directive('focus', {
             document.removeEventListener('keydown', this.arrowsKeyListener)
         }
     });
+     
+     return app;
 })();
 

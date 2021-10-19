@@ -58,7 +58,7 @@
                     <i class="icon icon-download"></i>
                 </button>
                 <button class="btn" v-if="!currentSession.currentlyPlaying"
-                    v-on:click="importdata" role="button" aria-label="Import Data"
+                    v-on:click="showimportdata" role="button" aria-label="Import Data"
                     title="Import Data">
                     <i class="icon icon-upload"></i>
                 </button>
@@ -203,8 +203,36 @@
                         <div class="h6">
                             Copy this data.
                         </div>
-                        <textarea class="data-export" rows="5" readonly wrap="hard" v-model="dataExport"></textarea>
+                        <textarea class="data-import-export" rows="5" readonly wrap="hard" v-model="dataExport"></textarea>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="importDataDialog" v-bind:class="{ active: importDataDialogOpen }">
+            <a href="#close" class="modal-overlay" v-on:click="closeImportDataDialog" title="Close"
+                aria-label="Close"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right" v-on:click="closeImportDataDialog" aria-label="Close"></a>
+                    <div class="modal-title h5">Import Data</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <div class="h6">
+                            Paste your exported data here and click the Import button.
+                        </div>
+                        <div class="text-warning">
+                            Please note that importing data will entirely overwrite any 
+                            encounters that currently exist, and that data will not be 
+                            recoverable.
+                        </div>
+                        <textarea class="data-import-export" rows="5" wrap="hard" v-model="dataImport"></textarea>
+                        <div class="error-message" v-show="dataImportError">{{ dataImportError }}</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" v-on:click="importdata" v-bind:disabled="dataImport.length == 0">Import</button>
+                    <button class="btn btn-primary" v-on:click="closeImportDataDialog">Cancel</button>
                 </div>
             </div>
         </div>
