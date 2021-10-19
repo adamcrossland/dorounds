@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do Rounds Tutorial</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <link rel="stylesheet" href="/dorounds.css">
+</head>
+<body class="tutorial">
+    <header class="navbar">
+        <section class="navbar-section">
+            <a href="/about.html" class="btn btn-link">about</a>
+            <a href="/index.html" class="btn btn-link">the app</a>
+            <a href="https://github.com/adamcrossland/dorounds" class="btn btn-link">github</a>
+            <a href="https://crossland.dev" class="btn btn-link">author</a>
+        </section>
+    </header>
+    <h1>Do Rounds Tutorial</h1>
+    <p>
+        This page will give you a step-by-step tour through using <b>Do Rounds</b>
+        to manage your D&D 5e encounters.
+    </p>
+    <h2>Starting Out</h2>
+    <p>
+        The first thing that you should notice is the Encounter List.
+        It will show all of the encounters that you have defined and allow
+        you to switch between them. Note that there is always an encounter 
+        called 'New...' which you can edit and change the name of.
+        <figure class="figure">
+            <img class="img-responsive" src="images/encounter_list.png" alt="the top-most part of the Do Rounds main page, with the Encounter List selection box highlighted">
+            <figcaption class="figure-caption text-center">The Do Rounds Encounter List</figcaption>
+        </figure>
+    </p>
+    <p>
+        To change the name to something useful &mdash; or to rename an existing
+        encounter &mdash; click the 'Edit' button and set the name to what you like.
+        Then, hit the Enter key to save your change.
+    </p>
+    <p>
+        Let's create an Encounter called 'Players.' Here, we will record the player 
+        characters: Joe, who has 34 HP, 14 AC and +4 to hit; Tom, who has 38 HP, 16 AC,
+        +4 to hit; Paul, who has 40 HP, 16 AC and +4 to hit, and Maryanne, who has 30 HP,
+        14 AC and +4 to hit.
+    </p>
+    <p>
+        Enter Joe's information, then hit the + button, which will add a new, blank line below:
+        <figure class="figure">
+            <img class="img-responsive" src="images/players_first_line.png" alt="One line filled in, with the plus button highlighted">
+            <figcaption class="figure-caption text-center">Adding players to the encounter</figcaption>
+        </figure>
+        Repeat the process for the remaining players:
+        <figure class="figure">
+            <img class="img-responsive" src="images/players_filled_out.png" alt="Four lines filled in">
+            <figcaption class="figure-caption text-center">All players added to the encounter</figcaption>
+        </figure>
+    </p>
+    <p>
+        Next, hit your browser's Reload button. Yes, really, try it. You'll see that all of your 
+        data is still there. <b>Do Rounds</b> automatically saves your data at every change, 
+        so you will never need to worry about losing work because you forgot to save.
+    </p>
+    <p>
+        Now, let's create an encounter with some monsters for our players to battle. Since we 
+        will not want to have to add the player information again, let's make a new encounter 
+        by copying this one. Hit the downward-pointing arrow button that is next to the 
+        Encounter List:
+        <figure class="figure">
+            <img class="img-responsive" src="images/encounter_clone_button.png" alt="The Encounter Clone button, highlighted">
+            <figcaption class="figure-caption text-center">The Encounter Clone button</figcaption>
+        </figure>
+        This is the Encounter Clone button, and it will make a new copy of the currently 
+        selected Encoutner with a new name:
+        <figure class="figure">
+            <img class="img-responsive" src="images/copy_of_encounter.png" alt="The Encounter List select box is open, showing a new Encounter called Copy of Players">
+            <figcaption class="figure-caption text-center">A copy of the Encounter called 'Players'</figcaption>
+        </figure>
+    </p>
+    <p>
+        Select the new encounter, and rename it to 'Goblin Clan Battle.' Now, we need to add 
+        some monsters to the Encounter. Press the plus button on the last line to get a new,
+        blank line, and add Goblin 1, who has 10 HP, 12 AC and +4 to hit. Next, instead of
+        hitting the plus button to get a new blank line, try hitting the downward-pointing 
+        arrow on that line.
+        <figure class="figure">
+            <img class="img-responsive" src="images/first_creature_added.png" alt="A line filled out with information about Goblin 1, with the Clone to New Line button highlighted">
+            <figcaption class="figure-caption text-center">There are always goblins</figcaption>
+        </figure>
+        Like the similar icon above, this button will clone the current line,
+        saving you from doing extra typing. Hit the CLone to New Line button again, and 
+        now you have three Goblins, ready to go:
+        <figure class="figure">
+            <img class="img-responsive" src="images/three_goblins.png" alt="Three new lines for three different Goblins">
+            <figcaption class="figure-caption text-center">Goblins...goblins everywhere</figcaption>
+        </figure>
+        You'll notice that you did not have to rename the two cloned Goblins; since it is very
+        common for encounters to have more than one instance of common types of monsters,
+        <b>Do Roll</b> will automatically increment any number that it finds at the end of
+        a name.
+    </p>
+    <p>
+        When it is time to play out the encounter, you'll have the players roll d20s for their
+        initiative scores. Let's say that Joe got 11, Tom 13, Paul 16 and Maryanne 8. If you would
+        like to save yourself the time and tedium of rolling and entering the goblins' initiative scores,
+        just hit the 'Auto-roll' button, and any remaining blank initiative scores will be filled
+        in for you:
+        <figure class="figure">
+            <img class="img-responsive" src="images/gcb_all_filled_in.png" alt="Four players and three monsters">
+            <figcaption class="figure-caption text-center">All lines are ready to go</figcaption>
+        </figure>
+        One last step before we start the encounter: it is definitely preferable to have the 
+        participants in order of descending initiative score. Hit the button with an up and
+        down arrow, the 'Sort Lines' button, and the list will be sorted for you:
+        <figure class="figure">
+            <img class="img-responsive" src="images/sort_button.png" alt="The Sort Lines button, highlighted">
+            <figcaption class="figure-caption text-center">The Sort Lines button</figcaption>
+        </figure>
+        Now, your encounter is all ready to begin play:
+        <figure class="figure">
+            <img class="img-responsive" src="images/ready_to_go.png" alt="A grid of seven enounter participants, sorted from highest to lowest initiative score">
+            <figcaption class="figure-caption text-center">Sorted and ready to play</figcaption>
+        </figure>
+    </p>
+    <h2>Playing the encounter</h2>
+    <p>
+        To begin playing the encounter, hit the 'Start' button:
+        <figure class="figure">
+            <img class="img-responsive" src="images/start_button.png" alt="The Start button, highlighted">
+            <figcaption class="figure-caption text-center">Press this when it is time to fight</figcaption>
+        </figure>
+    </p>
+    <p>
+        You will notice that some elements on the page change. The text 'Round 1' appears on the
+        top line. The number will increase as you step through all of the encounter's 
+        participants. Also, a left-facing arrow will appear along the right side of the grid
+        to indicate which player currently has their turn. Finally, each line has an X button 
+        at the end; pressing it will indicate that the participant is no longer able to take turns,
+        being dead or unconcious:
+        <figure class="figure">
+            <img class="img-responsive" src="images/playing_1.png" alt="In Play mode, with the round number, current turn indicator and disabled button highlighted">
+            <figcaption class="figure-caption text-center">The Encounter in Play mode</figcaption>
+        </figure>
+    </p>
+    <p>
+        You can press the spacebar to move from the current participant to the next, and 
+        after you get to the last one, the Round number will increment, and play will 
+        return to the top of the list. If any participants are disable, they will be skipped over.
+    </p>
+    <p>
+        You can also use the up and down arrow keys on your keyboard to change the number of 
+        hit points that the currently participant has. On the first line, hit the down arrow 
+        five times, indicating that Paul has taken 5 points of damage:
+        <figure class="figure">
+            <img class="img-responsive" src="images/five_damage.png" alt="The hit points column is highlighted and is now five fewer than before">
+            <figcaption class="figure-caption text-center">Damage taken</figcaption>
+        </figure>
+        Of course, you can always diretly manipulate the value in the HP field &mdesh; by
+        typing in a number or using the up and down arrows in the field &mdash; at any time,
+        regardless of whose turn it currently is.
+    </p>
+    <p>
+        You can revise the Round number by clicking the pencil icon. Change the number
+        to what it ought to be and the hit Enter:
+        <figure class="figure">
+            <img class="img-responsive" src="images/edit_round.png" alt="Changing the Round number by clicking on the pencil icon">
+            <figcaption class="figure-caption text-center">Modify the Round number</figcaption>
+        </figure>
+    </p>
+    <p>
+        Finally, you can delete an Encounter with the trash can icon:
+        <figure class="figure">
+            <img class="img-responsive" src="images/delete_encounter.png" alt="You can delete and encounter with the trash can icon">
+            <figcaption class="figure-caption text-center">Delete an Encounter</figcaption>
+        </figure>
+    </p>
+</body>
+</html>
