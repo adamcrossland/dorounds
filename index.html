@@ -34,7 +34,7 @@
                 <input class="form-input" v-if="currentSession.currentlyEditingName" v-model="currentSession.name"
                     v-on:keyup.13="currentSession.toggleNameEditing" v-focus>
             </div>
-            <div class="column col-2">
+            <div class="column col-3">
                 <button class="btn" v-if="!currentSession.currentlyEditingName" title="Edit Name"
                     v-on:click="currentSession.toggleNameEditing" aria-label="Edit Name">Edit</button>
                 <button class="btn" v-if="currentSession.currentlyEditingName" title="Save Name"
@@ -47,9 +47,20 @@
                     aria-label="Clone Encounter" title="Clone Encounter">
                     <i class="icon icon-arrow-down"></i>
                 </button>
-                <button class="btn line-button" v-if="!currentSession.currentlyPlaying"
-                    v-on:click="deleteCurrentSession" role="button" aria-label="Delete Encounter" title="Delete Encounter">
+                <button class="btn" v-if="!currentSession.currentlyPlaying"
+                    v-on:click="deleteCurrentSession" role="button" aria-label="Delete Encounter"
+                    title="Delete Encounter">
                     <i class="icon icon-delete"></i>
+                </button>
+                <button class="btn" v-if="!currentSession.currentlyPlaying"
+                    v-on:click="exportdata" role="button" aria-label="Export Data"
+                    title="Export Data">
+                    <i class="icon icon-download"></i>
+                </button>
+                <button class="btn" v-if="!currentSession.currentlyPlaying"
+                    v-on:click="showimportdata" role="button" aria-label="Import Data"
+                    title="Import Data">
+                    <i class="icon icon-upload"></i>
                 </button>
             </div>
             <div class="column col-1">
@@ -90,7 +101,7 @@
                     Auto-roll
                 </button>
             </div>
-            <div class="column col-5"></div>
+            <div class="column col-4"></div>
             <div class="column col-1 table-header">Initiative</div>
             <div class="column col-2 table-header">Name</div>
             <div class="column col-1 table-header">HP</div>
@@ -110,8 +121,9 @@
                                 aria-label="Name" autocomplete="off" placeholder="Name" />
                         </div>
                         <div class="column col-1">
-                            <input class="form-input" type="number" v-model.number="line.hp" @change="hitpointschanged(index)"
-                                aria-label="Hit Points" autocomplete="off" placeholder="HP" />
+                            <input class="form-input" type="number" v-model.number="line.hp"
+                                @change="hitpointschanged(index)" aria-label="Hit Points" autocomplete="off"
+                                placeholder="HP" />
                         </div>
                         <div class="column col-1">
                             <input class="form-input" type="number" v-model="line.ac" @change="saveData"
@@ -157,7 +169,8 @@
             </div>
         </div>
         <div class="modal" id="deleteSessionConfirmation" v-bind:class="{ active: deleteSessionDialogOpen }">
-            <a href="#close" class="modal-overlay" v-on:click="cancelDeleteSession" title="Close" aria-label="Close"></a>
+            <a href="#close" class="modal-overlay" v-on:click="cancelDeleteSession" title="Close"
+                aria-label="Close"></a>
             <div class="modal-container">
                 <div class="modal-header">
                     <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
@@ -174,6 +187,52 @@
                 <div class="modal-footer">
                     <button class="btn" v-on:click="confirmDeleteSession">Yes</button>
                     <button class="btn btn-primary" v-on:click="cancelDeleteSession">No</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="exportDataDialog" v-bind:class="{ active: exportDataDialogOpen }">
+            <a href="#close" class="modal-overlay" v-on:click="closeExportDataDialog" title="Close"
+                aria-label="Close"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right" v-on:click="closeExportDataDialog" aria-label="Close"></a>
+                    <div class="modal-title h5">Export Data</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <div class="h6">
+                            Copy this data.
+                        </div>
+                        <textarea class="data-import-export" rows="5" readonly wrap="hard" v-model="dataExport"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="importDataDialog" v-bind:class="{ active: importDataDialogOpen }">
+            <a href="#close" class="modal-overlay" v-on:click="closeImportDataDialog" title="Close"
+                aria-label="Close"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right" v-on:click="closeImportDataDialog" aria-label="Close"></a>
+                    <div class="modal-title h5">Import Data</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <div class="h6">
+                            Paste your exported data here and click the Import button.
+                        </div>
+                        <div class="text-warning">
+                            Please note that importing data will entirely overwrite any 
+                            encounters that currently exist, and that data will not be 
+                            recoverable.
+                        </div>
+                        <textarea class="data-import-export" rows="5" wrap="hard" v-model="dataImport"></textarea>
+                        <div class="error-message" v-show="dataImportError">{{ dataImportError }}</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" v-on:click="importdata" v-bind:disabled="dataImport.length == 0">Import</button>
+                    <button class="btn btn-primary" v-on:click="closeImportDataDialog">Cancel</button>
                 </div>
             </div>
         </div>

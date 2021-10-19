@@ -49,3 +49,13 @@ div.table-header {
     font-weight: bold;
     margin-top: 2em;
 }
+
+textarea.data-import-export {
+    width: 100%;
+    margin-top: 1em;
+}
+
+.error-message {
+    font-weight: bold;
+    color: darkred;
+}
