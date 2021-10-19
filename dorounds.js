@@ -280,6 +280,16 @@ Vue.directive('focus', {
             },
             cancelDeleteSession: function () {
                 this.deleteSessionDialogOpen = false;
+            },
+            hitpointschanged: function (idx) {
+                var line = this.currentSession.lines[idx];
+                if (line.hp <= 0) {
+                    line.disabled = true;
+                } else if (line.disabled) {
+                    line.disabled = false;
+                }
+
+                persistAll();
             }
         },
         created: function () {
