@@ -214,7 +214,9 @@ Vue.directive('focus', {
             sessions: foundSessions,
             currentSession: foundSessions[0],
             currentSessionIdx : 0,
-            deleteSessionDialogOpen: false
+            deleteSessionDialogOpen: false,
+            dataExport: null,
+            exportDataDialogOpen: false
         },
         methods: {
             currentSessionChanged: function (event) {
@@ -290,6 +292,18 @@ Vue.directive('focus', {
                 }
 
                 persistAll();
+            },
+            exportdata: function () {
+                const savedSessions = localStorage.getItem(sessionsStorageKey);
+                this.dataExport = btoa(savedSessions);
+                this.exportDataDialogOpen = true;
+            },
+            closeExportDataDialog: function () {
+                this.dataExport = null;
+                this.exportDataDialogOpen = false;
+            },
+            importdata: function () {
+
             }
         },
         created: function () {
