@@ -63,3 +63,7 @@ textarea.data-import-export {
 section.navbar-section a {
     margin-right: 2em;
 }
+
+.kbd-nav {
+    padding-left: 1.5em;
+}

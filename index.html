@@ -102,6 +102,10 @@
                 </button>
             </div>
             <div class="column col-4"></div>
+            <div class="column col-12 kbd-nav" v-show="currentSession.currentlyPlaying">
+                <kbd>Esc</kbd> = exit Playing mode; <kbd>Tab</kbd> = move to next HP field;
+                <kbd>Space</kbd> = move to next line
+            </div>
             <div class="column col-1 table-header">Initiative</div>
             <div class="column col-2 table-header">Name</div>
             <div class="column col-1 table-header">HP</div>
