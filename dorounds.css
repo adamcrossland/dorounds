@@ -59,3 +59,7 @@ textarea.data-import-export {
     font-weight: bold;
     color: darkred;
 }
+
+section.navbar-section a {
+    margin-right: 2em;
+}
