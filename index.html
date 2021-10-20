@@ -121,9 +121,9 @@
                                 aria-label="Name" autocomplete="off" placeholder="Name" />
                         </div>
                         <div class="column col-1">
-                            <input class="form-input" type="number" v-model.number="line.hp"
+                            <input class="form-input" type="number" ref="hitpoints" v-model.number="line.hp"
                                 @change="hitpointschanged(index)" aria-label="Hit Points" autocomplete="off"
-                                placeholder="HP" />
+                                placeholder="HP" :id="`line-${index}`"/>
                         </div>
                         <div class="column col-1">
                             <input class="form-input" type="number" v-model="line.ac" @change="saveData"

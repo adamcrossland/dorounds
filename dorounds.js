@@ -232,45 +232,53 @@ Vue.directive('focus', {
                 persistAll();
             },
             keyListener: function (evt) {
-                if (evt.keyCode === 32) {
-                    if (this.currentSession.currentlyPlaying) {
-                        evt.preventDefault();
-                        evt.stopImmediatePropagation();
-                        do {
-                            this.currentSession.activeLine++;
-                            if (this.currentSession.activeLine == this.currentSession.lines.length) {
-                                this.currentSession.activeLine = 0;
-                                this.currentSession.currentRound++;
-                            }
-                        } while (this.currentSession.anyLinesActive() &&
-                            this.currentSession.lines[this.currentSession.activeLine].disabled);
-                        if (!this.currentSession.anyLinesActive()) {
-                            this.currentSession.togglePlaying();
-                        }
-                    }
-                } 
-            },
-            arrowsKeyListener: function (evt) {
-                // Arrow keys only trigger on keydown, not keypress, thus the need
+                // Some keys only trigger on keydown, not keypress, thus the need
                 // for a separate handler.
-                if (evt.keyCode === 40) { // down arrow
-                    if (this.currentSession.currentlyPlaying) {
-                        evt.preventDefault();
-                        evt.stopImmediatePropagation();
-                        this.currentSession.lines[this.currentSession.activeLine].hp--;
-                        if (this.currentSession.lines[this.currentSession.activeLine].hp === 0) {
-                            this.currentSession.lines[this.currentSession.activeLine].disabled = true;
+                switch (evt.keyCode) {
+                    case 9:
+                        if (this.currentSession.currentlyPlaying) {
+                            evt.preventDefault();
+                            evt.stopImmediatePropagation();
+                            var activeId = document.activeElement.id;
+                            if (!activeId.startsWith("line-")) {
+                                // Not currently focused on a hitpoint field,
+                                // so all that we can do is set it to the first one.
+                                this.$refs.hitpoints[0].focus();
+                            } else {
+                                // Currently focused on a hitpoint field, so
+                                // determine which is next and focus there.
+                                var numPart = activeId.replace("line-", "");
+                                var asNumber = Number(numPart);
+                                if (asNumber === this.$refs.hitpoints.length - 1) {
+                                    // At the end, move to the top.
+                                    asNumber = 0;
+                                } else {
+                                    asNumber++;
+                                }
+                                this.$refs.hitpoints[asNumber].focus();
+                            }
                         }
-                    }
-                } else if (evt.keyCode === 38) { // down arrow
-                    if (this.currentSession.currentlyPlaying) {
-                        evt.preventDefault();
-                        evt.stopImmediatePropagation();
-                        this.currentSession.lines[this.currentSession.activeLine].hp++;
-                        if (this.currentSession.lines[this.currentSession.activeLine].hp > 0) {
-                            this.currentSession.lines[this.currentSession.activeLine].disabled = false;
+                        break;
+                    case 32:
+                        if (this.currentSession.currentlyPlaying) {
+                            evt.preventDefault();
+                            evt.stopImmediatePropagation();
+                            do {
+                                this.currentSession.activeLine++;
+                                if (this.currentSession.activeLine == this.currentSession.lines.length) {
+                                    this.currentSession.activeLine = 0;
+                                    this.currentSession.currentRound++;
+                                }
+                            } while (this.currentSession.anyLinesActive() &&
+                                this.currentSession.lines[this.currentSession.activeLine].disabled);
+                            if (!this.currentSession.anyLinesActive()) {
+                                this.currentSession.togglePlaying();
+                            }
                         }
-                    }
+                        break;
+                    case 27:
+                        this.currentSession.currentlyPlaying = false;
+                        break;
                 }
             },
             saveData: function () {
@@ -333,12 +341,10 @@ Vue.directive('focus', {
             }
         },
         created: function () {
-            document.addEventListener('keypress', this.keyListener);
-            document.addEventListener('keydown', this.arrowsKeyListener)
+            document.addEventListener('keydown', this.keyListener)
         },
         destroyed: function () {
-            document.removeEventListener('keypress', this.keyListener);
-            document.removeEventListener('keydown', this.arrowsKeyListener)
+            document.removeEventListener('keydown', this.keyListener)
         }
     });
      
