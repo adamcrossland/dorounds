@@ -88,8 +88,9 @@ Vue.directive('focus', {
             });
         };
         self.cloneLine = function () {
-            var clonedLine = Line();
             var lastLine = self.lines[self.lines.length - 1];
+            var clonedLine = lastLine.copy();
+
             var nameParts = lastLine.name.split(' ');
             if (nameParts.length > 0 && isNumeric(nameParts[nameParts.length - 1])) {
                 var asNumber = Number.parseInt(nameParts[nameParts.length - 1]);
@@ -100,8 +101,6 @@ Vue.directive('focus', {
                 clonedLine.name = lastLine.name;
             }
             
-            clonedLine.ac = lastLine.ac;
-            clonedLine.hitbonus = lastLine.hitbonus;
             self.lines.push(clonedLine);
         };
         self.deleteLine = function (index) {
