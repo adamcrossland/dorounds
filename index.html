@@ -144,9 +144,9 @@
                                 title="Add New Line">
                                 <i class="icon icon-plus"></i>
                             </button>
-                            <button class="btn line-button"
+                            <button class="btn line-button" ref="clonelinebutton"
                                 v-if="currentSession.isLastLine(index) && !currentSession.currentlyPlaying"
-                                v-on:click="currentSession.cloneLine" role="button" aria-label="Clone to New Line"
+                                v-on:click="cloneLine" role="button" aria-label="Clone to New Line"
                                 title="Clone to New Line">
                                 <i class="icon icon-arrow-down"></i>
                             </button>

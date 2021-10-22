@@ -87,22 +87,6 @@ Vue.directive('focus', {
                 }
             });
         };
-        self.cloneLine = function () {
-            var lastLine = self.lines[self.lines.length - 1];
-            var clonedLine = lastLine.copy();
-
-            var nameParts = lastLine.name.split(' ');
-            if (nameParts.length > 0 && isNumeric(nameParts[nameParts.length - 1])) {
-                var asNumber = Number.parseInt(nameParts[nameParts.length - 1]);
-                asNumber++;
-                nameParts[nameParts.length - 1] = asNumber.toString();
-                clonedLine.name = nameParts.join(' ');
-            } else {
-                clonedLine.name = lastLine.name;
-            }
-            
-            self.lines.push(clonedLine);
-        };
         self.deleteLine = function (index) {
             self.lines.splice(index, 1);
             persistAll();
@@ -337,6 +321,24 @@ Vue.directive('focus', {
             closeImportDataDialog: function () {
                 this.dataImport = "";
                 this.importDataDialogOpen = false;
+            },
+            cloneLine: function () {
+                var linesCount = this.currentSession.lines.length;
+                var lastLine = this.currentSession.lines[linesCount - 1];
+                var clonedLine = lastLine.copy();
+    
+                var nameParts = lastLine.name.split(' ');
+                if (nameParts.length > 0 && isNumeric(nameParts[nameParts.length - 1])) {
+                    var asNumber = Number.parseInt(nameParts[nameParts.length - 1]);
+                    asNumber++;
+                    nameParts[nameParts.length - 1] = asNumber.toString();
+                    clonedLine.name = nameParts.join(' ');
+                } else {
+                    clonedLine.name = lastLine.name;
+                }
+                
+                this.currentSession.lines.push(clonedLine);
+                Vue.nextTick(() => this.$refs.clonelinebutton[0].focus());
             }
         },
         created: function () {
