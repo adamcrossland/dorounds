@@ -1,3 +1,7 @@
+.container {
+    height: 100vh;
+}
+
 .line-button {
     margin-right: 1em;
 }
@@ -66,4 +70,14 @@ section.navbar-section a {
 
 .kbd-nav {
     padding-left: 1.5em;
+}
+
+.darkmode {
+    background-color: black;
+    color: white;
+}
+
+.lightmode {
+    background-color: white;
+    color: black;
 }

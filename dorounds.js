@@ -206,7 +206,8 @@ Vue.directive('focus', {
             exportDataDialogOpen: false,
             dataImport: "",
             importDataDialogOpen: false,
-            dataImportError: null
+            dataImportError: null,
+            lightmode: true
         },
         methods: {
             currentSessionChanged: function (event) {
@@ -339,6 +340,9 @@ Vue.directive('focus', {
                 
                 this.currentSession.lines.push(clonedLine);
                 Vue.nextTick(() => this.$refs.clonelinebutton[0].focus());
+            },
+            togglelightmode: function () {
+                this.lightmode = !this.lightmode;
             }
         },
         created: function () {

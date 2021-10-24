@@ -13,15 +13,17 @@
 </head>
 
 <body>
-    <header class="navbar">
-        <section class="navbar-section">
-            <a href="about.html" class="btn btn-link">about</a>
-            <a href="tutorial/tutorial.html">tutorial</a>
-            <a href="https://github.com/adamcrossland/dorounds" class="btn btn-link">github</a>
-            <a href="https://crossland.dev" class="btn btn-link">author</a>
-        </section>
-    </header>
-    <div id="app" class="container">
+    <div id="app" class="container" v-bind:class="{ lightmode: lightmode, darkmode: !lightmode }">
+        <header class="navbar">
+            <section class="navbar-section">
+                <a href="about.html" class="btn btn-link">about</a>
+                <a href="tutorial/tutorial.html">tutorial</a>
+                <a href="https://github.com/adamcrossland/dorounds" class="btn btn-link">github</a>
+                <a href="https://crossland.dev" class="btn btn-link">author</a>
+                <a v-if="!lightmode" v-on:click="togglelightmode">light mode</a>
+                <a v-if="lightmode" v-on:click="togglelightmode">dark mode</a>
+            </section>
+        </header>
         <h1>Do Rounds</h1>
         <h2 class="subtitle">a tool for 5e DMs to make enconters easier</h2>
         <div class="columns">
