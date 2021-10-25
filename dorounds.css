@@ -127,3 +127,7 @@ div.darkmode textarea {
 div.darkmode div.modal-header a {
     color: lightgray;
 }
+
+div.darkmode div.disabled input {
+    background-color: darkred;
+}
