@@ -72,12 +72,41 @@ section.navbar-section a {
     padding-left: 1.5em;
 }
 
-.darkmode {
+div.lightmode {
+    background-color: white;
+    color: black;
+}
+
+div.lightmode input,button {
+    background-color: white;
+    color: #5755d9;
+}
+
+div.darkmode {
     background-color: black;
     color: white;
 }
 
-.lightmode {
-    background-color: white;
-    color: black;
+div.darkmode input {
+    background-color: grey;
+    color: white;
+    border-color: darkgray;
+}
+
+div.darkmode button {
+    background-color: grey;
+    color: white;
+    border-color: darkgray;
+}
+div.darkmode i {
+    color: white;
+}
+
+div.darkmode select {
+    background-color: grey !important;
+    color: white !important;
+}
+
+div.darkmode section.navbar-section > a {
+    color: lightgray;
 }
