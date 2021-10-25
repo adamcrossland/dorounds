@@ -32,6 +32,7 @@ Vue.directive('focus', {
 
     const newSessionName = "New...";
     const sessionsStorageKey = "doRoundsSessions";
+    const lightdarkStorageKey = "doRoundsLightMode";
     const localStorage = window.localStorage;
 
     function persistAll() {
@@ -206,7 +207,8 @@ Vue.directive('focus', {
             exportDataDialogOpen: false,
             dataImport: "",
             importDataDialogOpen: false,
-            dataImportError: null
+            dataImportError: null,
+            lightmode: true
         },
         methods: {
             currentSessionChanged: function (event) {
@@ -339,13 +341,23 @@ Vue.directive('focus', {
                 
                 this.currentSession.lines.push(clonedLine);
                 Vue.nextTick(() => this.$refs.clonelinebutton[0].focus());
+            },
+            togglelightmode: function () {
+                this.lightmode = !this.lightmode;
+                localStorage.setItem(lightdarkStorageKey, this.lightmode);
             }
         },
         created: function () {
-            document.addEventListener('keydown', this.keyListener)
+            document.addEventListener('keydown', this.keyListener);
+            var savedLightMode = localStorage.getItem(lightdarkStorageKey);
+            if (savedLightMode === "true" || !savedLightMode) {
+                this.lightmode = true;
+            } else {
+                this.lightmode = false;
+            }
         },
         destroyed: function () {
-            document.removeEventListener('keydown', this.keyListener)
+            document.removeEventListener('keydown', this.keyListener);
         }
     });
      
