@@ -110,3 +110,20 @@ div.darkmode select {
 div.darkmode section.navbar-section > a {
     color: lightgray;
 }
+
+div.darkmode div.modal-container {
+    background-color: black;
+}
+
+div.darkmode div.modal-title {
+    color: lightgray;
+}
+
+div.darkmode textarea {
+    color: white;
+    background-color: black;
+}
+
+div.darkmode div.modal-header a {
+    color: lightgray;
+}
