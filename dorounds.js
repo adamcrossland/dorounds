@@ -147,7 +147,6 @@ Vue.directive('focus', {
             });
             
             foundSessions.push(clonedSession);
-            document.getElementById('sessionSelection').selectedIndex = foundSessions.length - 1;
         };
         return self;
     }
@@ -352,6 +351,10 @@ Vue.directive('focus', {
             togglelightmode: function () {
                 this.lightmode = !this.lightmode;
                 localStorage.setItem(lightdarkStorageKey, this.lightmode);
+            },
+            cloneencounter: function() {
+                this.currentSession.clone();
+                this.currentSession = this.sessions[this.sessions.length - 1];
             }
         },
         created: function () {
