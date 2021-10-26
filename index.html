@@ -16,10 +16,10 @@
     <div id="app" class="container" v-bind:class="{ lightmode: lightmode, darkmode: !lightmode }">
         <header class="navbar">
             <section class="navbar-section">
-                <a href="about.html" class="btn btn-link">about</a>
+                <a href="about.html">about</a>
                 <a href="tutorial/tutorial.html">tutorial</a>
-                <a href="https://github.com/adamcrossland/dorounds" class="btn btn-link">github</a>
-                <a href="https://crossland.dev" class="btn btn-link">author</a>
+                <a href="https://github.com/adamcrossland/dorounds">github</a>
+                <a href="https://crossland.dev">author</a>
                 <a v-if="!lightmode" v-on:click="togglelightmode">light mode</a>
                 <a v-if="lightmode" v-on:click="togglelightmode">dark mode</a>
             </section>
