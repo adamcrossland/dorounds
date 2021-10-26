@@ -10,6 +10,7 @@ Vue.directive('focus', {
         var self = {};
         self.name = "";
         self.initiative = null;
+        self.initmod = 0;
         self.hp = 0;
         self.ac = "";
         self.hitbonus = "";
@@ -19,6 +20,7 @@ Vue.directive('focus', {
             var copy = Line();
             copy.name = self.name;
             copy.initiative = self.initiative;
+            copy.initmod = self.initmod;
             copy.hp = self.hp;
             copy.ac = self.ac;
             copy.hitbonus = self.hitbonus;
@@ -87,6 +89,8 @@ Vue.directive('focus', {
                     }
                 }
             });
+
+            persistAll();
         };
         self.deleteLine = function (index) {
             self.lines.splice(index, 1);
@@ -130,9 +134,11 @@ Vue.directive('focus', {
         self.autoRollInitiative = function () {
             self.lines.forEach((line) => {
                 if (!line.initiative ||line.initiative.length === 0 || line.initiative === "0") {
-                    line.initiative = Math.floor(Math.random() * 20) + 1;
+                    line.initiative = Math.floor(Math.random() * 20) + 1 + line.initmod;
                 }
             });
+
+            persistAll();
         };
         self.clone = function () {
             var clonedSession = Session(`Copy of ${self.name}`, false);
@@ -161,6 +167,7 @@ Vue.directive('focus', {
                     var eachNewLine = Line();
                     eachNewLine.name = sl.name;
                     eachNewLine.initiative = sl.initiative;
+                    eachNewLine.initmod = sl.initmod;
                     eachNewLine.hp = sl.hp;
                     eachNewLine.ac = sl.ac;
                     eachNewLine.hitbonus = sl.hitbonus;

@@ -109,6 +109,7 @@
                 <kbd>Space</kbd> = move to next line
             </div>
             <div class="column col-1 table-header">Initiative</div>
+            <div class="column col-1 table-header">Init mod.</div>
             <div class="column col-2 table-header">Name</div>
             <div class="column col-1 table-header">HP</div>
             <div class="column col-1 table-header">AC</div>
@@ -121,6 +122,10 @@
                         <div class="column col-1">
                             <input class="form-input" type="text" v-model.number="line.initiative" @change="saveData"
                                 aria-label="Initiative" v-focus autocomplete="off" placeholder="Init." />
+                        </div>
+                        <div class="column col-1">
+                            <input class="form-input" type="number" v-model.number="line.initmod" @change="saveData"
+                                aria-label="Init mod" v-focus placeholder="Init +" />
                         </div>
                         <div class="column col-2">
                             <input class="form-input" type="text" v-model="line.name" @change="saveData"
