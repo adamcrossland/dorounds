@@ -99,17 +99,25 @@ div.darkmode button {
     border-color: darkgray;
 }
 
+div.darkmode i {
+    color: white;
+}
+
 div.darkmode button:hover {
     background-color: lightgray;
     color: black !important;
 }
 
-div.darkmode i {
-    color: white;
+div.darkmode button:hover i {
+    color:  white;
 }
 
-div.darkmode button:hover i {
-    color: black;
+div.darkmode button:focus {
+    background-color: grey;
+}
+
+div.darkmode button:focus i {
+    color: white;
 }
 
 div.darkmode select {
