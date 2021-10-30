@@ -52,8 +52,13 @@ Vue.directive('focus', {
         return !isNaN(parseFloat(n)) && isFinite(n);
     }
     
-    function Session(name, addBlankLine) {
+    function Session(id, name, addBlankLine) {
         var self = {};
+        if (id) {
+            self.id = id;
+        } else {
+            self.id = Date.now()
+        }
         if (name) {
             self.name = name;
         } else {
@@ -147,6 +152,8 @@ Vue.directive('focus', {
             });
             
             foundSessions.push(clonedSession);
+
+            return clonedSession;
         };
         return self;
     }
@@ -158,7 +165,7 @@ Vue.directive('focus', {
         if (savedSessions !== null) {
             var deserialized = JSON.parse(savedSessions);
             deserialized.forEach((ss) => {
-                var newSession = Session(ss.name, false);
+                var newSession = Session(ss.id, ss.name, false);
                 newSession.currentlyPlaying = ss.currentlyPlaying || false;
                 newSession.currentRound = ss.currentRound || 1;
                 newSession.activeLine = ss.activeLine || 0;
@@ -195,9 +202,31 @@ Vue.directive('focus', {
     }
 
     function addNewSession() {
-        var newSession = Session(newSessionName);
+        var newSession = Session(null, newSessionName);
         newSession.lines.push(Line());
         foundSessions.push(newSession);
+    }
+
+    function sortSessions() {
+        foundSessions.sort(function (a, b) {
+            if (a === newSessionName) {
+                return 1;
+            }
+
+            if (b === newSessionName) {
+                return -1;
+            }
+
+            if (a === b) {
+                return 0;
+            }
+
+            if (a < b) {
+                return -1;
+            }
+
+            return 1;
+        });
     }
 
     loadSavedData(foundSessions);
@@ -273,6 +302,7 @@ Vue.directive('focus', {
                 }
             },
             saveData: function () {
+                sortSessions();
                 persistAll();
             },
             deleteCurrentSession: function () {
@@ -353,8 +383,11 @@ Vue.directive('focus', {
                 localStorage.setItem(lightdarkStorageKey, this.lightmode);
             },
             cloneencounter: function() {
-                this.currentSession.clone();
-                this.currentSession = this.sessions[this.sessions.length - 1];
+                var clonedSession = this.currentSession.clone();
+                sortSessions();
+                persistAll();
+                this.currentSession = clonedSession;
+                //this.currentSession = this.sessions[this.sessions.length - 1];
             }
         },
         created: function () {
