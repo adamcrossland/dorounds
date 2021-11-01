@@ -172,6 +172,9 @@ Vue.directive('focus', {
                     eachNewLine.hitbonus = sl.hitbonus;
                     eachNewLine.disabled = sl.disabled || false;
 
+                    if (eachNewLine.hp <= 0) {
+                        eachNewLine.disabled = true;
+                    }
                     newSession.lines.push(eachNewLine);
                 });
                 loadTo.push(newSession);
