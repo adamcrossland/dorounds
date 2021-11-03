@@ -134,6 +134,7 @@ Vue.directive('focus', {
             if (!hasNewSession()) {
                 addNewSession();
             }
+            sortSessions();
             persistAll();
         };
         self.autoRollInitiative = function () {
@@ -146,7 +147,7 @@ Vue.directive('focus', {
             persistAll();
         };
         self.clone = function () {
-            var clonedSession = Session(`Copy of ${self.name}`, false);
+            var clonedSession = Session(null, `Copy of ${self.name}`, false);
             self.lines.forEach(l => {
                 clonedSession.lines.push(l.copy());
             });
@@ -190,6 +191,8 @@ Vue.directive('focus', {
         } else {
             addNewSession();
         }
+
+        sortSessions();
     }
 
     function hasNewSession() {
@@ -212,19 +215,20 @@ Vue.directive('focus', {
 
     function sortSessions() {
         foundSessions.sort(function (a, b) {
-            if (a === newSessionName) {
+            // The New... session should always be last on the list
+            if (a.name === newSessionName) {
                 return 1;
             }
 
-            if (b === newSessionName) {
+            if (b.name === newSessionName) {
                 return -1;
             }
 
-            if (a === b) {
+            if (a.name === b.name) {
                 return 0;
             }
 
-            if (a < b) {
+            if (a.name < b.name) {
                 return -1;
             }
 
