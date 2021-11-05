@@ -156,6 +156,12 @@ Vue.directive('focus', {
 
             return clonedSession;
         };
+        self.reset = function () {
+            self.lines.forEach(l => {
+                l.initiative = null;
+            });
+            self.currentRound = 1;
+        }
         return self;
     }
 
@@ -250,7 +256,8 @@ Vue.directive('focus', {
             dataImport: "",
             importDataDialogOpen: false,
             dataImportError: null,
-            lightmode: true
+            lightmode: true,
+            resetEncounterDialogOpen: false
         },
         methods: {
             currentSessionChanged: function (event) {
@@ -394,7 +401,13 @@ Vue.directive('focus', {
                 sortSessions();
                 persistAll();
                 this.currentSession = clonedSession;
-                //this.currentSession = this.sessions[this.sessions.length - 1];
+            },
+            toggleResetEncounter: function () {
+                this.resetEncounterDialogOpen = !this.resetEncounterDialogOpen;
+            },
+            resetEncounter: function () {
+                this.currentSession.reset();
+                this.resetEncounterDialogOpen = false;
             }
         },
         created: function () {

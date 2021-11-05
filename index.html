@@ -72,6 +72,10 @@
                 <button class="btn" v-if="currentSession.currentlyPlaying" title="Stop Playing"
                     v-on:click="currentSession.togglePlaying" aria-label="Start Play">Stop
                 </button>
+                <button class="btn" title="Reset Encounter" aria-label="Reset Encounter"
+                    v-on:click="toggleResetEncounter">
+                    <i class="icon icon-refresh"></i>
+                </button>
             </div>
             <div class="column col-2" v-if="currentSession.currentlyPlaying">
                 <div class="form-horizontal round-number">
@@ -244,6 +248,31 @@
                 <div class="modal-footer">
                     <button class="btn" v-on:click="importdata" v-bind:disabled="dataImport.length == 0">Import</button>
                     <button class="btn btn-primary" v-on:click="closeImportDataDialog">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="resetEncounterDialog" v-bind:class="{ active: resetEncounterDialogOpen }">
+            <a href="#close" class="modal-overlay" v-on:click="toggleResetEncounter" title="Close"
+                aria-label="Close"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right" v-on:click="toggleResetEncounter" aria-label="Close"></a>
+                    <div class="modal-title h5">Reset Encounter</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <div class="h6">
+                            Reset this encounter?
+                        </div>
+                        <div class="text-warning">
+                            Choosing OK will delete all initiative rolls and set the 
+                            Round to 1. You will have to manually reset HP.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" v-on:click="resetEncounter">Reset</button>
+                    <button class="btn btn-primary" v-on:click="toggleResetEncounter">Cancel</button>
                 </div>
             </div>
         </div>
