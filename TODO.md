@@ -1,7 +1,6 @@
 # TODO
 ## an informal roadmap of features to be added and bugs to be fixed
 * add ability to clear localStorage
-* add favicon
 * on encounter reset, put HP, TH bonus, Init bonus, AC to original values
 * auto sort on Start
 * add damage die/count/bonus column
