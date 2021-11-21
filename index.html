@@ -59,10 +59,6 @@
                     v-on:click="currentSession.toggleNameEditing" aria-label="Edit Name">Edit</button>
                 <button class="btn" v-if="currentSession.currentlyEditingName" title="Save Name"
                     v-on:click="currentSession.toggleNameEditing" aria-label="Save Name">Save</button>
-                <button class="btn" v-on:click="currentSession.sortLines" v-if="!currentSession.currentlyPlaying"
-                    aria-label="Sort Lines" title="Sort Lines">
-                    <i class="icon icon-resize-vert"></i>
-                </button>
                 <button class="btn" v-on:click="cloneencounter" v-if="!currentSession.currentlyPlaying"
                     aria-label="Clone Encounter" title="Clone Encounter">
                     <i class="icon icon-arrow-down"></i>
