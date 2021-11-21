@@ -104,6 +104,10 @@ Vue.directive('focus', {
         self.currentlyPlaying = false;
         self.togglePlaying = function () {
             self.currentlyPlaying = !self.currentlyPlaying;
+            if (self.currentlyPlaying) {
+                self.sortLines();
+            }
+
             persistAll();
         };
         self.currentRound = 1;
