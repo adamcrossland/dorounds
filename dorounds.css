@@ -149,3 +149,11 @@ div.darkmode div.modal-header a {
 div.darkmode div.disabled input {
     background-color: darkred;
 }
+
+div.encounter-name select {
+    width: 80%;
+}
+
+div.encounter-name input {
+    width: 80%;
+}
