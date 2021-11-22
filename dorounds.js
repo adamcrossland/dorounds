@@ -6,7 +6,7 @@ Vue.directive('focus', {
 
 (function () {
 
-    function Line() {
+    function Line(initObj) {
         var self = {};
         self.name = "";
         self.initiative = null;
@@ -16,6 +16,21 @@ Vue.directive('focus', {
         self.hitbonus = "";
         self.disabled = false;
         self.unmod = null;
+
+        if (initObj) {
+            self.name = initObj.name || self.name;
+            self.initiative = initObj.initiative || self.initiative;
+            self.initmod = initObj.initmod || self.initmod;
+            self.hp = initObj.hp || self.hp;
+            self.ac = initObj.ac || self.ac;
+            self.hitbonus = initObj.hitbonus || self.hitbonus;
+            self.disabled = initObj.disabled || self.disabled;
+            self.unmod = initObj.unmod || self.unmod;
+        }
+
+        if (self.hp < 1) {
+            self.disabled = true;
+        }
 
         self.copy = function () {
             var copy = Line();
@@ -241,19 +256,7 @@ Vue.directive('focus', {
                 newSession.currentRound = ss.currentRound || 1;
                 newSession.activeLine = ss.activeLine || 0;
                 ss.lines.forEach((sl) => {
-                    var eachNewLine = Line();
-                    eachNewLine.name = sl.name;
-                    eachNewLine.initiative = sl.initiative;
-                    eachNewLine.initmod = sl.initmod;
-                    eachNewLine.hp = sl.hp;
-                    eachNewLine.ac = sl.ac;
-                    eachNewLine.hitbonus = sl.hitbonus;
-                    eachNewLine.disabled = sl.disabled || false;
-                    eachNewLine.unmod = sl.unmod || null;
-
-                    if (eachNewLine.hp <= 0) {
-                        eachNewLine.disabled = true;
-                    }
+                    var eachNewLine = Line(sl);
                     newSession.lines.push(eachNewLine);
                 });
                 loadTo.push(newSession);
