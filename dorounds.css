@@ -150,6 +150,23 @@ div.darkmode div.disabled input {
     background-color: darkred;
 }
 
+div.darkmode a.btn {
+    background-color: black;
+    border-color: transparent;
+}
+
+div.darkmode .btn.btn-link.active, .btn.btn-link:active, .btn.btn-link:focus, .btn.btn-link:hover {
+    border-color: transparent !important;
+}
+
+div.darkmode div.dropdown {
+    background-color: black;
+}
+
+div.darkmode div.dropdown ul.menu {
+    background-color: darkgray;
+}
+
 div.encounter-name select {
     width: 80%;
 }

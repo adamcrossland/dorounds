@@ -325,7 +325,8 @@ Vue.directive('focus', {
             importDataDialogOpen: false,
             dataImportError: null,
             lightmode: true,
-            resetEncounterDialogOpen: false
+            resetEncounterDialogOpen: false,
+            extramenuopen: false
         },
         methods: {
             currentSessionChanged: function (event) {
@@ -412,6 +413,7 @@ Vue.directive('focus', {
                 persistAll();
             },
             exportdata: function () {
+                this.toggleextramenu();
                 const savedSessions = localStorage.getItem(sessionsStorageKey);
                 this.dataExport = btoa(savedSessions);
                 this.exportDataDialogOpen = true;
@@ -421,6 +423,7 @@ Vue.directive('focus', {
                 this.exportDataDialogOpen = false;
             },
             showimportdata: function () {
+                this.toggleextramenu();
                 this.importDataDialogOpen = true;
             },
             importdata: function () {
@@ -476,6 +479,9 @@ Vue.directive('focus', {
             resetEncounter: function () {
                 this.currentSession.reset();
                 this.resetEncounterDialogOpen = false;
+            },
+            toggleextramenu: function () {
+                this.extramenuopen = !this.extramenuopen;
             }
         },
         created: function () {

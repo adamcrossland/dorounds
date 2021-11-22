@@ -68,16 +68,19 @@
                     title="Delete Encounter">
                     <i class="icon icon-delete"></i>
                 </button>
-                <button class="btn" v-if="!currentSession.currentlyPlaying"
-                    v-on:click="exportdata" role="button" aria-label="Export Data"
-                    title="Export Data">
-                    <i class="icon icon-download"></i>
-                </button>
-                <button class="btn" v-if="!currentSession.currentlyPlaying"
-                    v-on:click="showimportdata" role="button" aria-label="Import Data"
-                    title="Import Data">
-                    <i class="icon icon-upload"></i>
-                </button>
+                <div class="dropdown" v-bind:class="{'active': extramenuopen }">
+                    <button class="btn dropdown" v-on:click="toggleextramenu" tabindex="0">
+                      <i class="icon icon-more-vert"></i>
+                    </button>
+                    <ul class="menu">
+                        <li class="menu-item">
+                            <a href="#" v-on:click="exportdata">Export Data</a>  
+                        </li>
+                        <li class="menu-item">
+                            <a href="#" v-on:click="showimportdata">Import Data</a>  
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="column col-1">
                 <button class="btn" v-if="!currentSession.currentlyPlaying" title="Start Playing"
