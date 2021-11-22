@@ -15,6 +15,7 @@ Vue.directive('focus', {
         self.ac = "";
         self.hitbonus = "";
         self.disabled = false;
+        self.unmod = null;
 
         self.copy = function () {
             var copy = Line();
@@ -25,8 +26,39 @@ Vue.directive('focus', {
             copy.ac = self.ac;
             copy.hitbonus = self.hitbonus;
             copy.disabled = self.disabled;
-
+            copy.unmod = self.unmod
             return copy;
+        };
+
+        self.storeUnmodifiedValues = function () {
+            if (self.unmod === null) {
+                self.unmod = {};
+                self.unmod.name = self.name;
+                self.unmod.initmod = self.initmod;
+                self.unmod.hp = self.hp;
+                self.unmod.ac = self.ac;
+                self.unmod.hitbonus = self.hitbonus;
+            }
+        };
+
+        self.setCurrentLine = function (linenum) {
+            if (!self.unmod.linenum) {
+                self.unmod.linenum = linenum + 1;
+            }
+        };
+
+        self.resetUnmodifiedValues = function () {
+            if (self.unmod !== null) {
+                self.name = self.unmod.name;
+                self.initmod = self.unmod.initmod;
+                self.hp = self.unmod.hp;
+                self.ac = self.unmod.ac;
+                self.hitbonus = self.unmod.hitbonus;
+
+                if (self.hp > 0) {
+                    self.disabled = false;
+                }
+            }
         };
 
         return self;
@@ -75,6 +107,10 @@ Vue.directive('focus', {
             return index === self.lines.length - 1;
         };
         self.sortLines = function () {
+            for (let i = 0; i < self.lines.length; i++) {
+                self.lines[i].setCurrentLine(i);
+            }
+
             self.lines.sort(function (a, b) {
                 if (a.initiative !== null && b.initiative !== null) {
                     if (a.initiative > b.initiative) {
@@ -105,6 +141,9 @@ Vue.directive('focus', {
         self.togglePlaying = function () {
             self.currentlyPlaying = !self.currentlyPlaying;
             if (self.currentlyPlaying) {
+                self.lines.forEach(l => {
+                    l.storeUnmodifiedValues();
+                });
                 self.sortLines();
             }
 
@@ -162,9 +201,30 @@ Vue.directive('focus', {
         };
         self.reset = function () {
             self.lines.forEach(l => {
+                l.resetUnmodifiedValues();
                 l.initiative = null;
             });
             self.currentRound = 1;
+
+            self.lines.sort(function (a, b) {
+                if (a.unmod && a.unmod.linenum && b.unmod && b.unmod.linenum) {
+                    if (a.unmod.linenum < b.unmod.linenum) {
+                        return -1;
+                    } else if (a.unmod.linenum > b.unmod.linenum) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    if ((!a.unmod || !a.unmod.linenum) && (b.unmod && b.unmod.linenum)) {
+                        return 0;
+                    } else if ((a.unmod && a.unmod.linenume) && (!b.unmod || !b.unmod.linenum)) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
         }
         return self;
     }
@@ -189,6 +249,7 @@ Vue.directive('focus', {
                     eachNewLine.ac = sl.ac;
                     eachNewLine.hitbonus = sl.hitbonus;
                     eachNewLine.disabled = sl.disabled || false;
+                    eachNewLine.unmod = sl.unmod || null;
 
                     if (eachNewLine.hp <= 0) {
                         eachNewLine.disabled = true;
