@@ -68,7 +68,8 @@
                     title="Delete Encounter">
                     <i class="icon icon-delete"></i>
                 </button>
-                <div class="dropdown" v-bind:class="{'active': extramenuopen }">
+                <div class="dropdown" v-bind:class="{'active': extramenuopen }"
+                     v-if="!currentSession.currentlyPlaying">
                     <button class="btn dropdown" v-on:click="toggleextramenu" tabindex="0">
                       <i class="icon icon-more-vert"></i>
                     </button>
