@@ -326,7 +326,8 @@ Vue.directive('focus', {
             dataImportError: null,
             lightmode: true,
             resetEncounterDialogOpen: false,
-            extramenuopen: false
+            extramenuopen: false,
+            clearStorageOpen: false
         },
         methods: {
             currentSessionChanged: function (event) {
@@ -463,8 +464,12 @@ Vue.directive('focus', {
                 this.currentSession.lines.push(clonedLine);
                 Vue.nextTick(() => this.$refs.clonelinebutton[0].focus());
             },
-            togglelightmode: function () {
-                this.lightmode = !this.lightmode;
+            togglelightmode: function (setTo) {
+                if (typeof setTo === 'boolean') {
+                    this.lightmode = setTo;
+                } else {
+                    this.lightmode = !this.lightmode;
+                }
                 localStorage.setItem(lightdarkStorageKey, this.lightmode);
             },
             cloneencounter: function() {
@@ -482,6 +487,25 @@ Vue.directive('focus', {
             },
             toggleextramenu: function () {
                 this.extramenuopen = !this.extramenuopen;
+            },
+            toggleClearStorage: function (setOpen) {
+                if (setOpen && typeof setOpen === 'boolean') {
+                    this.clearStorageOpen = setOpen;
+                } else {
+                    this.clearStorageOpen = !this.clearStorageOpen;
+                }
+                if (!this.clearStorageOpen) {
+                    this.toggleextramenu();
+                }
+            },
+            clearAllSavedData: function () {
+                let currentLightMode = localStorage.getItem(lightdarkStorageKey);
+                localStorage.clear();
+                this.sessions.splice(0, this.sessions.length);
+                loadSavedData(foundSessions);
+                this.toggleClearStorage(false);
+                this.currentSession = this.sessions[0];
+                this.togglelightmode(currentLightMode === "true" ? true : false);
             }
         },
         created: function () {

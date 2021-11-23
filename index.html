@@ -80,6 +80,9 @@
                         <li class="menu-item">
                             <a href="#" v-on:click="showimportdata">Import Data</a>  
                         </li>
+                        <li class="menu-item">
+                            <a href="#" v-on:click="toggleClearStorage">Clear Data</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -291,6 +294,33 @@
                 <div class="modal-footer">
                     <button class="btn" v-on:click="resetEncounter">Reset</button>
                     <button class="btn btn-primary" v-on:click="toggleResetEncounter">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="clearStorageDialog" v-bind:class="{ active: clearStorageOpen }">
+            <a href="#close" class="modal-overlay" v-on:click="toggleClearStorage" title="Close"
+                aria-label="Close"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right" v-on:click="toggleClearStorage"
+                        aria-label="Close"></a>
+                    <div class="modal-title h5">Clear All Saved Data</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <div class="h6">
+                            Clear all saved data?
+                        </div>
+                        <div class="text-warning">
+                            Warning! Selecting 'Clear' will remove all stored encounter data. This
+                            action cannot be undone, is permanent, and may fill you with horrible regrets.
+                            Consider exporting your data before clearing it.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" v-on:click="clearAllSavedData">Clear</button>
+                    <button class="btn btn-primary" v-on:click="toggleClearStorage">Close</button>
                 </div>
             </div>
         </div>
