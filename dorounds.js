@@ -324,9 +324,9 @@ Vue.directive('focus', {
             dataImport: "",
             importDataDialogOpen: false,
             dataImportError: null,
-            lightmode: true,
+            lightMode: true,
             resetEncounterDialogOpen: false,
-            extramenuopen: false,
+            extraMenuOpen: false,
             clearStorageOpen: false
         },
         methods: {
@@ -403,7 +403,7 @@ Vue.directive('focus', {
             cancelDeleteSession: function () {
                 this.deleteSessionDialogOpen = false;
             },
-            hitpointschanged: function (idx) {
+            hitPointsChanged: function (idx) {
                 var line = this.currentSession.lines[idx];
                 if (line.hp <= 0) {
                     line.disabled = true;
@@ -413,8 +413,8 @@ Vue.directive('focus', {
 
                 persistAll();
             },
-            exportdata: function () {
-                this.toggleextramenu();
+            exportData: function () {
+                this.toggleExtraMenu();
                 const savedSessions = localStorage.getItem(sessionsStorageKey);
                 this.dataExport = btoa(savedSessions);
                 this.exportDataDialogOpen = true;
@@ -423,11 +423,11 @@ Vue.directive('focus', {
                 this.dataExport = null;
                 this.exportDataDialogOpen = false;
             },
-            showimportdata: function () {
-                this.toggleextramenu();
+            showImportData: function () {
+                this.toggleExtraMenu();
                 this.importDataDialogOpen = true;
             },
-            importdata: function () {
+            importData: function () {
                 try {
                     const newSessions = atob(this.dataImport);
                     JSON.parse(newSessions);
@@ -464,13 +464,13 @@ Vue.directive('focus', {
                 this.currentSession.lines.push(clonedLine);
                 Vue.nextTick(() => this.$refs.clonelinebutton[0].focus());
             },
-            togglelightmode: function (setTo) {
+            toggleLightMode: function (setTo) {
                 if (typeof setTo === 'boolean') {
-                    this.lightmode = setTo;
+                    this.lightMode = setTo;
                 } else {
-                    this.lightmode = !this.lightmode;
+                    this.lightMode = !this.lightMode;
                 }
-                localStorage.setItem(lightdarkStorageKey, this.lightmode);
+                localStorage.setItem(lightdarkStorageKey, this.lightMode);
             },
             cloneencounter: function() {
                 var clonedSession = this.currentSession.clone();
@@ -485,8 +485,8 @@ Vue.directive('focus', {
                 this.currentSession.reset();
                 this.resetEncounterDialogOpen = false;
             },
-            toggleextramenu: function () {
-                this.extramenuopen = !this.extramenuopen;
+            toggleExtraMenu: function () {
+                this.extraMenuOpen = !this.extraMenuOpen;
             },
             toggleClearStorage: function (setOpen) {
                 if (setOpen && typeof setOpen === 'boolean') {
@@ -495,7 +495,7 @@ Vue.directive('focus', {
                     this.clearStorageOpen = !this.clearStorageOpen;
                 }
                 if (!this.clearStorageOpen) {
-                    this.toggleextramenu();
+                    this.toggleExtraMenu();
                 }
             },
             clearAllSavedData: function () {
@@ -512,9 +512,9 @@ Vue.directive('focus', {
             document.addEventListener('keydown', this.keyListener);
             var savedLightMode = localStorage.getItem(lightdarkStorageKey);
             if (savedLightMode === "true" || !savedLightMode) {
-                this.lightmode = true;
+                this.lighMode = true;
             } else {
-                this.lightmode = false;
+                this.lightMode = false;
             }
         },
         destroyed: function () {

@@ -31,15 +31,15 @@
 </head>
 
 <body>
-    <div id="app" class="container" v-bind:class="{ lightmode: lightmode, darkmode: !lightmode }">
+    <div id="app" class="container" v-bind:class="{ lightMode: lightMode, darkmode: !lightMode }">
         <header class="navbar">
             <section class="navbar-section">
                 <a href="about.html">about</a>
                 <a href="tutorial/tutorial.html">tutorial</a>
                 <a href="https://github.com/adamcrossland/dorounds">github</a>
                 <a href="https://crossland.dev">author</a>
-                <a v-if="!lightmode" v-on:click="togglelightmode">light mode</a>
-                <a v-if="lightmode" v-on:click="togglelightmode">dark mode</a>
+                <a v-if="!lightMode" v-on:click="toggleLightMode">light mode</a>
+                <a v-if="lightMode" v-on:click="toggleLightMode">dark mode</a>
             </section>
         </header>
         <h1>Do Rounds</h1>
@@ -68,17 +68,17 @@
                     title="Delete Encounter">
                     <i class="icon icon-delete"></i>
                 </button>
-                <div class="dropdown" v-bind:class="{'active': extramenuopen }"
+                <div class="dropdown" v-bind:class="{'active': extraMenuOpen }"
                      v-if="!currentSession.currentlyPlaying">
-                    <button class="btn dropdown" v-on:click="toggleextramenu" tabindex="0">
+                    <button class="btn dropdown" v-on:click="toggleExtraMenu" tabindex="0">
                       <i class="icon icon-more-vert"></i>
                     </button>
                     <ul class="menu">
                         <li class="menu-item">
-                            <a href="#" v-on:click="exportdata">Export Data</a>  
+                            <a href="#" v-on:click="exportData">Export Data</a>  
                         </li>
                         <li class="menu-item">
-                            <a href="#" v-on:click="showimportdata">Import Data</a>  
+                            <a href="#" v-on:click="showImportData">Import Data</a>  
                         </li>
                         <li class="menu-item">
                             <a href="#" v-on:click="toggleClearStorage">Clear Data</a>
@@ -158,7 +158,7 @@
                         </div>
                         <div class="column col-1">
                             <input class="form-input" type="number" ref="hitpoints" v-model.number="line.hp"
-                                @change="hitpointschanged(index)" aria-label="Hit Points" autocomplete="off"
+                                @change="hitPointsChanged(index)" aria-label="Hit Points" autocomplete="off"
                                 placeholder="HP" :id="`line-${index}`"/>
                         </div>
                         <div class="column col-1">
@@ -267,7 +267,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn" v-on:click="importdata" v-bind:disabled="dataImport.length == 0">Import</button>
+                    <button class="btn" v-on:click="importData" v-bind:disabled="dataImport.length == 0">Import</button>
                     <button class="btn btn-primary" v-on:click="closeImportDataDialog">Cancel</button>
                 </div>
             </div>
