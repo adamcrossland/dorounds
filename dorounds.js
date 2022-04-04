@@ -13,7 +13,8 @@ Vue.directive('focus', {
         self.initmod = 0;
         self.hp = 0;
         self.ac = "";
-        self.hitbonus = "";
+        self.weapons = [];
+        self.selectedWeapon = null;
         self.disabled = false;
         self.unmod = null;
 
@@ -23,7 +24,12 @@ Vue.directive('focus', {
             self.initmod = initObj.initmod || self.initmod;
             self.hp = initObj.hp || self.hp;
             self.ac = initObj.ac || self.ac;
-            self.hitbonus = initObj.hitbonus || self.hitbonus;
+            if (initObj.weapons == null || initObj.length == 0) {
+                self.weapons = [DoRounds.Weapons.UnarmedAttack];
+            } else {
+                self.weapons = initObj.weapons;
+            }
+            self.selectedWeapon = initObj.selectedWeapon || self.weapons[0];
             self.disabled = initObj.disabled || self.disabled;
             self.unmod = initObj.unmod || self.unmod;
         }
@@ -39,7 +45,8 @@ Vue.directive('focus', {
             copy.initmod = self.initmod;
             copy.hp = self.hp;
             copy.ac = self.ac;
-            copy.hitbonus = self.hitbonus;
+            copy.weapons = self.weapons;
+            copy.selectedWeapon = self.selectedWeapon;
             copy.disabled = self.disabled;
             copy.unmod = self.unmod
             return copy;
@@ -52,7 +59,8 @@ Vue.directive('focus', {
                 self.unmod.initmod = self.initmod;
                 self.unmod.hp = self.hp;
                 self.unmod.ac = self.ac;
-                self.unmod.hitbonus = self.hitbonus;
+                self.unmod.weapons = self.weapons;
+                self.unmod.selectedWeapon = self.selectedWeapon;
             }
         };
 
@@ -68,13 +76,18 @@ Vue.directive('focus', {
                 self.initmod = self.unmod.initmod;
                 self.hp = self.unmod.hp;
                 self.ac = self.unmod.ac;
-                self.hitbonus = self.unmod.hitbonus;
+                self.weapons = self.unmod.weapons;
+                self.selectedWeapon = self.unmod.selectedWeapon;
 
                 if (self.hp > 0) {
                     self.disabled = false;
                 }
             }
         };
+
+        self.availableWeapons = function () {
+            return [DoRounds.Weapons.UnarmedAttack].concat(self.weapons);
+        }
 
         return self;
     }
@@ -327,7 +340,8 @@ Vue.directive('focus', {
             lightMode: true,
             resetEncounterDialogOpen: false,
             extraMenuOpen: false,
-            clearStorageOpen: false
+            clearStorageOpen: false,
+            weapons: DoRounds.Weapons
         },
         methods: {
             currentSessionChanged: function (event) {

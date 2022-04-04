@@ -46,7 +46,7 @@
         <h2 class="subtitle">a tool for 5e DMs to make enconters easier</h2>
         <div class="columns">
             <div class="column col-2 encounter-name">
-                <select class="form-select" @change="currentSessionChanged($event)" v-model="currentSession"
+                <select class="form-select session-chooser" @change="currentSessionChanged($event)" v-model="currentSession"
                     v-if="!currentSession.currentlyEditingName" id="sessionSelection">
                     <option v-for="(session, index) in sessions" v-bind:value="session">{{ session.name }}
                     </option>
@@ -133,23 +133,22 @@
                 <kbd>Esc</kbd> = exit Playing mode; <kbd>Tab</kbd> = move to next HP field;
                 <kbd>Space</kbd> = move to next line
             </div>
-            <div class="column col-1 table-header">Initiative</div>
-            <div class="column col-1 table-header">Init mod.</div>
+            <div class="column col-1 table-header">Init / mod</div>
             <div class="column col-2 table-header">Name</div>
-            <div class="column col-1 table-header">HP</div>
-            <div class="column col-1 table-header">AC</div>
-            <div class="column col-1 table-header">To Hit Bonus</div>
-            <div class="column col-6"></div>
+            <div class="column col-1 table-header">HP / AC</div>
+            <div class="column col-1 table-header">+To Hit</div>
+            <div class="column col-2 table-header">Weapon</div>
+            <div class="column col-4"></div>
             <div class="column col-12">
                 <div class="form-horizontal" v-for="(line, index) in currentSession.lines">
-                    <div class="form-group"
-                        v-bind:class="{ 'disabled': currentSession.currentlyPlaying && line.disabled }">
+                    <div class="form-group session-line"
+                        v-bind:class="{ 'line-disabled': currentSession.currentlyPlaying && line.disabled, 'line-enabled': !currentSession.currentlyPlaying || !line.disabled }">
                         <div class="column col-1">
-                            <input class="form-input" type="text" v-model.number="line.initiative" @change="saveData"
+                            <input class="form-input small-num" type="text"
+                                v-model.number="line.initiative" @change="saveData"
                                 aria-label="Initiative" v-focus autocomplete="off" placeholder="Init." />
-                        </div>
-                        <div class="column col-1">
-                            <input class="form-input" type="number" v-model.number="line.initmod" @change="saveData"
+                            <input class="form-input small-num" type="number"
+                                v-model.number="line.initmod" @change="saveData"
                                 aria-label="Init mod" v-focus placeholder="Init +" />
                         </div>
                         <div class="column col-2">
@@ -157,17 +156,35 @@
                                 aria-label="Name" autocomplete="off" placeholder="Name" />
                         </div>
                         <div class="column col-1">
-                            <input class="form-input" type="number" ref="hitpoints" v-model.number="line.hp"
+                            <input class="form-input small-num" type="number" ref="hitpoints"
+                                v-model.number="line.hp"
                                 @change="hitPointsChanged(index)" aria-label="Hit Points" autocomplete="off"
                                 placeholder="HP" :id="`line-${index}`"/>
-                        </div>
-                        <div class="column col-1">
-                            <input class="form-input" type="number" v-model="line.ac" @change="saveData"
+                            <input class="form-input ac-num" type="number" v-model="line.ac"
+                                @change="saveData"
                                 aria-label="Armor Class" autocomplete="off" placeholder="AC" />
                         </div>
                         <div class="column col-1">
                             <input class="form-input" type="number" v-model="line.hitbonus" @change="saveData"
                                 aria-label="To Hit Bonus" autocomplete="off" placeholder="+hit" />
+                        </div>
+                        <div class="column col-2">
+                            <select v-if="!currentSession.currentlyPlaying" multiple
+                                class="form-select" v-model="line.weapons">
+                                <optgroup v-for="weaponCategory in weapons.Categories"
+                                        v-bind:label="weaponCategory">
+                                    <option v-for="eachWeapon in weapons.Items[weaponCategory]"
+                                            :value="eachWeapon">
+                                        {{ eachWeapon.name }}
+                                    </option>
+                                </optgroup>
+                            </select>
+                            <select v-if="currentSession.currentlyPlaying" class="form-select"
+                                v-model="line.selectedWeapon">
+                                <option v-for="weapon in line.availableWeapons()" v-bind:value="weapon">
+                                    {{ weapon.name }}
+                                </option>
+                            </select>
                         </div>
                         <div class="column col-2">
                             <button class="btn line-button"
@@ -326,6 +343,7 @@
         </div>
     </div>
     <script src="vue.min.js"></script>
+    <script src="weapons.js"></script>
     <script src="dorounds.js"></script>
     <script>
         if ("serviceWorker" in navigator ) {

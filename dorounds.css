@@ -13,9 +13,31 @@ h2.subtitle {
     margin-bottom: 2em;
 }
 
-div.disabled > div > input {
+div.line-disabled input {
     border-color:red;
-    background-color: lightgray;
+    background-color: darkred !important;
+    border-color: red;
+}
+
+div.line-disabled > div > select {
+    border-color:red;
+    background-color: darkred !important;
+    border-color: red;
+}
+
+div.line-disabled > div > select > option {
+    border-color:red;
+    background-color: darkred !important;
+}
+
+div.line-enabled > div > select {
+    background-color: grey !important;
+    color: white;
+}
+
+div.line-enabled > div > select > option {
+    background-color: grey;
+    color: white;
 }
 
 input.round-number {
@@ -120,9 +142,9 @@ div.darkmode button:focus i {
     color: white;
 }
 
-div.darkmode select {
-    background-color: grey !important;
-    color: white !important;
+div.darkmode select.session-chooser {
+    background-color: grey;
+    color: black;
 }
 
 div.darkmode section.navbar-section > a {
@@ -144,10 +166,6 @@ div.darkmode textarea {
 
 div.darkmode div.modal-header a {
     color: lightgray;
-}
-
-div.darkmode div.disabled input {
-    background-color: darkred;
 }
 
 div.darkmode a.btn {
@@ -173,4 +191,14 @@ div.encounter-name select {
 
 div.encounter-name input {
     width: 80%;
+}
+
+.small-num {
+    width: 45%;
+    display: inline-flex;
+}
+
+.ac-num {
+    width: 50%;
+    display: inline-flex;
 }
