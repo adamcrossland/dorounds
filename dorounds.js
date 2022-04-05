@@ -87,7 +87,11 @@ Vue.directive('focus', {
 
         self.availableWeapons = function () {
             return [DoRounds.Weapons.UnarmedAttack].concat(self.weapons);
-        }
+        };
+
+        self.safeSelectedWeapon = function () {
+            return self.selectedWeapon || self.availableWeapons()[0];
+        };
 
         return self;
     }
@@ -536,6 +540,6 @@ Vue.directive('focus', {
         }
     });
      
-     return app;
+    return app;
 })();
 

@@ -202,3 +202,11 @@ div.encounter-name input {
     width: 50%;
     display: inline-flex;
 }
+
+div.weapon-details {
+    justify-content: center;
+}
+
+span.weapon-properties {
+    font-style: italic;
+}

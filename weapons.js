@@ -9,14 +9,22 @@ DoRounds.Weapons = (function () {
         } else {
             throw "Weapon must have a name property.";
         }
-        self.damageType = props.damageType || null;
+        self.damageType = props.damageType || 0;
         self.damage = props.damage || null;
         self.range = props.range || null;
         self.weight = props.weight || 0;
         self.properties = props.properties || [];
-        self.versatileDamage = props.versatileDamage || null;;
+        self.versatileDamage = props.versatileDamage || null;
         self.special = props.special || null;
         self.hitbonus = props.hitbonus || 0;
+
+        self.damageText = function () {
+            if (Array.isArray(self.damage)) {
+                return self.damage.join(", ");
+            } else {
+                return self.damage;
+            }
+        };
 
         return self;
     }
@@ -766,6 +774,23 @@ DoRounds.Weapons = (function () {
         properties: []
     });
 
+    savedWeapons.propertiesText = function (weapon) {
+        let text = "";
+        for (var i = 0; i < weapon.properties.length; i++) {
+            if (text.length > 0) {
+                text += ", ";
+            }
+            let curProp = savedWeapons.Properties[weapon.properties[i]];
+            if (curProp.name == "versatile") {
+                text += `versatile(${ weapon.versatileDamage })`;
+            } else {
+                text += savedWeapons.Properties[weapon.properties[i]].name;
+            }
+        }
+
+        return text;
+    };
+    
     savedWeapons.Weapon = Weapon;
 
     return savedWeapons;

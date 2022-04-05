@@ -218,6 +218,13 @@
                                 v-show="currentSession.currentlyPlaying && currentSession.activeLine == index"></i>
                         </div>
                     </div>
+                    <div class="form-group column col-12 weapon-details" v-if="currentSession.currentlyPlaying">
+                        <span>{{ line.safeSelectedWeapon().name }} : {{ line.safeSelectedWeapon().damageText()}} of {{ weapons.DamageTypes[line.safeSelectedWeapon().damageType] }} damage</span>
+                        <span v-if="line.safeSelectedWeapon().hitbonus > 0">at +{{ line.safeSelectedWeapon().hitbonus }} to hit</span>
+                        <span v-if="line.safeSelectedWeapon().hitbonus < 0">at {{ line.safeSelectedWeapon().hitbonus }} to hit</span>
+                        <span v-if="line.safeSelectedWeapon().range">; range: {{ line.safeSelectedWeapon().range }}</span>
+                        <span class="weapon-properties" v-if="line.safeSelectedWeapon().properties.length > 0">; {{ weapons.propertiesText(line.safeSelectedWeapon()) }}</span>
+                    </div>
                 </div>
             </div>
         </div>
