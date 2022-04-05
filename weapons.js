@@ -245,7 +245,7 @@ DoRounds.Weapons = (function () {
                     range: null,
                     weight: 6,
                     properties: [5, 9, 11],
-                    special: "This long, almost moon-shaped blade allows a proper wielder unsurpassed flexibility in battle. If you have the Exotic Weapon Master feat, the elven crescent blade gains the finesse property."
+                    special: "This long, almost moon-shaped blade allows a\nproper wielder unsurpassed flexibility in battle.\n\nIf you have the Exotic Weapon Master feat,\nthe elven crescent blade gains the finesse\nproperty."
                 }),
                 Weapon({
                     name: "Flail",
@@ -295,7 +295,7 @@ DoRounds.Weapons = (function () {
                     range: null,
                     weight: 6,
                     properties: [8, 9],
-                    special: "You have disadvantage when you use a lance to attack a target within 5 feet of you. Also, a lance requires two hands to wield when you aren’t mounted."
+                    special: "You have disadvantage when you use a lance\nto attack a target within 5 feet of you.\nAlso, a lance requires two hands to\nwield when you aren’t mounted."
                 }),
                 Weapon({
                     name: "Longsword",
@@ -361,7 +361,7 @@ DoRounds.Weapons = (function () {
                     range: null,
                     weight: 10,
                     properties: [4, 5, 8, 9, 11],
-                    special: "A length of spiked chain is between 6 and 8-feet long with wicked barbs welded onto one end. If you have the Dual-Wielder feat, the Exotic Weapon Master feat, or the Two-Weapon Fighting style, you can wield a spiked chain as two one-handed, light weapons that each deal 1d6 piercing damage. The spiked chain loses the reach property when wielded in this way."
+                    special: "A length of spiked chain is between 6 and\n8-feet long with wicked barbs welded onto\none end. If you have the Dual-Wielder\nfeat, the Exotic Weapon Master feat, or\nthe Two-Weapon Fighting style, you can\nwield a spiked chain as two one-handed,\nlight weapons that each deal 1d6 piercing\ndamage. The spiked chain loses the reach\nproperty when wielded in this way."
                 }),
                 Weapon({
                     name: "Trident",
@@ -404,7 +404,7 @@ DoRounds.Weapons = (function () {
                     range: null,
                     weight: 2,
                     properties: [9, 11],
-                    special: "Fashioned to resemble the threshing implement but modified for battle, the war scythe can be a deadly weapon in the right hands. You can’t wield a war scythe in one hand. If you have the Exotic Weapon Master feat, you can wield the war scythe as a war pick. It gains the versatile (d10) property when wielded in this way. When you take the Attack action, you can attempt the Trip Attack combat manuever (DC 8 + your proficiency bonus + your Strength modifier) against a creature as one of your attacks."
+                    special: "Fashioned to resemble the threshing\nimplement but modified for battle, the war\nscythe can be a deadly weapon in the\nright hands.\nYou can’t wield a war scythe in one hand.\nIf you have the Exotic Weapon Master feat,\nyou can wield the war scythe as a war pick.\nIt gains the versatile (d10) property\nwhen wielded in this way.\nWhen you takethe Attack action, you can\nattempt the Trip Attack combat manuever\n(DC 8 + your proficiency bonus + your\nStrength modifier) against a creature as\none of your attacks."
                 }),
                 Weapon({
                     name: "Blowgun",
@@ -437,7 +437,7 @@ DoRounds.Weapons = (function () {
                     range: "150/600",
                     weight: 2,
                     properties: [0, 5, 9, 11],
-                    special: "This 6-foot tall bow is made of elm rather than yew or ash, making it astonishingly stiff, large and strong, and equally capable of use for long and short shooting. You can use a bonus action to steady yourself. While you are steadied, your attacks with the great bow deal 2d6 piercing damage. You are no longer steadied if you move."
+                    special: "This 6-foot tall bow is made of elm\nrather than yew or ash, making it\nastonishingly stiff, large and strong,\nand equally capable of use for long and\nshort shooting.\nYou can use a bonus action to steady\nyourself. While you are steadied, your\nattacks with the great bow deal 2d6\npiercing damage. You are no longer\nsteadied if you move."
                 }),
                 Weapon({
                     name: "Longbow",
@@ -454,7 +454,7 @@ DoRounds.Weapons = (function () {
                     range: "5/15",
                     weight: 3,
                     properties: [9, 10],
-                    special: "A Large or smaller creature hit by a net is restrained until it is freed. A net has no effect on creatures that are formless, or creatures that are Huge or larger. A creature can use its action to make a DC 10 Strength check, freeing itself or another creature within its reach on a success. Dealing 5 slashing damage to the net (AC 10) also frees the creature without harming it, ending the effect and destroying the net. When you use an action, bonus action, or reaction to attack with a net, you can make only one attack regardless of the number of attacks you can normally make."
+                    special: "A Large or smaller creature hit by a net\nis restrained until it is freed. A net has\nno effect on creatures that are formless,\nor creatures that are Huge or larger.\nA creature can use its action to make a\nDC 10 Strength check, freeing itself or\nanother creature within its reach on a\nsuccess. Dealing 5 slashing damage to the\nnet (AC 10) also frees the creature\nwithout harming it, ending the effect\nand destroying the net. When you use an\naction, bonus action, or reaction to\nattack regardless of the number of attacks\nyou can normally make."
                 })
             ],
             "Spell": [
