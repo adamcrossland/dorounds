@@ -805,7 +805,11 @@ DoRounds.Weapons = (function () {
                 text += `${weapon.damage[i]} of ${savedWeapons.DamageTypes[weapon.damageType[i]]}`;
             }
         } else {
-            text = `${weapon.damage} of ${savedWeapons.DamageTypes[weapon.damageType]}`;
+            if (weapon.damage) {
+                text = `${weapon.damage} of ${savedWeapons.DamageTypes[weapon.damageType]}`;
+            } else {
+                text = "no";
+            }
         }
 
         return text;
