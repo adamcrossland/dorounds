@@ -777,10 +777,10 @@ DoRounds.Weapons = (function () {
     savedWeapons.propertiesText = function (weapon) {
         let text = "";
         for (var i = 0; i < weapon.properties.length; i++) {
-            if (text.length > 0) {
+            let curProp = savedWeapons.Properties[weapon.properties[i]];
+            if (text.length > 0 && curProp.name !== "special") {
                 text += ", ";
             }
-            let curProp = savedWeapons.Properties[weapon.properties[i]];
             if (curProp.name == "versatile") {
                 text += `versatile (${weapon.versatileDamage})`;
             } else if (curProp.name == "special") {
