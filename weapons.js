@@ -236,7 +236,7 @@ DoRounds.Weapons = (function () {
                     range: "20/60",
                     weight: 4,
                     properties: [9, 10],
-                    special: "One head of this weapon ends in a spear and the other end is an axe. Originally used exclusively for mining, these weapons were adapted to combat creatures in the Underdark. If you have the Dual Wielder feat, the Exotic Weapon Master feat, or the Two-Weapon Fighting style, you can wield a dwarven urgrosh as a one-handed spear and a one-handed battleaxe. It gains the light property when wielded in this way."
+                    special: "One head of this weapon ends in a spear and\nthe other end is an axe. Originally used\nexclusively for mining, these weapons were\nadapted to combat creatures in the Underdark.\n\nIf you have the Dual Wielder feat, the Exotic \nWeapon Master feat, or the Two-Weapon \nFighting style, you can wield a dwarven urgrosh\nas a one-handed spear and a one-handed\nbattleaxe. It gains the light property when\nwielded in this way."
                 }),
                 Weapon({
                     name: "Elven Crescent Blade",
@@ -782,7 +782,9 @@ DoRounds.Weapons = (function () {
             }
             let curProp = savedWeapons.Properties[weapon.properties[i]];
             if (curProp.name == "versatile") {
-                text += `versatile(${ weapon.versatileDamage })`;
+                text += `versatile (${weapon.versatileDamage})`;
+            } else if (curProp.name == "special") {
+               // skip this type; it is rendered by UI code
             } else {
                 text += savedWeapons.Properties[weapon.properties[i]].name;
             }
@@ -791,6 +793,24 @@ DoRounds.Weapons = (function () {
         return text;
     };
     
+    savedWeapons.damageText = function (weapon) {
+        let text = "";
+
+        if (Array.isArray(weapon.damageType)) {
+            for (var i = 0; i < weapon.damageType.length; i++) {
+                if (text.length > 0) {
+                    text += ", ";
+                }
+
+                text += `${weapon.damage[i]} of ${savedWeapons.DamageTypes[weapon.damageType[i]]}`;
+            }
+        } else {
+            text = `${weapon.damage} of ${savedWeapons.DamageTypes[weapon.damageType]}`;
+        }
+
+        return text;
+    };
+
     savedWeapons.Weapon = Weapon;
 
     return savedWeapons;
