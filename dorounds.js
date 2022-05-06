@@ -15,7 +15,7 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
         self.hp = 0;
         self.ac = "";
         self.weapons = [];
-        self.selectedWeapon = null;
+        self.selectedWeapons = [];
         self.disabled = false;
         self.unmod = null;
 
@@ -30,7 +30,7 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
             } else {
                 self.weapons = initObj.weapons;
             }
-            self.selectedWeapon = initObj.selectedWeapon || self.weapons[0];
+            self.selectedWeapons = initObj.selectedWeapons || [];
             self.disabled = initObj.disabled || self.disabled;
             self.unmod = initObj.unmod || self.unmod;
         }
@@ -92,18 +92,6 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
 
         self.safeSelectedWeapon = function () {
             return self.selectedWeapon || self.availableWeapons()[0];
-        };
-
-        self.detailedWeapons = function () {
-            var detailed = [];
-            self.weapons.forEach(w => {
-                let eachWeapon = DoRounds.Weapons.getWeaponFromId(w);
-                if (eachWeapon) {
-                    detailed.push(eachWeapon);
-                }
-            });
-
-            return detailed;
         };
 
         return self;
@@ -197,6 +185,7 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
         self.currentRound = 1;
         self.toggleLinedisabled = function (index) {
             self.lines[index].disabled = !self.lines[index].disabled;
+            console.log("Weapons: " + self.lines[index].weapons);
             persistAll();
         };
         self.activeLine = 0;
@@ -358,7 +347,7 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
             resetEncounterDialogOpen: false,
             extraMenuOpen: false,
             clearStorageOpen: false,
-            weapons: DoRounds.Weapons.Items
+            weapons: DoRounds.Weapons
         },
         methods: {
             currentSessionChanged: function (event) {

@@ -168,20 +168,20 @@
                             <input class="form-input" type="number" v-model="line.hitbonus" @change="saveData"
                                 aria-label="To Hit Bonus" autocomplete="off" placeholder="+hit" />
                         </div>
-                        <div class="column col-3">
-                            <treeselect v-if="!currentSession.currentlyPlaying" 
+                        <div class="column col-3" v-if="!currentSession.currentlyPlaying">
+                            <treeselect 
                                 :disable-branch-nodes="true"
                                 placeholder="Select weapons..."
-                                value="node"
-                                value-format="object"
+                                value="node" value-format="object"
                                 value-consists-of="LEAF_PRIORITY"
-                                v-model="line.weapons" :multiple="true" :options="weapons" />
-                            <select v-if="currentSession.currentlyPlaying" class="form-select"
-                                v-model="line.selectedWeapon">
-                                <option v-for="weapon in line.availableWeapons()" v-bind:value="weapon">
-                                    {{ weapon.name }}
-                                </option>
-                            </select>
+                                v-model="line.weapons" :multiple="true" :options="weapons.Items" />
+                        </div>
+                        <div class="column col-3" v-if="currentSession.currentlyPlaying">
+                            <treeselect
+                                placeholder="Active weapons"
+                                value="node" value-format="object"
+                                value-consists-of="LEAF_PRIORITY"
+                                v-model="line.selectedWeapons" :multiple="true" :options="line.weapons" />
                         </div>
                         <div class="column col-2">
                             <button class="btn line-button"
@@ -215,13 +215,13 @@
                                 v-show="currentSession.currentlyPlaying && currentSession.activeLine == index"></i>
                         </div>
                     </div>
-                    <div class="form-group column col-12 weapon-details" v-if="currentSession.currentlyPlaying">
-                        <span>{{ line.safeSelectedWeapon().name }} : {{ weapons.damageText(line.safeSelectedWeapon())}} damage</span>
-                        <span v-if="line.safeSelectedWeapon().hitbonus > 0">at +{{ line.safeSelectedWeapon().hitbonus }} to hit</span>
-                        <span v-if="line.safeSelectedWeapon().hitbonus < 0">at {{ line.safeSelectedWeapon().hitbonus }} to hit</span>
-                        <span v-if="line.safeSelectedWeapon().range">; range: {{ line.safeSelectedWeapon().range }}</span>
-                        <span class="weapon-properties" v-if="line.safeSelectedWeapon().properties.length > 0">; {{ weapons.propertiesText(line.safeSelectedWeapon()) }}</span>
-                        <span class="weapon-properties tooltip" v-if="line.safeSelectedWeapon().special" :data-tooltip="line.safeSelectedWeapon().special">; special <b>?</b></span>
+                    <div class="form-group column col-12 weapon-details" v-if="currentSession.currentlyPlaying" v-for="eachWeapon in line.selectedWeapons">
+                        <span>{{ eachWeapon.name }} : {{ weapons.damageText(eachWeapon)}} damage</span>
+                        <span v-if="eachWeapon.hitbonus > 0">at +{{ eachWeapon.hitbonus }} to hit</span>
+                        <span v-if="eachWeapon.hitbonus < 0">at {{ eachWeapon.hitbonus }} to hit</span>
+                        <span v-if="eachWeapon.range">; range: {{ eachWeapon.range }}</span>
+                        <span class="weapon-properties" v-if="eachWeapon.properties.length > 0">; {{ weapons.propertiesText(line.safeSelectedWeapon()) }}</span>
+                        <span class="weapon-properties tooltip" v-if="eachWeapon.special" :data-tooltip="eachWeapon.special">; special <b>?</b></span>
                     </div>
                     <div class="form-group column col-12 weapon-details weapon-details-edit" v-if="!currentSession.currentlyPlaying" v-for="eachWeapon in line.weapons">
                         <label class="form-label form-inline">Name: <input type="text" v-model="eachWeapon.name" placeholder="name"/></label>
