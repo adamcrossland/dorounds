@@ -3,6 +3,7 @@ Vue.directive('focus', {
         el.focus()
     }
 });
+Vue.component('treeselect', VueTreeselect.Treeselect);
 
 (function () {
 
@@ -25,7 +26,7 @@ Vue.directive('focus', {
             self.hp = initObj.hp || self.hp;
             self.ac = initObj.ac || self.ac;
             if (initObj.weapons == null || initObj.length == 0) {
-                self.weapons = [DoRounds.Weapons.UnarmedAttack];
+                self.weapons = ["unarmed"];
             } else {
                 self.weapons = initObj.weapons;
             }
@@ -91,6 +92,18 @@ Vue.directive('focus', {
 
         self.safeSelectedWeapon = function () {
             return self.selectedWeapon || self.availableWeapons()[0];
+        };
+
+        self.detailedWeapons = function () {
+            var detailed = [];
+            self.weapons.forEach(w => {
+                let eachWeapon = DoRounds.Weapons.getWeaponFromId(w);
+                if (eachWeapon) {
+                    detailed.push(eachWeapon);
+                }
+            });
+
+            return detailed;
         };
 
         return self;
@@ -345,7 +358,7 @@ Vue.directive('focus', {
             resetEncounterDialogOpen: false,
             extraMenuOpen: false,
             clearStorageOpen: false,
-            weapons: DoRounds.Weapons
+            weapons: DoRounds.Weapons.Items
         },
         methods: {
             currentSessionChanged: function (event) {

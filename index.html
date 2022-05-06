@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A tool for Dungeons and Dragons Fifth Edition Dungeon Masters to make running combat encounters easier and more efficient.">
     <link rel="stylesheet" href="spectre.min.css">
     <link rel="stylesheet" href="spectre-exp.min.css">
     <link rel="stylesheet" href="spectre-icons.min.css">
+    <link rel="stylesheet" href="vue-treeselect.min.css">
     <link rel="stylesheet" href="dorounds.css">
     <title>Do Rounds</title>
     <link rel="apple-touch-icon" sizes="57x57" href="icons/apple-icon-57x57.png">
@@ -137,7 +137,7 @@
             <div class="column col-2 table-header">Name</div>
             <div class="column col-1 table-header">HP / AC</div>
             <div class="column col-1 table-header">+To Hit</div>
-            <div class="column col-2 table-header">Weapon</div>
+            <div class="column col-2 table-header">Weapons</div>
             <div class="column col-4"></div>
             <div class="column col-12">
                 <div class="form-horizontal" v-for="(line, index) in currentSession.lines">
@@ -168,17 +168,14 @@
                             <input class="form-input" type="number" v-model="line.hitbonus" @change="saveData"
                                 aria-label="To Hit Bonus" autocomplete="off" placeholder="+hit" />
                         </div>
-                        <div class="column col-2">
-                            <select v-if="!currentSession.currentlyPlaying" multiple
-                                class="form-select" v-model="line.weapons">
-                                <optgroup v-for="weaponCategory in weapons.Categories"
-                                        v-bind:label="weaponCategory">
-                                    <option v-for="eachWeapon in weapons.Items[weaponCategory]"
-                                            :value="eachWeapon">
-                                        {{ eachWeapon.name }}
-                                    </option>
-                                </optgroup>
-                            </select>
+                        <div class="column col-3">
+                            <treeselect v-if="!currentSession.currentlyPlaying" 
+                                :disable-branch-nodes="true"
+                                placeholder="Select weapons..."
+                                value="node"
+                                value-format="object"
+                                value-consists-of="LEAF_PRIORITY"
+                                v-model="line.weapons" :multiple="true" :options="weapons" />
                             <select v-if="currentSession.currentlyPlaying" class="form-select"
                                 v-model="line.selectedWeapon">
                                 <option v-for="weapon in line.availableWeapons()" v-bind:value="weapon">
@@ -225,6 +222,12 @@
                         <span v-if="line.safeSelectedWeapon().range">; range: {{ line.safeSelectedWeapon().range }}</span>
                         <span class="weapon-properties" v-if="line.safeSelectedWeapon().properties.length > 0">; {{ weapons.propertiesText(line.safeSelectedWeapon()) }}</span>
                         <span class="weapon-properties tooltip" v-if="line.safeSelectedWeapon().special" :data-tooltip="line.safeSelectedWeapon().special">; special <b>?</b></span>
+                    </div>
+                    <div class="form-group column col-12 weapon-details weapon-details-edit" v-if="!currentSession.currentlyPlaying" v-for="eachWeapon in line.weapons">
+                        <label class="form-label form-inline">Name: <input type="text" v-model="eachWeapon.name" placeholder="name"/></label>
+                        <label class="form-label form-inline">Hit bonus: <input type="number" v-model.number="eachWeapon.hitbonus" /></label>
+                        <label class="form-label form-inline">Damage: <input type="text" v-model="eachWeapon.damage" placeholder="damage" /></label>
+                        <label class="form-label form-inline">Range: <input type="text" v-model="eachWeapon.range" placeholder="range" /></label>
                     </div>
                 </div>
             </div>
@@ -352,6 +355,7 @@
     </div>
     <script src="vue.min.js"></script>
     <script src="weapons.js"></script>
+    <script src="vue-treeselect.umd.min.js"></script>
     <script src="dorounds.js"></script>
     <script>
         if ("serviceWorker" in navigator ) {

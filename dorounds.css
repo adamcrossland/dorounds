@@ -210,3 +210,37 @@ div.weapon-details {
 span.weapon-properties {
     font-style: italic;
 }
+
+div.weapon-details-edit label {
+    margin-right: 2em;
+}
+
+div.weapon-details-edit input {
+    width: 50%;
+}
+
+.vure_treeselect {
+    background-color: black;;
+}
+
+.vue-treeselect__menu-container {
+    background-color: black;
+}
+
+.vue-treeselect__menu {
+    background-color: black;
+}
+
+.vue-treeselect__menu * {
+    background-color: black;
+}
+
+.vue-treeselect__control {
+    background-color: black;
+}
+
+.vue-treeselect__multi-value {
+    max-height: 29px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
