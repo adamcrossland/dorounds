@@ -215,13 +215,16 @@
                                 v-show="currentSession.currentlyPlaying && currentSession.activeLine == index"></i>
                         </div>
                     </div>
-                    <div class="form-group column col-12 weapon-details" v-if="currentSession.currentlyPlaying" v-for="eachWeapon in line.selectedWeapons">
-                        <span>{{ eachWeapon.name }} : {{ weapons.damageText(eachWeapon)}} damage</span>
-                        <span v-if="eachWeapon.hitbonus > 0">at +{{ eachWeapon.hitbonus }} to hit</span>
-                        <span v-if="eachWeapon.hitbonus < 0">at {{ eachWeapon.hitbonus }} to hit</span>
-                        <span v-if="eachWeapon.range">; range: {{ eachWeapon.range }}</span>
-                        <span class="weapon-properties" v-if="eachWeapon.properties.length > 0">; {{ weapons.propertiesText(line.safeSelectedWeapon()) }}</span>
-                        <span class="weapon-properties tooltip" v-if="eachWeapon.special" :data-tooltip="eachWeapon.special">; special <b>?</b></span>
+                    <div class="form-group column col-12" v-if="currentSession.currentlyPlaying">
+                        <div class="weapon-details" v-for="eachWeapon in line.selectedWeapons">
+                            <span><b>{{ eachWeapon.name }}</b> : {{ weapons.damageText(eachWeapon)}} damage</span>
+                            <span v-if="eachWeapon.hitbonus > 0"> at +{{ eachWeapon.hitbonus }} to hit</span>
+                            <span v-if="eachWeapon.hitbonus < 0"> at {{ eachWeapon.hitbonus }} to hit</span>
+                            <span v-if="eachWeapon.range">, <i>range:</i> {{ eachWeapon.range }}</span>
+                            <span class="weapon-properties" v-if="eachWeapon.properties.length > 0">, {{ weapons.propertiesText(eachWeapon) }}</span>
+                            <span class="weapon-properties tooltip" v-if="eachWeapon.special" :data-tooltip="eachWeapon.special">; special <b>?</b></span>
+                            <span>;</span>
+                        </div>
                     </div>
                     <div class="form-group column col-12 weapon-details weapon-details-edit" v-if="!currentSession.currentlyPlaying" v-for="eachWeapon in line.weapons">
                         <label class="form-label form-inline">Name: <input type="text" v-model="eachWeapon.name" placeholder="name"/></label>

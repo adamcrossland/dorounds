@@ -244,3 +244,8 @@ div.weapon-details-edit input {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.weapon-details {
+    display: inline;
+    margin-right: 2em;
+}
