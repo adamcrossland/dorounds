@@ -135,8 +135,7 @@
             </div>
             <div class="column col-1 table-header">Init / mod</div>
             <div class="column col-2 table-header">Name</div>
-            <div class="column col-1 table-header">HP / AC</div>
-            <div class="column col-1 table-header">+To Hit</div>
+            <div class="column col-2 table-header">HP / AC / +Hit</div>
             <div class="column col-2 table-header">Weapons</div>
             <div class="column col-4"></div>
             <div class="column col-12">
@@ -144,10 +143,10 @@
                     <div class="form-group session-line"
                         v-bind:class="{ 'line-disabled': currentSession.currentlyPlaying && line.disabled, 'line-enabled': !currentSession.currentlyPlaying || !line.disabled }">
                         <div class="column col-1">
-                            <input class="form-input small-num" type="text"
+                            <input class="form-input small-num init-num" type="text"
                                 v-model.number="line.initiative" @change="saveData"
                                 aria-label="Initiative" v-focus autocomplete="off" placeholder="Init." />
-                            <input class="form-input small-num" type="number"
+                            <input class="form-input small-num init-num" type="number"
                                 v-model.number="line.initmod" @change="saveData"
                                 aria-label="Init mod" v-focus placeholder="Init +" />
                         </div>
@@ -155,17 +154,15 @@
                             <input class="form-input" type="text" v-model="line.name" @change="saveData"
                                 aria-label="Name" autocomplete="off" placeholder="Name" />
                         </div>
-                        <div class="column col-1">
-                            <input class="form-input small-num" type="number" ref="hitpoints"
+                        <div class="column col-2">
+                            <input class="form-input hp-num small-num" type="number" ref="hitpoints"
                                 v-model.number="line.hp"
                                 @change="hitPointsChanged(index)" aria-label="Hit Points" autocomplete="off"
                                 placeholder="HP" :id="`line-${index}`"/>
-                            <input class="form-input ac-num" type="number" v-model="line.ac"
+                            <input class="form-input ac-num small-num" type="number" v-model="line.ac"
                                 @change="saveData"
                                 aria-label="Armor Class" autocomplete="off" placeholder="AC" />
-                        </div>
-                        <div class="column col-1">
-                            <input class="form-input" type="number" v-model="line.hitbonus" @change="saveData"
+                            <input class="form-input th-num small-num" type="number" v-model="line.hitbonus" @change="saveData"
                                 aria-label="To Hit Bonus" autocomplete="off" placeholder="+hit" />
                         </div>
                         <div class="column col-3" v-if="!currentSession.currentlyPlaying">

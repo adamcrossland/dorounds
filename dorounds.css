@@ -194,12 +194,11 @@ div.encounter-name input {
 }
 
 .small-num {
-    width: 45%;
     display: inline-flex;
 }
 
 .ac-num {
-    width: 50%;
+    width: 47%;
     display: inline-flex;
 }
 
@@ -248,4 +247,19 @@ div.weapon-details-edit input {
 .weapon-details {
     display: inline;
     margin-right: 2em;
+}
+
+.init-num {
+    width: 46%;
+}
+.ac-num {
+    width: 30%;
+}
+
+.hp-num {
+    width: 30%;
+}
+
+.th-num {
+    width: 30%;
 }
