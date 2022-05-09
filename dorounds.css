@@ -143,8 +143,12 @@ div.darkmode button:focus i {
 }
 
 div.darkmode select.session-chooser {
-    background-color: grey;
-    color: black;
+    background-color: grey !important;
+    color: black !important;
+}
+
+div.darkmode select {
+    background-color: grey !important;
 }
 
 div.darkmode section.navbar-section > a {
