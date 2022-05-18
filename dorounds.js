@@ -562,8 +562,30 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                 this.weapons.save();
                 this.weaponBeingEdited = this.weapons.Weapon();
             },
-            saveWeaponsChanges: function () {
+            saveWeaponChanges: function () {
                 this.weapons.save();
+            },
+            deleteWeapon: function () {
+                console.log(`Deleting weapon ${this.weaponBeingEdited.name}`);  
+            },
+            canDeleteWeapon: function () {
+                let canDelete = true;
+                if (!this.weaponBeingEdited || this.weaponBeingEdited.name === "New weapon" ||
+                    !this.weapons.weaponExists(this.weaponBeingEdited.name)) {
+                    canDelete = false;
+                }
+
+                return canDelete;
+            },
+            canAddWeapon: function () {
+                let canAdd = false;
+                if (this.weaponBeingEdited && this.weaponBeingEdited.name.trim().length > 0
+                    && this.weaponBeingEdited.name !== "New weapon"
+                    && !this.weapons.weaponExists(this.weaponBeingEdited.name)) {
+                    canAdd = true;
+                }
+
+                return canAdd;
             }
         },
         created: function () {

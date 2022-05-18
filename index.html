@@ -425,8 +425,11 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn" v-on:click="">Delete</button>
-                        <button class="btn" v-on:click="saveNewWeapon">Add</button>
+                        <button class="btn" :disabled="!canDeleteWeapon()"
+                            v-on:click="deleteWeapon">Delete</button>
+                        <button class="btn" :disabled="!canAddWeapon()"
+                            v-on:click="saveNewWeapon">Add</button>
+                        <button class="btn" v-on:click="saveWeaponChanges">Save</button>
                     </div>
                 </div>
             </div>

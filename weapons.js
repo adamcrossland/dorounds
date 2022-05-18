@@ -866,6 +866,29 @@ DoRounds.Weapons = (function () {
         return text;
     };
 
+    savedWeapons.weaponExists = function (weaponName, inList) {
+        let doesExist = false;
+        if (!inList) {
+            inList = savedWeapons.Items;
+        }
+        
+        inList.every(item => {
+            if (item.name && item.name === weaponName) {
+                doesExist = true;
+                return false;
+            } else if (item.children) {
+                doesExist = savedWeapons.weaponExists(weaponName, item.children);
+                if (doesExist) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+
+        return doesExist;
+    };
+
     savedWeapons.Weapon = Weapon;
 
     return savedWeapons;
