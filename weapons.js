@@ -4,6 +4,19 @@ DoRounds.Weapons = (function () {
 
     let Weapon = function(props) {
         var self = {};
+        if (!props) {
+            // Provide a default initialization object
+            props = {};
+            props.name = "New weapon";
+            props.damageType = 0;
+            props.damage = "";
+            props.range = "";
+            props.weight = 0;
+            props.properties = [];
+            props.versatileDamage = "";
+            props.special = "";
+            props.hitbonus = 0;
+        }
         if (props.name) {
             self.name = props.name;
             self.id = props.name;
@@ -105,6 +118,14 @@ DoRounds.Weapons = (function () {
             "force",        // 10
         ],
         Items: [
+            Weapon({
+                name: "Unarmed attack",
+                damageType: 0,
+                damage: "1d4",
+                range: 0,
+                weight: 0,
+                properties: []
+            }),
             {
                 id: "Simple",
                 label: "Simple",
@@ -740,14 +761,18 @@ DoRounds.Weapons = (function () {
         ]
     };
 
-    let savedWeapons = localStorage.getItem(weaponStorageKey);
+    let savedWeapons = null;
+    let savedWeaponsString = localStorage.getItem(weaponStorageKey);
 
-    if (savedWeapons === null) {
+    if (savedWeaponsString === null) {
         savedWeapons = defaultWeaponData;
-    };
+    } else {
+        savedWeapons = JSON.parse(savedWeaponsString);
+    }
     
     savedWeapons.save = function () {
-        localStorage.setItem(weaponStorageKey, savedWeapons);
+        let saveString = JSON.stringify(savedWeapons);
+        localStorage.setItem(weaponStorageKey, saveString);
     };
 
     savedWeapons.autoSave = false;
@@ -755,6 +780,13 @@ DoRounds.Weapons = (function () {
         if (savedWeapons.autoSave) {
             savedWeapons.save();
         }  
+    };
+
+    savedWeapons.weaponsWithNew = function () {
+        let all = [];
+        all.push(Weapon());
+        all = all.concat(savedWeapons.Items);
+        return all;
     };
 
     savedWeapons.AddCategory = function (categoryName) {
@@ -772,21 +804,26 @@ DoRounds.Weapons = (function () {
         return foundCategory;
     };
 
-    savedWeapons.AddWeapon = function (categoryName, weapon) {
-        savedWeapons.AddCategory(categoryName);
-        let foundCategory = savedWeapons.Categories[categoryName];
-        foundCategory.push(weapon);
-        doAutoSave();
+    savedWeapons.findItemCategory = function (categoryName) {
+        let foundItemCategory = null;
+        let normCatName = categoryName.toLowerCase();
+        savedWeapons.Items.forEach(c => {
+            if (c.children && (normCatName === c.label.toLowerCase())) {
+                foundItemCategory = c;
+                return true;
+            }
+        });
+
+        return foundItemCategory;
     };
 
-    savedWeapons.UnarmedAttack = new Weapon({
-        name: "Unarmed attack",
-        damageType: 0,
-        damage: "1d4",
-        range: 0,
-        weight: 0,
-        properties: []
-    });
+    savedWeapons.AddWeapon = function (categoryId, weapon) {
+        let categoryName = savedWeapons.Categories[categoryId];
+        let category = savedWeapons.findItemCategory(categoryName);
+        let newWeapon = Weapon(weapon);
+        category.children.push(newWeapon);
+        savedWeapons.doAutoSave();
+    };
 
     savedWeapons.propertiesText = function (weapon) {
         let text = "";

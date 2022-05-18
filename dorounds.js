@@ -347,7 +347,10 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
             resetEncounterDialogOpen: false,
             extraMenuOpen: false,
             clearStorageOpen: false,
-            weapons: DoRounds.Weapons
+            weapons: DoRounds.Weapons,
+            editWeaponsOpen: false,
+            weaponBeingEdited: null,
+            editableWeaponList: []
         },
         methods: {
             currentSessionChanged: function (event) {
@@ -407,6 +410,7 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
             },
             saveData: function () {
                 sortSessions();
+                this.weapons.save();
                 persistAll();
             },
             deleteCurrentSession: function () {
@@ -526,6 +530,40 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                 this.toggleClearStorage(false);
                 this.currentSession = this.sessions[0];
                 this.togglelightmode(currentLightMode === "true" ? true : false);
+            },
+            toggleEditWeapons: function () {
+                this.editableWeaponList = this.weapons.weaponsWithNew();
+                if (!this.editWeaponsOpen) {
+                    this.weaponBeingEdited = this.weapons.Weapon();
+                }
+                this.editWeaponsOpen = !this.editWeaponsOpen;
+            },
+            normalizeWeaponNode: function (node) {
+                if (node) {
+                    return {
+                        id: node.name,
+                        label: node.name
+                    };
+                } else {
+                    return {
+                        id: "New weapon",
+                        label: "New weapon"
+                    };
+                }
+            },
+            normalizeWeaponProperties: function (node) {
+                return {
+                    id: node.name,
+                    label: node.name
+                }
+            },
+            saveNewWeapon: function () {
+                this.weapons.AddWeapon(this.weaponBeingEdited.category, this.weaponBeingEdited);
+                this.weapons.save();
+                this.weaponBeingEdited = this.weapons.Weapon();
+            },
+            saveWeaponsChanges: function () {
+                this.weapons.save();
             }
         },
         created: function () {
