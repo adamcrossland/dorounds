@@ -866,19 +866,19 @@ DoRounds.Weapons = (function () {
         return text;
     };
 
-    savedWeapons.weaponExists = function (weaponName, inList) {
-        let doesExist = false;
+    function findWeaponByName(weaponName, inList) {
+        let foundWeapon = null;
         if (!inList) {
             inList = savedWeapons.Items;
         }
         
         inList.every(item => {
             if (item.name && item.name === weaponName) {
-                doesExist = true;
+                foundWeapon = item;
                 return false;
             } else if (item.children) {
-                doesExist = savedWeapons.weaponExists(weaponName, item.children);
-                if (doesExist) {
+                foundWeapon = findWeaponByName(weaponName, item.children);
+                if (foundWeapon !== null) {
                     return false;
                 }
             }
@@ -886,7 +886,40 @@ DoRounds.Weapons = (function () {
             return true;
         });
 
-        return doesExist;
+        return foundWeapon;
+    }
+
+    savedWeapons.weaponExists = function (weaponName) {
+        return findWeaponByName(weaponName) !== null;
+    };
+
+    savedWeapons.deleteWeapon = function (weaponName, inList) {
+        let weaponDeleted = false;
+
+        if (!inList) {
+            inList = inList = savedWeapons.Items;
+        }
+
+        let itemIndex = -1;
+        inList.every(item => {
+            itemIndex++;
+            if (item.children) {
+                if (savedWeapons.deleteWeapon(weaponName, item.children)) {
+                    weaponDeleted = true;
+                    return false;
+                } else {
+                    return true;
+                }
+            } else if (item.name && item.name === weaponName) {
+                delete inList[itemIndex];
+                weaponDeleted = true;
+                return false;
+            } else {
+                return true;
+            }
+        });
+
+        return weaponDeleted;
     };
 
     savedWeapons.Weapon = Weapon;
