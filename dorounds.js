@@ -350,7 +350,8 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
             weapons: DoRounds.Weapons,
             editWeaponsOpen: false,
             weaponBeingEdited: null,
-            editableWeaponList: []
+            editableWeaponList: [],
+            weaponProperties: DoRounds.Weapons.Properties || []
         },
         methods: {
             currentSessionChanged: function (event) {
@@ -540,10 +541,14 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
             },
             normalizeWeaponNode: function (node) {
                 if (node) {
-                    return {
-                        id: node.name,
-                        label: node.name
-                    };
+                    if (node.children) {
+                        return node;
+                    } else {
+                        return {
+                            id: node.name,
+                            label: node.name
+                        };
+                    }
                 } else {
                     return {
                         id: "New weapon",
@@ -552,9 +557,16 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                 }
             },
             normalizeWeaponProperties: function (node) {
-                return {
-                    id: node.name,
-                    label: node.name
+                if (node) {
+                    return {
+                        id: node.id,
+                        label: node.name
+                    }
+                } else {
+                    return {
+                        id: -1,
+                        label: "Unknown"
+                    }
                 }
             },
             saveNewWeapon: function () {

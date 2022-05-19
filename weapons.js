@@ -52,54 +52,67 @@ DoRounds.Weapons = (function () {
         ],
         Properties: [
             {
+                id: 0,
                 name: "ammunition",   // 0
                 description: "You can use a weapon that has the ammunition property to make a ranged attack only if you have ammunition to fire from the weapon. Each time you attack with the weapon, you expend one piece of ammunition. Drawing the ammunition from a quiver, case, or other container is part of the attack (you need a free hand to load a one-handed weapon). At the end of the battle, you can recover half your expended ammunition by taking a minute to search the battlefield. If you use a weapon that has the ammunition property to make a melee attack, you treat the weapon as an improvised weapon (see “Improvised Weapons” later in the section). A sling must be loaded to deal any damage when used in this way."
             },
             {
+                id: 1,
                 name: "close",        // 1
                 descritpion: " A close weapon is more effective up close than other ranged weapons. When you make a ranged attack with a close weapon, you do not suffer disadvantage on the attack roll when you are within 5 feet of a hostile creature who can see you and who is not incapacitated."
             },
             {
+                id: 2,
                 name: "deadly",       // 2
                 description: "When you roll a natural 1 on a damage die with a deadly weapon, treat the result as a 2 instead."
             },
             {
+                id: 3,
                 name: "defensive",    // 3
                 description: "A defensive weapon makes you harder to hit effectively while you are wielding two weapons. As long as at least one of your two weapons has the defensive property, you add +1 to your AC against the first attack that targets you in a round, provided you aren’t surprised or immobile. You regain the bonus at the start of your next turn, and do not gain this bonus against subsequent attacks against you until then."
             },
             {
+                id: 4, 
                 name: "finesse",      // 4
                 description: "When making an attack with a finesse weapon, you use your choice of your Strength or Dexterity modifier for the attack and damage rolls. You must use the same modifier for both rolls."
             },
             {
+                id: 5,
                 name: "heavy",        // 5
                 description: "Small creatures have disadvantage on attack rolls with heavy weapons. A heavy weapon’s size and bulk make it too large for a Small creature to use effectively."
             },
             {
+                id: 6,
                 name: "light",        // 6
                 description: "A light weapon is small and easy to handle, making it ideal for use when fighting with two weapons."
             },
             {
+                id: 7,
                 name: "loading",      // 7
                 description: "Because of the time required to load this weapon, you can fire only one piece of ammunition from it when you use an action, bonus action, or reaction to fire it, regardless of the number of attacks you can normally make."
             },
             {
+                id: 8,
                 name: "reach",        // 8
                 description: "This weapon adds 5 feet to your reach when you attack with it, as well as when determining your reach for opportunity attacks with it."
             },
             {
+                id: 9,
                 name: "special",      // 9
                 description: "A weapon with the special property has unusual rules governing its use."
             },
             {
+                id: 10,
                 name: "thrown",       // 10
                 description: "If a weapon has the thrown property, you can throw the weapon to make a ranged attack. If the weapon is a melee weapon, you use the same ability modifier for that attack roll and damage roll that you would use for a melee attack with the weapon. For example, if you throw a handaxe, you use your Strength, but if you throw a dagger, you can use either your Strength or your Dexterity, since the dagger has the finesse property."
             },
             {
+                id: 11,
                 name: "two-handed",   // 11
                 description: "This weapon requires two hands when you attack with it."
             },
             {
+                id: 12,
                 name: "versatile",     // 12
                 description: "This weapon can be used with one or two hands. A damage value in parentheses appears with the property—the damage when the weapon is used with two hands to make a melee attack."
             }
