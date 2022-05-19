@@ -567,11 +567,8 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
             },
             deleteWeapon: function () {
                 if (this.weapons.deleteWeapon(this.weaponBeingEdited.name)) {
-                    console.log(`Deleted weapon ${this.weaponBeingEdited.name}`);
                     this.weapons.save();
                     this.weaponBeingEdited = this.weapons.Weapon();
-                } else {
-                    console.log(`Could not find weapon ${this.weaponBeingEdited.name}`);
                 }
             },
             canDeleteWeapon: function () {
