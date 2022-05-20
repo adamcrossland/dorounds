@@ -369,11 +369,12 @@
                     <div class="content">
                         <form class="form-hortizontal">
                             <div class="form-group">
-                                <treeselect class="col-12" :disable-branch-nodes="true" value="node"
+                                <treeselect class="col-12" :disable-branch-nodes="true"
                                     value-format="object" value-consists-of="LEAF_PRIORITY"
                                     v-model="weaponBeingEdited" value="node"
-                                    value-format="object" :normalize="normalizeWeaponNode"
-                                    :multiple="false" :options="editableWeaponList">
+                                    value-format="object" :normalizer="normalizeWeaponNode"
+                                    :multiple="false" :options="editableWeaponList"
+                                    :clearable="false">
                                 </treeselect>
                                 <div v-if="weaponBeingEdited !== null">
                                 <label class="form-label form-inline col-6 input-sm">Name:
@@ -408,8 +409,9 @@
                                         v-model="weaponBeingEdited.weight">
                                 </label>
                                 <label class="form-label col-12 input-sm">Properties:
-                                    <treeselect :options="weapons.Properties"
+                                    <treeselect :options="weaponProperties"
                                         v-model="weaponBeingEdited.properties"
+                                        value="node" value-format="object"
                                         :normalizer="normalizeWeaponProperties"
                                         :multiple="true">
                                     </treeselect>
