@@ -267,3 +267,7 @@ div.weapon-details-edit input {
 .th-num {
     width: 30%;
 }
+
+.btn.edit-weapons {
+    float: right;
+}
