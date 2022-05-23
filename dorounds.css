@@ -13,9 +13,31 @@ h2.subtitle {
     margin-bottom: 2em;
 }
 
-div.disabled > div > input {
+div.line-disabled input {
     border-color:red;
-    background-color: lightgray;
+    background-color: darkred !important;
+    border-color: red;
+}
+
+div.line-disabled > div > select {
+    border-color:red;
+    background-color: darkred !important;
+    border-color: red;
+}
+
+div.line-disabled > div > select > option {
+    border-color:red;
+    background-color: darkred !important;
+}
+
+div.line-enabled > div > select {
+    background-color: grey !important;
+    color: white;
+}
+
+div.line-enabled > div > select > option {
+    background-color: grey;
+    color: white;
 }
 
 input.round-number {
@@ -120,9 +142,13 @@ div.darkmode button:focus i {
     color: white;
 }
 
+div.darkmode select.session-chooser {
+    background-color: grey !important;
+    color: black !important;
+}
+
 div.darkmode select {
     background-color: grey !important;
-    color: white !important;
 }
 
 div.darkmode section.navbar-section > a {
@@ -144,10 +170,6 @@ div.darkmode textarea {
 
 div.darkmode div.modal-header a {
     color: lightgray;
-}
-
-div.darkmode div.disabled input {
-    background-color: darkred;
 }
 
 div.darkmode a.btn {
@@ -173,4 +195,79 @@ div.encounter-name select {
 
 div.encounter-name input {
     width: 80%;
+}
+
+.small-num {
+    display: inline-flex;
+}
+
+.ac-num {
+    width: 47%;
+    display: inline-flex;
+}
+
+div.weapon-details {
+    justify-content: center;
+}
+
+span.weapon-properties {
+    font-style: italic;
+}
+
+div.weapon-details-edit label {
+    margin-right: 2em;
+}
+
+div.weapon-details-edit input {
+    width: 50%;
+}
+
+.vure_treeselect {
+    background-color: black;;
+}
+
+.vue-treeselect__menu-container {
+    background-color: black;
+}
+
+.vue-treeselect__menu {
+    background-color: black;
+}
+
+.vue-treeselect__menu * {
+    background-color: black;
+}
+
+.vue-treeselect__control {
+    background-color: black;
+}
+
+.vue-treeselect__multi-value {
+    max-height: 29px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.weapon-details {
+    display: inline;
+    margin-right: 2em;
+}
+
+.init-num {
+    width: 46%;
+}
+.ac-num {
+    width: 30%;
+}
+
+.hp-num {
+    width: 30%;
+}
+
+.th-num {
+    width: 30%;
+}
+
+.btn.edit-weapons {
+    float: right;
 }

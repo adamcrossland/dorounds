@@ -3,12 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A tool for Dungeons and Dragons Fifth Edition Dungeon Masters to make running combat encounters easier and more efficient.">
+    <meta name="description"
+        content="A tool for Dungeons and Dragons Fifth Edition Dungeon Masters to make running combat encounters easier and more efficient.">
     <link rel="stylesheet" href="spectre.min.css">
     <link rel="stylesheet" href="spectre-exp.min.css">
     <link rel="stylesheet" href="spectre-icons.min.css">
+    <link rel="stylesheet" href="vue-treeselect.min.css">
     <link rel="stylesheet" href="dorounds.css">
     <title>Do Rounds</title>
     <link rel="apple-touch-icon" sizes="57x57" href="icons/apple-icon-57x57.png">
@@ -20,7 +21,7 @@
     <link rel="apple-touch-icon" sizes="144x144" href="icons/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="icons/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
@@ -46,8 +47,8 @@
         <h2 class="subtitle">a tool for 5e DMs to make enconters easier</h2>
         <div class="columns">
             <div class="column col-2 encounter-name">
-                <select class="form-select" @change="currentSessionChanged($event)" v-model="currentSession"
-                    v-if="!currentSession.currentlyEditingName" id="sessionSelection">
+                <select class="form-select session-chooser" @change="currentSessionChanged($event)"
+                    v-model="currentSession" v-if="!currentSession.currentlyEditingName" id="sessionSelection">
                     <option v-for="(session, index) in sessions" v-bind:value="session">{{ session.name }}
                     </option>
                 </select>
@@ -63,22 +64,20 @@
                     aria-label="Clone Encounter" title="Clone Encounter">
                     <i class="icon icon-arrow-down"></i>
                 </button>
-                <button class="btn" v-if="!currentSession.currentlyPlaying"
-                    v-on:click="deleteCurrentSession" role="button" aria-label="Delete Encounter"
-                    title="Delete Encounter">
+                <button class="btn" v-if="!currentSession.currentlyPlaying" v-on:click="deleteCurrentSession"
+                    role="button" aria-label="Delete Encounter" title="Delete Encounter">
                     <i class="icon icon-delete"></i>
                 </button>
-                <div class="dropdown" v-bind:class="{'active': extraMenuOpen }"
-                     v-if="!currentSession.currentlyPlaying">
+                <div class="dropdown" v-bind:class="{'active': extraMenuOpen }" v-if="!currentSession.currentlyPlaying">
                     <button class="btn dropdown" v-on:click="toggleExtraMenu" tabindex="0">
-                      <i class="icon icon-more-vert"></i>
+                        <i class="icon icon-more-vert"></i>
                     </button>
                     <ul class="menu">
                         <li class="menu-item">
-                            <a href="#" v-on:click="exportData">Export Data</a>  
+                            <a href="#" v-on:click="exportData">Export Data</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" v-on:click="showImportData">Import Data</a>  
+                            <a href="#" v-on:click="showImportData">Import Data</a>
                         </li>
                         <li class="menu-item">
                             <a href="#" v-on:click="toggleClearStorage">Clear Data</a>
@@ -133,41 +132,49 @@
                 <kbd>Esc</kbd> = exit Playing mode; <kbd>Tab</kbd> = move to next HP field;
                 <kbd>Space</kbd> = move to next line
             </div>
-            <div class="column col-1 table-header">Initiative</div>
-            <div class="column col-1 table-header">Init mod.</div>
+            <div class="column col-1 table-header">Init / mod</div>
             <div class="column col-2 table-header">Name</div>
-            <div class="column col-1 table-header">HP</div>
-            <div class="column col-1 table-header">AC</div>
-            <div class="column col-1 table-header">To Hit Bonus</div>
-            <div class="column col-6"></div>
+            <div class="column col-2 table-header">HP / AC / +Hit</div>
+            <div class="column col-3 table-header">Weapons &nbsp;
+                <button type="button" class="btn btn-sm edit-weapons" @click="toggleEditWeapons">
+                    Edit
+                </button>
+            </div>
+            <div class="column col-4"></div>
             <div class="column col-12">
                 <div class="form-horizontal" v-for="(line, index) in currentSession.lines">
-                    <div class="form-group"
-                        v-bind:class="{ 'disabled': currentSession.currentlyPlaying && line.disabled }">
+                    <div class="form-group session-line"
+                        v-bind:class="{ 'line-disabled': currentSession.currentlyPlaying && line.disabled, 'line-enabled': !currentSession.currentlyPlaying || !line.disabled }">
                         <div class="column col-1">
-                            <input class="form-input" type="text" v-model.number="line.initiative" @change="saveData"
-                                aria-label="Initiative" v-focus autocomplete="off" placeholder="Init." />
-                        </div>
-                        <div class="column col-1">
-                            <input class="form-input" type="number" v-model.number="line.initmod" @change="saveData"
-                                aria-label="Init mod" v-focus placeholder="Init +" />
+                            <input class="form-input small-num init-num" type="text" v-model.number="line.initiative"
+                                @change="saveData" aria-label="Initiative" v-focus autocomplete="off"
+                                placeholder="Init." />
+                            <input class="form-input small-num init-num" type="number" v-model.number="line.initmod"
+                                @change="saveData" aria-label="Init mod" v-focus placeholder="Init +" />
                         </div>
                         <div class="column col-2">
                             <input class="form-input" type="text" v-model="line.name" @change="saveData"
                                 aria-label="Name" autocomplete="off" placeholder="Name" />
                         </div>
-                        <div class="column col-1">
-                            <input class="form-input" type="number" ref="hitpoints" v-model.number="line.hp"
-                                @change="hitPointsChanged(index)" aria-label="Hit Points" autocomplete="off"
-                                placeholder="HP" :id="`line-${index}`"/>
+                        <div class="column col-2">
+                            <input class="form-input hp-num small-num" type="number" ref="hitpoints"
+                                v-model.number="line.hp" @change="hitPointsChanged(index)" aria-label="Hit Points"
+                                autocomplete="off" placeholder="HP" :id="`line-${index}`" />
+                            <input class="form-input ac-num small-num" type="number" v-model="line.ac"
+                                @change="saveData" aria-label="Armor Class" autocomplete="off" placeholder="AC" />
+                            <input class="form-input th-num small-num" type="number" v-model="line.hitbonus"
+                                @change="saveData" aria-label="To Hit Bonus" autocomplete="off" placeholder="+hit" />
                         </div>
-                        <div class="column col-1">
-                            <input class="form-input" type="number" v-model="line.ac" @change="saveData"
-                                aria-label="Armor Class" autocomplete="off" placeholder="AC" />
+                        <div class="column col-3" v-if="!currentSession.currentlyPlaying">
+                            <treeselect :disable-branch-nodes="true" placeholder="Select weapons..."
+                                value="node" value-format="object" value-consists-of="LEAF_PRIORITY"
+                                v-model="line.weapons" :multiple="true" :options="weapons.Items"
+                                :normalize="normalizeWeaponNode" />
                         </div>
-                        <div class="column col-1">
-                            <input class="form-input" type="number" v-model="line.hitbonus" @change="saveData"
-                                aria-label="To Hit Bonus" autocomplete="off" placeholder="+hit" />
+                        <div class="column col-3" v-if="currentSession.currentlyPlaying">
+                            <treeselect placeholder="Active weapons" value="node" value-format="object"
+                                value-consists-of="LEAF_PRIORITY" v-model="line.selectedWeapons" :multiple="true"
+                                :options="line.weapons" :normalize="normalizeWeaponNode" />
                         </div>
                         <div class="column col-2">
                             <button class="btn line-button"
@@ -201,6 +208,29 @@
                                 v-show="currentSession.currentlyPlaying && currentSession.activeLine == index"></i>
                         </div>
                     </div>
+                    <div class="form-group column col-12" v-if="currentSession.currentlyPlaying">
+                        <div class="weapon-details" v-for="eachWeapon in line.selectedWeapons">
+                            <span><b>{{ eachWeapon.name }}</b> : {{ weapons.damageText(eachWeapon)}} damage</span>
+                            <span v-if="eachWeapon.hitbonus > 0"> at +{{ eachWeapon.hitbonus }} to hit</span>
+                            <span v-if="eachWeapon.hitbonus < 0"> at {{ eachWeapon.hitbonus }} to hit</span>
+                            <span v-if="eachWeapon.range">, <i>range:</i> {{ eachWeapon.range }}</span>
+                            <span class="weapon-properties" v-if="eachWeapon.properties.length > 0">, {{
+                                weapons.propertiesText(eachWeapon) }}</span>
+                            <span class="weapon-properties tooltip" v-if="eachWeapon.special"
+                                :data-tooltip="eachWeapon.special">; special <b>?</b></span>
+                        </div>
+                    </div>
+                    <div class="form-group column col-12 weapon-details weapon-details-edit"
+                        v-if="!currentSession.currentlyPlaying" v-for="eachWeapon in line.weapons">
+                        <label class="form-label form-inline">Name: <input type="text" v-model="eachWeapon.name"
+                                placeholder="name" /></label>
+                        <label class="form-label form-inline">Hit bonus: <input type="number"
+                                v-model.number="eachWeapon.hitbonus" /></label>
+                        <label class="form-label form-inline">Damage: <input type="text" v-model="eachWeapon.damage"
+                                placeholder="damage" /></label>
+                        <label class="form-label form-inline">Range: <input type="text" v-model="eachWeapon.range"
+                                placeholder="range" /></label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -231,7 +261,8 @@
                 aria-label="Close"></a>
             <div class="modal-container">
                 <div class="modal-header">
-                    <a href="#close" class="btn btn-clear float-right" v-on:click="closeExportDataDialog" aria-label="Close"></a>
+                    <a href="#close" class="btn btn-clear float-right" v-on:click="closeExportDataDialog"
+                        aria-label="Close"></a>
                     <div class="modal-title h5">Export Data</div>
                 </div>
                 <div class="modal-body">
@@ -239,7 +270,8 @@
                         <div class="h6">
                             Copy this data.
                         </div>
-                        <textarea class="data-import-export" rows="5" readonly wrap="hard" v-model="dataExport"></textarea>
+                        <textarea class="data-import-export" rows="5" readonly wrap="hard"
+                            v-model="dataExport"></textarea>
                     </div>
                 </div>
             </div>
@@ -249,7 +281,8 @@
                 aria-label="Close"></a>
             <div class="modal-container">
                 <div class="modal-header">
-                    <a href="#close" class="btn btn-clear float-right" v-on:click="closeImportDataDialog" aria-label="Close"></a>
+                    <a href="#close" class="btn btn-clear float-right" v-on:click="closeImportDataDialog"
+                        aria-label="Close"></a>
                     <div class="modal-title h5">Import Data</div>
                 </div>
                 <div class="modal-body">
@@ -258,8 +291,8 @@
                             Paste your exported data here and click the Import button.
                         </div>
                         <div class="text-warning">
-                            Please note that importing data will entirely overwrite any 
-                            encounters that currently exist, and that data will not be 
+                            Please note that importing data will entirely overwrite any
+                            encounters that currently exist, and that data will not be
                             recoverable.
                         </div>
                         <textarea class="data-import-export" rows="5" wrap="hard" v-model="dataImport"></textarea>
@@ -277,7 +310,8 @@
                 aria-label="Close"></a>
             <div class="modal-container">
                 <div class="modal-header">
-                    <a href="#close" class="btn btn-clear float-right" v-on:click="toggleResetEncounter" aria-label="Close"></a>
+                    <a href="#close" class="btn btn-clear float-right" v-on:click="toggleResetEncounter"
+                        aria-label="Close"></a>
                     <div class="modal-title h5">Reset Encounter</div>
                 </div>
                 <div class="modal-body">
@@ -286,7 +320,7 @@
                             Reset this encounter?
                         </div>
                         <div class="text-warning">
-                            Choosing OK will delete all initiative rolls and set the 
+                            Choosing OK will delete all initiative rolls and set the
                             Round to 1. You will have to manually reset HP.
                         </div>
                     </div>
@@ -298,8 +332,7 @@
             </div>
         </div>
         <div class="modal" id="clearStorageDialog" v-bind:class="{ active: clearStorageOpen }">
-            <a href="#close" class="modal-overlay" v-on:click="toggleClearStorage" title="Close"
-                aria-label="Close"></a>
+            <a href="#close" class="modal-overlay" v-on:click="toggleClearStorage" title="Close" aria-label="Close"></a>
             <div class="modal-container">
                 <div class="modal-header">
                     <a href="#close" class="btn btn-clear float-right" v-on:click="toggleClearStorage"
@@ -324,14 +357,94 @@
                 </div>
             </div>
         </div>
-    </div>
-    <script src="vue.min.js"></script>
-    <script src="dorounds.js"></script>
-    <script>
-        if ("serviceWorker" in navigator ) {
-            navigator.serviceWorker.register( "/install.js" );
-        }
-    </script>
+        <div class="modal" id="editWeaponsDialog" v-bind:class="{ active: editWeaponsOpen }">
+            <a href="#close" class="modal-overlay" v-on:click="toggleEditWeapons" title="Close" aria-label="Close"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right" v-on:click="toggleEditWeapons"
+                        aria-label="Close"></a>
+                    <div class="modal-title h5">Add/Edit/Remove Weapons</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <form class="form-hortizontal">
+                            <div class="form-group">
+                                <treeselect class="col-12" :disable-branch-nodes="true"
+                                    value-format="object" value-consists-of="LEAF_PRIORITY"
+                                    v-model="weaponBeingEdited" value="node"
+                                    value-format="object" :normalizer="normalizeWeaponNode"
+                                    :multiple="false" :options="editableWeaponList"
+                                    :clearable="false">
+                                </treeselect>
+                                <div v-if="weaponBeingEdited !== null">
+                                <label class="form-label form-inline col-6 input-sm">Name:
+                                    <input class="form-input input-sm" type="text"
+                                        v-model="weaponBeingEdited.name">
+                                </label>
+                                <label class="form-label form-inline col-5 input-sm">Type:
+                                    <select class="form-select form-input input-sm"
+                                        v-model="weaponBeingEdited.category">
+                                        <option v-for="(item, key) in weapons.Categories"
+                                            :value="key">{{ item }}</option>
+                                    </select>
+                                </label>
+                                <label class="form-label form-inline col-6 input-sm">Damage dice:
+                                    <input class="form-input input-sm" type="text"
+                                        v-model="weaponBeingEdited.damage" placeholder="XdY+Z">
+                                </label>
+                                <label class="form-label form-inline col-5 input-sm">Damage type:
+                                    <select class="form-select form-input input-sm"
+                                        v-model="weaponBeingEdited.damageType">
+                                        <option v-for="(item, key) in weapons.DamageTypes"
+                                            :value="key">{{ item }}</option>
+                                    </select>
+                                </label>
+                                <label class="form-label form-inline col-6 input-sm">Range:
+                                    <input class="form-input input-sm" type="text"
+                                        placeholder="normal/max"
+                                        v-model="weaponBeingEdited.range">
+                                </label>
+                                <label class="form-label form-inline col-5 input-sm">Weight:
+                                    <input class="form-input input-sm" type="number"
+                                        v-model="weaponBeingEdited.weight">
+                                </label>
+                                <label class="form-label col-12 input-sm">Properties:
+                                    <treeselect :options="weaponProperties"
+                                        v-model="weaponBeingEdited.properties"
+                                        value="node" value-format="object"
+                                        :normalizer="normalizeWeaponProperties"
+                                        :multiple="true">
+                                    </treeselect>
+                                </label>
+                                <label class="form-label col-12 input-sm" v-if="false">Versatile damage:
+                                    <input class="form-input input-sm" type="text" v-model="weaponBeingEdited.versatileDamage">
+                                </label>
+                                <label class="form-label col-12 input-sm">Special:
+                                    <input class="form-input input-sm" type="text" v-model="weaponBeingEdited.special">
+                                </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" :disabled="!canDeleteWeapon()"
+                            v-on:click="deleteWeapon">Delete</button>
+                        <button class="btn" :disabled="!canAddWeapon()"
+                            v-on:click="saveNewWeapon">Add</button>
+                        <button class="btn" v-on:click="saveWeaponChanges">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="vue.min.js"></script>
+        <script src="weapons.js"></script>
+        <script src="vue-treeselect.umd.min.js"></script>
+        <script src="dorounds.js"></script>
+        <script>
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register("/install.js");
+            }
+        </script>
 </body>
 
 </html>

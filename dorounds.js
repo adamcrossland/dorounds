@@ -3,6 +3,7 @@ Vue.directive('focus', {
         el.focus()
     }
 });
+Vue.component('treeselect', VueTreeselect.Treeselect);
 
 (function () {
 
@@ -13,7 +14,8 @@ Vue.directive('focus', {
         self.initmod = 0;
         self.hp = 0;
         self.ac = "";
-        self.hitbonus = "";
+        self.weapons = [];
+        self.selectedWeapons = [];
         self.disabled = false;
         self.unmod = null;
 
@@ -23,7 +25,12 @@ Vue.directive('focus', {
             self.initmod = initObj.initmod || self.initmod;
             self.hp = initObj.hp || self.hp;
             self.ac = initObj.ac || self.ac;
-            self.hitbonus = initObj.hitbonus || self.hitbonus;
+            if (initObj.weapons == null || initObj.length == 0) {
+                self.weapons = ["unarmed"];
+            } else {
+                self.weapons = initObj.weapons;
+            }
+            self.selectedWeapons = initObj.selectedWeapons || [];
             self.disabled = initObj.disabled || self.disabled;
             self.unmod = initObj.unmod || self.unmod;
         }
@@ -39,7 +46,8 @@ Vue.directive('focus', {
             copy.initmod = self.initmod;
             copy.hp = self.hp;
             copy.ac = self.ac;
-            copy.hitbonus = self.hitbonus;
+            copy.weapons = self.weapons;
+            copy.selectedWeapon = self.selectedWeapon;
             copy.disabled = self.disabled;
             copy.unmod = self.unmod
             return copy;
@@ -52,7 +60,8 @@ Vue.directive('focus', {
                 self.unmod.initmod = self.initmod;
                 self.unmod.hp = self.hp;
                 self.unmod.ac = self.ac;
-                self.unmod.hitbonus = self.hitbonus;
+                self.unmod.weapons = self.weapons;
+                self.unmod.selectedWeapon = self.selectedWeapon;
             }
         };
 
@@ -68,12 +77,21 @@ Vue.directive('focus', {
                 self.initmod = self.unmod.initmod;
                 self.hp = self.unmod.hp;
                 self.ac = self.unmod.ac;
-                self.hitbonus = self.unmod.hitbonus;
+                self.weapons = self.unmod.weapons;
+                self.selectedWeapon = self.unmod.selectedWeapon;
 
                 if (self.hp > 0) {
                     self.disabled = false;
                 }
             }
+        };
+
+        self.availableWeapons = function () {
+            return [DoRounds.Weapons.UnarmedAttack].concat(self.weapons);
+        };
+
+        self.safeSelectedWeapon = function () {
+            return self.selectedWeapon || self.availableWeapons()[0];
         };
 
         return self;
@@ -167,6 +185,7 @@ Vue.directive('focus', {
         self.currentRound = 1;
         self.toggleLinedisabled = function (index) {
             self.lines[index].disabled = !self.lines[index].disabled;
+            console.log("Weapons: " + self.lines[index].weapons);
             persistAll();
         };
         self.activeLine = 0;
@@ -327,7 +346,12 @@ Vue.directive('focus', {
             lightMode: true,
             resetEncounterDialogOpen: false,
             extraMenuOpen: false,
-            clearStorageOpen: false
+            clearStorageOpen: false,
+            weapons: DoRounds.Weapons,
+            editWeaponsOpen: false,
+            weaponBeingEdited: null,
+            editableWeaponList: [],
+            weaponProperties: DoRounds.Weapons.Properties || []
         },
         methods: {
             currentSessionChanged: function (event) {
@@ -387,6 +411,7 @@ Vue.directive('focus', {
             },
             saveData: function () {
                 sortSessions();
+                this.weapons.save();
                 persistAll();
             },
             deleteCurrentSession: function () {
@@ -415,8 +440,12 @@ Vue.directive('focus', {
             },
             exportData: function () {
                 this.toggleExtraMenu();
-                const savedSessions = localStorage.getItem(sessionsStorageKey);
-                this.dataExport = btoa(savedSessions);
+                let exportData = {
+                    sessions: localStorage.getItem(sessionsStorageKey),
+                    weapons: this.weapons.export()
+                };
+                let exportDataAsJSON = JSON.stringify(exportData);
+                this.dataExport = btoa(unescape(encodeURIComponent(exportDataAsJSON)));
                 this.exportDataDialogOpen = true;
             },
             closeExportDataDialog: function () {
@@ -429,12 +458,13 @@ Vue.directive('focus', {
             },
             importData: function () {
                 try {
-                    const newSessions = atob(this.dataImport);
-                    JSON.parse(newSessions);
+                    const importDataRaw = decodeURIComponent(escape(window.atob(this.dataImport)));
+                    let importData = JSON.parse(importDataRaw);
                     while (this.sessions.length > 0) {
                         this.sessions.pop();
                     }
-                    localStorage.setItem(sessionsStorageKey, newSessions);
+                    localStorage.setItem(sessionsStorageKey, importData.sessions);
+                    this.weapons.import(importData.weapons);
                     loadSavedData(this.sessions);
                     this.importDataDialogOpen = false;
                     this.dataImport = "";
@@ -506,6 +536,76 @@ Vue.directive('focus', {
                 this.toggleClearStorage(false);
                 this.currentSession = this.sessions[0];
                 this.togglelightmode(currentLightMode === "true" ? true : false);
+            },
+            toggleEditWeapons: function () {
+                this.editableWeaponList = this.weapons.weaponsWithNew();
+                if (!this.editWeaponsOpen) {
+                    this.weaponBeingEdited = this.weapons.Weapon();
+                }
+                this.editWeaponsOpen = !this.editWeaponsOpen;
+            },
+            normalizeWeaponNode: function (node) {
+                if (node) {
+                    if (node.children) {
+                        return node;
+                    } else {
+                        return {
+                            id: node.name,
+                            label: node.name
+                        };
+                    }
+                } else {
+                    return {
+                        id: "New weapon",
+                        label: "New weapon"
+                    };
+                }
+            },
+            normalizeWeaponProperties: function (node) {
+                if (node) {
+                    return {
+                        id: node.id,
+                        label: node.name
+                    }
+                } else {
+                    return {
+                        id: -1,
+                        label: "Unknown"
+                    }
+                }
+            },
+            saveNewWeapon: function () {
+                this.weapons.AddWeapon(this.weaponBeingEdited.category, this.weaponBeingEdited);
+                this.weapons.save();
+                this.weaponBeingEdited = this.weapons.Weapon();
+            },
+            saveWeaponChanges: function () {
+                this.weapons.save();
+            },
+            deleteWeapon: function () {
+                if (this.weapons.deleteWeapon(this.weaponBeingEdited.name)) {
+                    this.weapons.save();
+                    this.weaponBeingEdited = this.weapons.Weapon();
+                }
+            },
+            canDeleteWeapon: function () {
+                let canDelete = true;
+                if (!this.weaponBeingEdited || this.weaponBeingEdited.name === "New weapon" ||
+                    !this.weapons.weaponExists(this.weaponBeingEdited.name)) {
+                    canDelete = false;
+                }
+
+                return canDelete;
+            },
+            canAddWeapon: function () {
+                let canAdd = false;
+                if (this.weaponBeingEdited && this.weaponBeingEdited.name.trim().length > 0
+                    && this.weaponBeingEdited.name !== "New weapon"
+                    && !this.weapons.weaponExists(this.weaponBeingEdited.name)) {
+                    canAdd = true;
+                }
+
+                return canAdd;
             }
         },
         created: function () {
@@ -522,6 +622,6 @@ Vue.directive('focus', {
         }
     });
      
-     return app;
+    return app;
 })();
 
