@@ -54,12 +54,12 @@ DoRounds.Weapons = (function () {
             {
                 id: 0,
                 name: "ammunition",   // 0
-                description: "You can use a weapon that has the ammunition property to make a ranged attack only if you have ammunition to fire from the weapon. Each time you attack with the weapon, you expend one piece of ammunition. Drawing the ammunition from a quiver, case, or other container is part of the attack (you need a free hand to load a one-handed weapon). At the end of the battle, you can recover half your expended ammunition by taking a minute to search the battlefield. If you use a weapon that has the ammunition property to make a melee attack, you treat the weapon as an improvised weapon (see “Improvised Weapons” later in the section). A sling must be loaded to deal any damage when used in this way."
+                description: "You can use a weapon that has the ammunition property to make a ranged attack only if you have ammunition to fire from the weapon. Each time you attack with the weapon, you expend one piece of ammunition. Drawing the ammunition from a quiver, case, or other container is part of the attack (you need a free hand to load a one-handed weapon). At the end of the battle, you can recover half your expended ammunition by taking a minute to search the battlefield. If you use a weapon that has the ammunition property to make a melee attack, you treat the weapon as an improvised weapon (see 'Improvised Weapons' later in the section). A sling must be loaded to deal any damage when used in this way."
             },
             {
                 id: 1,
                 name: "close",        // 1
-                descritpion: " A close weapon is more effective up close than other ranged weapons. When you make a ranged attack with a close weapon, you do not suffer disadvantage on the attack roll when you are within 5 feet of a hostile creature who can see you and who is not incapacitated."
+                descritpion: "A close weapon is more effective up close than other ranged weapons. When you make a ranged attack with a close weapon, you do not suffer disadvantage on the attack roll when you are within 5 feet of a hostile creature who can see you and who is not incapacitated."
             },
             {
                 id: 2,
@@ -69,7 +69,7 @@ DoRounds.Weapons = (function () {
             {
                 id: 3,
                 name: "defensive",    // 3
-                description: "A defensive weapon makes you harder to hit effectively while you are wielding two weapons. As long as at least one of your two weapons has the defensive property, you add +1 to your AC against the first attack that targets you in a round, provided you aren’t surprised or immobile. You regain the bonus at the start of your next turn, and do not gain this bonus against subsequent attacks against you until then."
+                description: "A defensive weapon makes you harder to hit effectively while you are wielding two weapons. As long as at least one of your two weapons has the defensive property, you add +1 to your AC against the first attack that targets you in a round, provided you aren't surprised or immobile. You regain the bonus at the start of your next turn, and do not gain this bonus against subsequent attacks against you until then."
             },
             {
                 id: 4, 
@@ -79,7 +79,7 @@ DoRounds.Weapons = (function () {
             {
                 id: 5,
                 name: "heavy",        // 5
-                description: "Small creatures have disadvantage on attack rolls with heavy weapons. A heavy weapon’s size and bulk make it too large for a Small creature to use effectively."
+                description: "Small creatures have disadvantage on attack rolls with heavy weapons. A heavy weapon's size and bulk make it too large for a Small creature to use effectively."
             },
             {
                 id: 6,
@@ -338,7 +338,7 @@ DoRounds.Weapons = (function () {
                         range: null,
                         weight: 6,
                         properties: [8, 9],
-                        special: "You have disadvantage when you use a lance\nto attack a target within 5 feet of you.\nAlso, a lance requires two hands to\nwield when you aren’t mounted."
+                        special: "You have disadvantage when you use a lance\nto attack a target within 5 feet of you.\nAlso, a lance requires two hands to\nwield when you aren't mounted."
                     }),
                     Weapon({
                         name: "Longsword",
@@ -447,7 +447,7 @@ DoRounds.Weapons = (function () {
                         range: null,
                         weight: 2,
                         properties: [9, 11],
-                        special: "Fashioned to resemble the threshing\nimplement but modified for battle, the war\nscythe can be a deadly weapon in the\nright hands.\nYou can’t wield a war scythe in one hand.\nIf you have the Exotic Weapon Master feat,\nyou can wield the war scythe as a war pick.\nIt gains the versatile (d10) property\nwhen wielded in this way.\nWhen you takethe Attack action, you can\nattempt the Trip Attack combat manuever\n(DC 8 + your proficiency bonus + your\nStrength modifier) against a creature as\none of your attacks."
+                        special: "Fashioned to resemble the threshing\nimplement but modified for battle, the war\nscythe can be a deadly weapon in the\nright hands.\nYou can't wield a war scythe in one hand.\nIf you have the Exotic Weapon Master feat,\nyou can wield the war scythe as a war pick.\nIt gains the versatile (d10) property\nwhen wielded in this way.\nWhen you take the Attack action, you can\nattempt the Trip Attack combat manuever\n(DC 8 + your proficiency bonus + your\nStrength modifier) against a creature as\none of your attacks."
                     }),
                     Weapon({
                         name: "Blowgun",
@@ -786,6 +786,14 @@ DoRounds.Weapons = (function () {
     savedWeapons.save = function () {
         let saveString = JSON.stringify(savedWeapons);
         localStorage.setItem(weaponStorageKey, saveString);
+    };
+
+    savedWeapons.import = function (importData) {
+        localStorage.setItem(weaponStorageKey, importData);    
+    };
+
+    savedWeapons.export = function () {
+        return localStorage.getItem(weaponStorageKey);
     };
 
     savedWeapons.autoSave = false;
