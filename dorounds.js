@@ -440,8 +440,12 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
             },
             exportData: function () {
                 this.toggleExtraMenu();
-                const savedSessions = localStorage.getItem(sessionsStorageKey);
-                this.dataExport = btoa(savedSessions);
+                let exportData = {
+                    sessions: localStorage.getItem(sessionsStorageKey),
+                    weapons: this.weapons.export()
+                };
+                let exportDataAsJSON = JSON.stringify(exportData);
+                this.dataExport = btoa(unescape(encodeURIComponent(exportDataAsJSON)));
                 this.exportDataDialogOpen = true;
             },
             closeExportDataDialog: function () {
@@ -454,12 +458,13 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
             },
             importData: function () {
                 try {
-                    const newSessions = atob(this.dataImport);
-                    JSON.parse(newSessions);
+                    const importDataRaw = decodeURIComponent(escape(window.atob(this.dataImport)));
+                    let importData = JSON.parse(importDataRaw);
                     while (this.sessions.length > 0) {
                         this.sessions.pop();
                     }
-                    localStorage.setItem(sessionsStorageKey, newSessions);
+                    localStorage.setItem(sessionsStorageKey, importData.sessions);
+                    this.weapons.import(importData.weapons);
                     loadSavedData(this.sessions);
                     this.importDataDialogOpen = false;
                     this.dataImport = "";
