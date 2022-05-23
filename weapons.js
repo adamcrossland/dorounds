@@ -789,7 +789,9 @@ DoRounds.Weapons = (function () {
     };
 
     savedWeapons.import = function (importData) {
-        localStorage.setItem(weaponStorageKey, importData);    
+        localStorage.setItem(weaponStorageKey, importData);
+        let asWeaponsData = JSON.parse(importData);
+        savedWeapons.Items = asWeaponsData.Items;
     };
 
     savedWeapons.export = function () {
