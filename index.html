@@ -53,7 +53,7 @@
                     </option>
                 </select>
                 <input class="form-input" v-if="currentSession.currentlyEditingName" v-model="currentSession.name"
-                    v-on:keyup.13="currentSession.toggleNameEditing" v-focus>
+                    @keyup.13="currentSession.toggleNameEditing" v-focus>
                 <button class="btn" v-if="!currentSession.currentlyEditingName" title="Edit Name"
                     @click="currentSession.toggleNameEditing" aria-label="Edit Name">
                     <i class="icon icon-edit"></i>
@@ -111,7 +111,7 @@
                         <input class="form-input round-number" type="number" min="1" aria-label="Round Number"
                             v-if="currentSession.currentlyPlaying && currentSession.currentlyEditingRound"
                             v-model="currentSession.currentRound" v-focus
-                            v-on:keyup.enter="currentSession.toggleRoundEditing" />
+                            @keyup.enter="currentSession.toggleRoundEditing" />
                         <button class="btn"
                             v-if="currentSession.currentlyPlaying && !currentSession.currentlyEditingRound"
                             title="Edit Round" aria-label="Edit Round" @click="currentSession.toggleRoundEditing">
