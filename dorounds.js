@@ -504,6 +504,12 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                     this.lightMode = !this.lightMode;
                 }
                 localStorage.setItem(lightdarkStorageKey, this.lightMode);
+
+                if (this.lightMode) {
+                    document.body.className = 'lightmode';
+                } else {
+                    document.body.className = 'darkmode';
+                }
             },
             cloneencounter: function() {
                 var clonedSession = this.currentSession.clone();
@@ -641,8 +647,10 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
             var savedLightMode = localStorage.getItem(lightdarkStorageKey);
             if (savedLightMode === "true" || !savedLightMode) {
                 this.lighMode = true;
+                document.body.className = 'lightmode';
             } else {
                 this.lightMode = false;
+                document.body.className = 'darkmode';
             }
         },
         destroyed: function () {
