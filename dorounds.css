@@ -259,19 +259,19 @@ body.lightmode .vue_treeselect {
     background-color: white;
 }
 
-body.darkmode .vue-treeselect__menu-container {
+body.lightmode .vue-treeselect__menu-container {
     background-color: white;
 }
 
-body.darkmode .vue-treeselect__menu {
+body.lightmode .vue-treeselect__menu {
     background-color: white;
 }
 
-body.darkmode .vue-treeselect__menu * {
+body.lightmode .vue-treeselect__menu * {
     background-color: white;
 }
 
-body.darkmode .vue-treeselect__control {
+body.lightmode .vue-treeselect__control {
     background-color: white;
 }
 
