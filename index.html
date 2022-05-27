@@ -64,6 +64,10 @@
                     aria-label="Clone Encounter" title="Clone Encounter">
                     <i class="icon icon-arrow-down"></i>
                 </button>
+                <button class="btn" @click="toggleNewEncounter" v-if="!currentSession.currentlyPlaying"
+                    aria-label="New Encounter" title="New Encounter">
+                    <i class="icon icon-copy"></i>
+                </button>
                 <button class="btn" v-if="!currentSession.currentlyPlaying" v-on:click="deleteCurrentSession"
                     role="button" aria-label="Delete Encounter" title="Delete Encounter">
                     <i class="icon icon-delete"></i>
@@ -432,6 +436,43 @@
                         <button class="btn" :disabled="!canAddWeapon()"
                             v-on:click="saveNewWeapon">Add</button>
                         <button class="btn" v-on:click="saveWeaponChanges">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal model-lg" id="newEncounterDialog" v-bind:class="{ active: newEncounterDialogOpen }">
+            <a href="#close" class="modal-overlay" @click="toggleNewEncounter" title="Close" aria-label="Close"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right" @click="toggleNewEncounter"
+                        aria-label="Close"></a>
+                    <div class="modal-title h5">New Encounter</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <p>
+                            Give your new encounter a name, and choose any number of
+                            existing encounters of which it will be composed.
+                        </p>
+                        <form class="form-hortizontal">
+                            <div class="form-group">
+                                <label class="form-label form-inline col-12 input-sm">Encounter name:
+                                    <input class="form-input input-sm" type="text"
+                                        v-model="newEncounterName">
+                                </label>
+                                <treeselect class="col-12" :disable-branch-nodes="true"
+                                    value-format="object" value-consists-of="LEAF_PRIORITY"
+                                    v-model="newEncounterInclude" value="node"
+                                    value-format="object" :normalizer="normalizeEncounterNode"
+                                    :multiple="true" :options="sessions"
+                                    :clearable="true">
+                                </treeselect>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" @click="saveNewEncounter">Save</button>
+                        <button class="btn" @click="toggleNewEncounter">Cancel</button>
                     </div>
                 </div>
             </div>

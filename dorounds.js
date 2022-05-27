@@ -351,7 +351,10 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
             editWeaponsOpen: false,
             weaponBeingEdited: null,
             editableWeaponList: [],
-            weaponProperties: DoRounds.Weapons.Properties || []
+            weaponProperties: DoRounds.Weapons.Properties || [],
+            newEncounterDialogOpen: false,
+            newEncounterName: "",
+            newEncounterInclude: []
         },
         methods: {
             currentSessionChanged: function (event) {
@@ -606,6 +609,31 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                 }
 
                 return canAdd;
+            },
+            toggleNewEncounter: function () {
+                this.newEncounterDialogOpen = !this.newEncounterDialogOpen;
+                if (!this.newEncounterDialogOpen) {
+                    this.newEncounterName = "";
+                    this.newEncounterInclude = [];
+                }
+            },
+            saveNewEncounter: function () {
+                let newSession = Session(null, this.newEncounterName, false);
+                this.newEncounterInclude.forEach(nei => {
+                    nei.lines.forEach(nel => {
+                        newSession.lines.push(nel.copy());
+                    });
+                });
+                this.sessions.push(newSession);
+                persistAll();
+
+                this.toggleNewEncounter();
+            },
+            normalizeEncounterNode: function (node) {
+                return {
+                    id: node.id,
+                    label: node.name
+                }
             }
         },
         created: function () {
