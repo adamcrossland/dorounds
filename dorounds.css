@@ -94,81 +94,94 @@ section.navbar-section a {
     padding-left: 1.5em;
 }
 
-div.lightmode {
+body.lightmode {
     background-color: white;
     color: black;
 }
 
-div.lightmode input,button {
+body.lightmode input,button {
     background-color: white;
     color: #5755d9;
 }
 
-div.darkmode {
+body.darkmode div.dropdown {
+    background-color: white;
+}
+
+body.darkmode div.dropdown ul.menu {
+    background-color: darkgray;
+}
+
+body.darkmode {
     background-color: black;
     color: white;
 }
 
-div.darkmode input {
+body.darkmode {
+    background-color: black;
+    color: white;
+}
+
+body.darkmode input {
     background-color: grey;
     color: white;
     border-color: darkgray;
 }
 
-div.darkmode button {
+body.darkmode button {
     background-color: grey;
     color: white;
     border-color: darkgray;
 }
 
-div.darkmode i {
+body.darkmode i {
     color: white;
 }
 
-div.darkmode button:hover {
+body.darkmode button:hover {
     background-color: lightgray;
     color: black !important;
 }
 
-div.darkmode button:hover i {
+body.darkmode button:hover i {
     color:  white;
 }
 
-div.darkmode button:focus {
+body.darkmode button:focus {
     background-color: grey;
 }
 
-div.darkmode button:focus i {
+body.darkmode button:focus i {
     color: white;
 }
 
-div.darkmode select.session-chooser {
+body.darkmode select.session-chooser {
     background-color: grey !important;
     color: black !important;
 }
 
-div.darkmode select {
+body.darkmode select {
     background-color: grey !important;
 }
 
-div.darkmode section.navbar-section > a {
+body.darkmode section.navbar-section > a {
     color: lightgray;
 }
 
-div.darkmode div.modal-container {
+body.darkmode div.modal-container {
     background-color: black;
 }
 
-div.darkmode div.modal-title {
+body.darkmode div.modal-title {
     color: lightgray;
 }
 
-div.darkmode textarea {
+body.darkmode textarea {
     color: white;
     background-color: black;
 }
 
-div.darkmode div.modal-header a {
+body.darkmode div.modal-header a {
     color: lightgray;
 }
 
@@ -177,15 +190,15 @@ div.darkmode a.btn {
     border-color: transparent;
 }
 
-div.darkmode .btn.btn-link.active, .btn.btn-link:active, .btn.btn-link:focus, .btn.btn-link:hover {
+body.darkmode .btn.btn-link.active, .btn.btn-link:active, .btn.btn-link:focus, .btn.btn-link:hover {
     border-color: transparent !important;
 }
 
-div.darkmode div.dropdown {
+body.darkmode div.dropdown {
     background-color: black;
 }
 
-div.darkmode div.dropdown ul.menu {
+body.darkmode div.dropdown ul.menu {
     background-color: darkgray;
 }
 
@@ -222,24 +235,44 @@ div.weapon-details-edit input {
     width: 50%;
 }
 
-.vure_treeselect {
-    background-color: black;;
-}
-
-.vue-treeselect__menu-container {
+body.darkmode .vue_treeselect {
     background-color: black;
 }
 
-.vue-treeselect__menu {
+body.darkmode .vue-treeselect__menu-container {
     background-color: black;
 }
 
-.vue-treeselect__menu * {
+body.darkmode .vue-treeselect__menu {
     background-color: black;
 }
 
-.vue-treeselect__control {
+body.darkmode .vue-treeselect__menu * {
     background-color: black;
+}
+
+body.darkmode .vue-treeselect__control {
+    background-color: black;
+}
+
+body.lightmode .vue_treeselect {
+    background-color: white;
+}
+
+body.darkmode .vue-treeselect__menu-container {
+    background-color: white;
+}
+
+body.darkmode .vue-treeselect__menu {
+    background-color: white;
+}
+
+body.darkmode .vue-treeselect__menu * {
+    background-color: white;
+}
+
+body.darkmode .vue-treeselect__control {
+    background-color: white;
 }
 
 .vue-treeselect__multi-value {
