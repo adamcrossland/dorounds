@@ -511,7 +511,7 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                     document.body.className = 'darkmode';
                 }
             },
-            cloneencounter: function() {
+            cloneEncounter: function() {
                 var clonedSession = this.currentSession.clone();
                 sortSessions();
                 persistAll();
