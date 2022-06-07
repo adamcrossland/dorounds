@@ -28,7 +28,10 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
             if (initObj.weapons == null || initObj.length == 0) {
                 self.weapons = ["unarmed"];
             } else {
-                self.weapons = initObj.weapons;
+                self.weapons = [];
+                initObj.weapons.forEach(w => {
+                    self.weapons.push(DoRounds.Weapons.Weapon(w));
+                });
             }
             self.selectedWeapons = initObj.selectedWeapons || [];
             self.disabled = initObj.disabled || self.disabled;
