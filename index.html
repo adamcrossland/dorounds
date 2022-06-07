@@ -229,13 +229,13 @@
                     <div class="form-group column col-12 weapon-details weapon-details-edit"
                         v-if="!currentSession.currentlyPlaying" v-for="eachWeapon in line.weapons">
                         <label class="form-label form-inline">Name: <input type="text" v-model="eachWeapon.name"
-                                placeholder="name" /></label>
+                                placeholder="name" @change="saveData" /></label>
                         <label class="form-label form-inline">Hit bonus: <input type="number"
-                                v-model.number="eachWeapon.hitbonus" /></label>
+                                v-model.number="eachWeapon.hitbonus" @change="saveData" /></label>
                         <label class="form-label form-inline">Damage: <input type="text" v-model="eachWeapon.damage"
-                                placeholder="damage" /></label>
+                                placeholder="damage" @change="saveData"/></label>
                         <label class="form-label form-inline">Range: <input type="text" v-model="eachWeapon.range"
-                                placeholder="range" /></label>
+                                placeholder="range" @change="saveData"/></label>
                     </div>
                 </div>
             </div>
