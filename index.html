@@ -32,15 +32,15 @@
 </head>
 
 <body>
-    <div id="app" class="container" v-bind:class="{ lightMode: lightMode, darkmode: !lightMode }">
+    <div id="app" class="container">
         <header class="navbar">
             <section class="navbar-section">
                 <a href="about.html">about</a>
                 <a href="tutorial/tutorial.html">tutorial</a>
                 <a href="https://github.com/adamcrossland/dorounds">github</a>
                 <a href="https://crossland.dev">author</a>
-                <a v-if="!lightMode" v-on:click="toggleLightMode">light mode</a>
-                <a v-if="lightMode" v-on:click="toggleLightMode">dark mode</a>
+                <a v-if="!lightMode" @click="toggleLightMode">light mode</a>
+                <a v-if="lightMode" @click="toggleLightMode">dark mode</a>
             </section>
         </header>
         <h1>Do Rounds</h1>
@@ -53,14 +53,14 @@
                     </option>
                 </select>
                 <input class="form-input" v-if="currentSession.currentlyEditingName" v-model="currentSession.name"
-                    v-on:keyup.13="currentSession.toggleNameEditing" v-focus>
+                    @keyup.13="currentSession.toggleNameEditing" v-focus>
                 <button class="btn" v-if="!currentSession.currentlyEditingName" title="Edit Name"
-                    v-on:click="currentSession.toggleNameEditing" aria-label="Edit Name">
+                    @click="currentSession.toggleNameEditing" aria-label="Edit Name">
                     <i class="icon icon-edit"></i>
                 </button>
             </div>
             <div class="column col-3">
-                <button class="btn" v-on:click="cloneencounter" v-if="!currentSession.currentlyPlaying"
+                <button class="btn" @click="cloneEncounter" v-if="!currentSession.currentlyPlaying"
                     aria-label="Clone Encounter" title="Clone Encounter">
                     <i class="icon icon-arrow-down"></i>
                 </button>
@@ -68,36 +68,36 @@
                     aria-label="New Encounter" title="New Encounter">
                     <i class="icon icon-copy"></i>
                 </button>
-                <button class="btn" v-if="!currentSession.currentlyPlaying" v-on:click="deleteCurrentSession"
+                <button class="btn" v-if="!currentSession.currentlyPlaying" @click="deleteCurrentSession"
                     role="button" aria-label="Delete Encounter" title="Delete Encounter">
                     <i class="icon icon-delete"></i>
                 </button>
                 <div class="dropdown" v-bind:class="{'active': extraMenuOpen }" v-if="!currentSession.currentlyPlaying">
-                    <button class="btn dropdown" v-on:click="toggleExtraMenu" tabindex="0">
+                    <button class="btn dropdown" @click="toggleExtraMenu" tabindex="0">
                         <i class="icon icon-more-vert"></i>
                     </button>
                     <ul class="menu">
                         <li class="menu-item">
-                            <a href="#" v-on:click="exportData">Export Data</a>
+                            <a href="#" @click="exportData">Export Data</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" v-on:click="showImportData">Import Data</a>
+                            <a href="#" @click="showImportData">Import Data</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" v-on:click="toggleClearStorage">Clear Data</a>
+                            <a href="#" @click="toggleClearStorage">Clear Data</a>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="column col-1">
                 <button class="btn" v-if="!currentSession.currentlyPlaying" title="Start Playing"
-                    v-on:click="currentSession.togglePlaying" aria-label="Start Play">Start
+                    @click="currentSession.togglePlaying" aria-label="Start Play">Start
                 </button>
                 <button class="btn" v-if="currentSession.currentlyPlaying" title="Stop Playing"
-                    v-on:click="currentSession.togglePlaying" aria-label="Start Play">Stop
+                    @click="currentSession.togglePlaying" aria-label="Start Play">Stop
                 </button>
                 <button class="btn" title="Reset Encounter" aria-label="Reset Encounter"
-                    v-on:click="toggleResetEncounter">
+                    @click="toggleResetEncounter">
                     <i class="icon icon-refresh"></i>
                 </button>
             </div>
@@ -111,15 +111,15 @@
                         <input class="form-input round-number" type="number" min="1" aria-label="Round Number"
                             v-if="currentSession.currentlyPlaying && currentSession.currentlyEditingRound"
                             v-model="currentSession.currentRound" v-focus
-                            v-on:keyup.enter="currentSession.toggleRoundEditing" />
+                            @keyup.enter="currentSession.toggleRoundEditing" />
                         <button class="btn"
                             v-if="currentSession.currentlyPlaying && !currentSession.currentlyEditingRound"
-                            title="Edit Round" aria-label="Edit Round" v-on:click="currentSession.toggleRoundEditing">
+                            title="Edit Round" aria-label="Edit Round" @click="currentSession.toggleRoundEditing">
                             <i class="icon icon-edit"></i>
                         </button>
                         <button class="btn"
                             v-if="currentSession.currentlyPlaying && currentSession.currentlyEditingRound"
-                            title="Save Round" aria-label="Save Round" v-on:click="currentSession.toggleRoundEditing">
+                            title="Save Round" aria-label="Save Round" @click="currentSession.toggleRoundEditing">
                             <i class="icon icon-edit"></i>
                         </button>
                     </div>
@@ -127,7 +127,7 @@
             </div>
             <div class="column col-2" v-if="!currentSession.currentlyPlaying">
                 <button class="btn" title="Auto-roll Initiative" aria-label="Auto-roll Initiative"
-                    v-on:click="currentSession.autoRollInitiative">
+                    @click="currentSession.autoRollInitiative">
                     Auto-roll
                 </button>
             </div>
@@ -173,38 +173,40 @@
                             <treeselect :disable-branch-nodes="true" placeholder="Select weapons..."
                                 value="node" value-format="object" value-consists-of="LEAF_PRIORITY"
                                 v-model="line.weapons" :multiple="true" :options="weapons.Items"
+                                @select="saveData" @deselect="saveData"
                                 :normalize="normalizeWeaponNode" />
                         </div>
                         <div class="column col-3" v-if="currentSession.currentlyPlaying">
                             <treeselect placeholder="Active weapons" value="node" value-format="object"
                                 value-consists-of="LEAF_PRIORITY" v-model="line.selectedWeapons" :multiple="true"
+                                @select="saveData" @deselect="saveData"
                                 :options="line.weapons" :normalize="normalizeWeaponNode" />
                         </div>
                         <div class="column col-2">
                             <button class="btn line-button"
                                 v-if="currentSession.isLastLine(index) && !currentSession.currentlyPlaying"
-                                v-on:click="currentSession.newLine" role="button" aria-label="Add New Line"
+                                @click="currentSession.newLine" role="button" aria-label="Add New Line"
                                 title="Add New Line">
                                 <i class="icon icon-plus"></i>
                             </button>
-                            <button class="btn line-button" ref="clonelinebutton"
+                            <button class="btn line-button" ref="cloneLineButton"
                                 v-if="currentSession.isLastLine(index) && !currentSession.currentlyPlaying"
-                                v-on:click="cloneLine" role="button" aria-label="Clone to New Line"
+                                @click="cloneLine" role="button" aria-label="Clone to New Line"
                                 title="Clone to New Line">
                                 <i class="icon icon-arrow-down"></i>
                             </button>
                             <button class="btn line-button" v-if="currentSession.currentlyPlaying && !line.disabled"
-                                v-on:click="currentSession.toggleLinedisabled(index)" role="button"
+                                @click="currentSession.toggleLinedisabled(index)" role="button"
                                 aria-label="Disable Line" title="Disable Line">
                                 <i class="icon icon-cross"></i>
                             </button>
                             <button class="btn line-button" v-if="currentSession.currentlyPlaying && line.disabled"
-                                v-on:click="currentSession.toggleLinedisabled(index)" role="button"
+                                @click="currentSession.toggleLinedisabled(index)" role="button"
                                 aria-label="Enable Line" title="Enable Line">
                                 <i class="icon icon-plus"></i>
                             </button>
                             <button class="btn line-button" v-if="!currentSession.currentlyPlaying"
-                                v-on:click="currentSession.deleteLine(index)" role="button" aria-label="Delete Line"
+                                @click="currentSession.deleteLine(index)" role="button" aria-label="Delete Line"
                                 title="Delete Line">
                                 <i class="icon icon-delete"></i>
                             </button>
@@ -227,19 +229,19 @@
                     <div class="form-group column col-12 weapon-details weapon-details-edit"
                         v-if="!currentSession.currentlyPlaying" v-for="eachWeapon in line.weapons">
                         <label class="form-label form-inline">Name: <input type="text" v-model="eachWeapon.name"
-                                placeholder="name" /></label>
+                                placeholder="name" @change="saveData" /></label>
                         <label class="form-label form-inline">Hit bonus: <input type="number"
-                                v-model.number="eachWeapon.hitbonus" /></label>
+                                v-model.number="eachWeapon.hitbonus" @change="saveData" /></label>
                         <label class="form-label form-inline">Damage: <input type="text" v-model="eachWeapon.damage"
-                                placeholder="damage" /></label>
+                                placeholder="damage" @change="saveData"/></label>
                         <label class="form-label form-inline">Range: <input type="text" v-model="eachWeapon.range"
-                                placeholder="range" /></label>
+                                placeholder="range" @change="saveData"/></label>
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal" id="deleteSessionConfirmation" v-bind:class="{ active: deleteSessionDialogOpen }">
-            <a href="#close" class="modal-overlay" v-on:click="cancelDeleteSession" title="Close"
+            <a href="#close" class="modal-overlay" @click="cancelDeleteSession" title="Close"
                 aria-label="Close"></a>
             <div class="modal-container">
                 <div class="modal-header">
@@ -255,17 +257,17 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn" v-on:click="confirmDeleteSession">Yes</button>
-                    <button class="btn btn-primary" v-on:click="cancelDeleteSession">No</button>
+                    <button class="btn" @click="confirmDeleteSession">Yes</button>
+                    <button class="btn btn-primary" @click="cancelDeleteSession">No</button>
                 </div>
             </div>
         </div>
         <div class="modal" id="exportDataDialog" v-bind:class="{ active: exportDataDialogOpen }">
-            <a href="#close" class="modal-overlay" v-on:click="closeExportDataDialog" title="Close"
+            <a href="#close" class="modal-overlay" @click="closeExportDataDialog" title="Close"
                 aria-label="Close"></a>
             <div class="modal-container">
                 <div class="modal-header">
-                    <a href="#close" class="btn btn-clear float-right" v-on:click="closeExportDataDialog"
+                    <a href="#close" class="btn btn-clear float-right" @click="closeExportDataDialog"
                         aria-label="Close"></a>
                     <div class="modal-title h5">Export Data</div>
                 </div>
@@ -281,11 +283,11 @@
             </div>
         </div>
         <div class="modal" id="importDataDialog" v-bind:class="{ active: importDataDialogOpen }">
-            <a href="#close" class="modal-overlay" v-on:click="closeImportDataDialog" title="Close"
+            <a href="#close" class="modal-overlay" @click="closeImportDataDialog" title="Close"
                 aria-label="Close"></a>
             <div class="modal-container">
                 <div class="modal-header">
-                    <a href="#close" class="btn btn-clear float-right" v-on:click="closeImportDataDialog"
+                    <a href="#close" class="btn btn-clear float-right" @click="closeImportDataDialog"
                         aria-label="Close"></a>
                     <div class="modal-title h5">Import Data</div>
                 </div>
@@ -304,17 +306,17 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn" v-on:click="importData" v-bind:disabled="dataImport.length == 0">Import</button>
-                    <button class="btn btn-primary" v-on:click="closeImportDataDialog">Cancel</button>
+                    <button class="btn" @click="importData" v-bind:disabled="dataImport.length == 0">Import</button>
+                    <button class="btn btn-primary" @click="closeImportDataDialog">Cancel</button>
                 </div>
             </div>
         </div>
         <div class="modal" id="resetEncounterDialog" v-bind:class="{ active: resetEncounterDialogOpen }">
-            <a href="#close" class="modal-overlay" v-on:click="toggleResetEncounter" title="Close"
+            <a href="#close" class="modal-overlay" @click="toggleResetEncounter" title="Close"
                 aria-label="Close"></a>
             <div class="modal-container">
                 <div class="modal-header">
-                    <a href="#close" class="btn btn-clear float-right" v-on:click="toggleResetEncounter"
+                    <a href="#close" class="btn btn-clear float-right" @click="toggleResetEncounter"
                         aria-label="Close"></a>
                     <div class="modal-title h5">Reset Encounter</div>
                 </div>
@@ -330,16 +332,16 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn" v-on:click="resetEncounter">Reset</button>
-                    <button class="btn btn-primary" v-on:click="toggleResetEncounter">Cancel</button>
+                    <button class="btn" @click="resetEncounter">Reset</button>
+                    <button class="btn btn-primary" @click="toggleResetEncounter">Cancel</button>
                 </div>
             </div>
         </div>
         <div class="modal" id="clearStorageDialog" v-bind:class="{ active: clearStorageOpen }">
-            <a href="#close" class="modal-overlay" v-on:click="toggleClearStorage" title="Close" aria-label="Close"></a>
+            <a href="#close" class="modal-overlay" @click="toggleClearStorage" title="Close" aria-label="Close"></a>
             <div class="modal-container">
                 <div class="modal-header">
-                    <a href="#close" class="btn btn-clear float-right" v-on:click="toggleClearStorage"
+                    <a href="#close" class="btn btn-clear float-right" @click="toggleClearStorage"
                         aria-label="Close"></a>
                     <div class="modal-title h5">Clear All Saved Data</div>
                 </div>
@@ -356,16 +358,16 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn" v-on:click="clearAllSavedData">Clear</button>
-                    <button class="btn btn-primary" v-on:click="toggleClearStorage">Close</button>
+                    <button class="btn" @click="clearAllSavedData">Clear</button>
+                    <button class="btn btn-primary" @click="toggleClearStorage">Close</button>
                 </div>
             </div>
         </div>
         <div class="modal" id="editWeaponsDialog" v-bind:class="{ active: editWeaponsOpen }">
-            <a href="#close" class="modal-overlay" v-on:click="toggleEditWeapons" title="Close" aria-label="Close"></a>
+            <a href="#close" class="modal-overlay" @click="toggleEditWeapons" title="Close" aria-label="Close"></a>
             <div class="modal-container">
                 <div class="modal-header">
-                    <a href="#close" class="btn btn-clear float-right" v-on:click="toggleEditWeapons"
+                    <a href="#close" class="btn btn-clear float-right" @click="toggleEditWeapons"
                         aria-label="Close"></a>
                     <div class="modal-title h5">Add/Edit/Remove Weapons</div>
                 </div>
@@ -432,10 +434,10 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn" :disabled="!canDeleteWeapon()"
-                            v-on:click="deleteWeapon">Delete</button>
+                            @click="deleteWeapon">Delete</button>
                         <button class="btn" :disabled="!canAddWeapon()"
-                            v-on:click="saveNewWeapon">Add</button>
-                        <button class="btn" v-on:click="saveWeaponChanges">Save</button>
+                            @click="saveNewWeapon">Add</button>
+                        <button class="btn" @click="saveWeaponChanges">Save</button>
                     </div>
                 </div>
             </div>

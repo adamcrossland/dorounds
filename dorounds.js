@@ -28,7 +28,10 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
             if (initObj.weapons == null || initObj.length == 0) {
                 self.weapons = ["unarmed"];
             } else {
-                self.weapons = initObj.weapons;
+                self.weapons = [];
+                initObj.weapons.forEach(w => {
+                    self.weapons.push(DoRounds.Weapons.Weapon(w));
+                });
             }
             self.selectedWeapons = initObj.selectedWeapons || [];
             self.disabled = initObj.disabled || self.disabled;
@@ -495,7 +498,7 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                 }
                 
                 this.currentSession.lines.push(clonedLine);
-                Vue.nextTick(() => this.$refs.clonelinebutton[0].focus());
+                Vue.nextTick(() => this.$refs.cloneLineButton[0].focus());
             },
             toggleLightMode: function (setTo) {
                 if (typeof setTo === 'boolean') {
@@ -511,7 +514,7 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                     document.body.className = 'darkmode';
                 }
             },
-            cloneencounter: function() {
+            cloneEncounter: function() {
                 var clonedSession = this.currentSession.clone();
                 sortSessions();
                 persistAll();
