@@ -498,7 +498,7 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                 }
                 
                 this.currentSession.lines.push(clonedLine);
-                Vue.nextTick(() => this.$refs.clonelinebutton[0].focus());
+                Vue.nextTick(() => this.$refs.cloneLineButton[0].focus());
             },
             toggleLightMode: function (setTo) {
                 if (typeof setTo === 'boolean') {
