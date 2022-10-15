@@ -136,6 +136,7 @@
                 <kbd>Esc</kbd> = exit Playing mode; <kbd>Tab</kbd> = move to next HP field;
                 <kbd>Space</kbd> = move to next line
             </div>
+            <div class="column col-1 table-header" v-show="!currentSession.currentlyPlaying">Singular</div>
             <div class="column col-1 table-header">Init / mod</div>
             <div class="column col-2 table-header">Name</div>
             <div class="column col-2 table-header">HP / AC / +Hit</div>
@@ -149,6 +150,11 @@
                 <div class="form-horizontal" v-for="(line, index) in currentSession.lines">
                     <div class="form-group session-line"
                         v-bind:class="{ 'line-disabled': currentSession.currentlyPlaying && line.disabled, 'line-enabled': !currentSession.currentlyPlaying || !line.disabled }">
+                        <div class="column col-1 text-center"  v-show="!currentSession.currentlyPlaying">
+                                <input type="checkbox" v-model="line.singular" @change="singularChanged(index)"
+                                    title="This is a singular player or monster. Changes to it will be reflected in all instances.">
+                                <i class="form-icon"></i>
+                        </div>
                         <div class="column col-1">
                             <input class="form-input small-num init-num" type="text" v-model.number="line.initiative"
                                 @change="saveData" aria-label="Initiative" v-focus autocomplete="off"
