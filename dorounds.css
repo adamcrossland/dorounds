@@ -304,3 +304,7 @@ body.lightmode .vue-treeselect__control {
 .btn.edit-weapons {
     float: right;
 }
+
+label.form-checkbox {
+    text-align:center;
+}

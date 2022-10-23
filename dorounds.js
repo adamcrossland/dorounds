@@ -7,6 +7,19 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
 
 (function () {
 
+    // This object holds singular instances of all Line objects that have an Id
+    // set.
+    let uniqueLines = {};
+
+    let randomId = () => {
+        let s4 = () => {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+        return s4() + s4() + s4() + s4();
+    }
+
     function Line(initObj) {
         var self = {};
         self.name = "";
@@ -18,24 +31,40 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
         self.selectedWeapons = [];
         self.disabled = false;
         self.unmod = null;
+        self.singular = false;
+        self.id = null;
 
         if (initObj) {
-            self.name = initObj.name || self.name;
-            self.initiative = initObj.initiative || self.initiative;
-            self.initmod = initObj.initmod || self.initmod;
-            self.hp = initObj.hp || self.hp;
-            self.ac = initObj.ac || self.ac;
-            if (initObj.weapons == null || initObj.length == 0) {
-                self.weapons = ["unarmed"];
+            if (initObj.id && uniqueLines[initObj.id]) {
+                // An instance with the given id already exists, so just
+                // return the object.
+                self = uniqueLines[initObj.id];
             } else {
-                self.weapons = [];
-                initObj.weapons.forEach(w => {
-                    self.weapons.push(DoRounds.Weapons.Weapon(w));
-                });
+                self.name = initObj.name || self.name;
+                self.initiative = initObj.initiative || self.initiative;
+                self.initmod = initObj.initmod || self.initmod;
+                self.hp = initObj.hp || self.hp;
+                self.ac = initObj.ac || self.ac;
+                if (initObj.weapons == null || initObj.length == 0) {
+                    self.weapons = ["unarmed"];
+                } else {
+                    self.weapons = [];
+                    initObj.weapons.forEach(w => {
+                        self.weapons.push(DoRounds.Weapons.Weapon(w));
+                    });
+                }
+                self.selectedWeapons = initObj.selectedWeapons || [];
+                self.disabled = initObj.disabled || self.disabled;
+                self.unmod = initObj.unmod || self.unmod;
+                self.singular = initObj.singular || false;
+                self.id = initObj.id || randomId();
             }
-            self.selectedWeapons = initObj.selectedWeapons || [];
-            self.disabled = initObj.disabled || self.disabled;
-            self.unmod = initObj.unmod || self.unmod;
+
+            if (self.singular && self.id && !uniqueLines[self.id]) {
+                // This instance with an id does not yet exist in the uniqueLines
+                // dictionary, so add it there.
+                uniqueLines[self.id] = self;
+            }
         }
 
         if (self.hp < 1) {
@@ -43,16 +72,13 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
         }
 
         self.copy = function () {
-            var copy = Line();
-            copy.name = self.name;
-            copy.initiative = self.initiative;
-            copy.initmod = self.initmod;
-            copy.hp = self.hp;
-            copy.ac = self.ac;
-            copy.weapons = self.weapons;
-            copy.selectedWeapon = self.selectedWeapon;
-            copy.disabled = self.disabled;
-            copy.unmod = self.unmod
+            let copy = null;
+            if (!self.singular) {
+                copy = Line(self);
+            } else {
+                copy = self;
+            }
+
             return copy;
         };
 
@@ -96,6 +122,18 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
         self.safeSelectedWeapon = function () {
             return self.selectedWeapon || self.availableWeapons()[0];
         };
+
+        self.toggleSingular = function () {
+            if (self.singular) {
+                if (self.id === null) {
+                    self.id = randomId();
+                }
+                uniqueLines[self.id] = self;
+            } else {
+                delete uniqueLines[self.id];
+                self.id = null;
+            }
+        }
 
         return self;
     }
@@ -643,6 +681,11 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                     id: node.id,
                     label: node.name
                 }
+            },
+            singularChanged: function (idx) {
+                var line = this.currentSession.lines[idx];
+                line.toggleSingular();
+                persistAll();
             }
         },
         created: function () {
