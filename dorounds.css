@@ -30,6 +30,10 @@ div.line-disabled > div > select > option {
     background-color: darkred !important;
 }
 
+div.line-disabled > div > div.vue-treeselect > div {
+    background-color: darkred;
+}
+
 div.line-enabled > div > select {
     background-color: grey !important;
     color: white;
