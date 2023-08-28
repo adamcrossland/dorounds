@@ -585,7 +585,7 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                 loadSavedData(foundSessions);
                 this.toggleClearStorage(false);
                 this.currentSession = this.sessions[0];
-                this.togglelightmode(currentLightMode === "true" ? true : false);
+                this.toggleLightMode(currentLightMode === "true" ? true : false);
             },
             toggleEditWeapons: function () {
                 this.editableWeaponList = this.weapons.weaponsWithNew();
