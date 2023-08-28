@@ -843,6 +843,10 @@ DoRounds.Weapons = (function () {
     savedWeapons.AddWeapon = function (categoryId, weapon) {
         let categoryName = savedWeapons.Categories[categoryId];
         let category = savedWeapons.findItemCategory(categoryName);
+        // weapon.properties will contain an array of objects here, but we
+        // need it to be an array of integers that are indices to the 
+        // savedWeapons.Properties array.
+        weapon.properties = weapon.properties.map(p => p.id);
         let newWeapon = Weapon(weapon);
         category.children.push(newWeapon);
         savedWeapons.doAutoSave();
