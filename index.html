@@ -137,7 +137,8 @@
                 <kbd>Space</kbd> = move to next line
             </div>
             <div class="column col-1 table-header" v-show="!currentSession.currentlyPlaying">Singular</div>
-            <div class="column col-1 table-header">Init / mod</div>
+            <div class="column col-1 table-header text-center" v-show="!currentSession.currentlyPlaying">Init / +Init</div>
+            <div class="column col-1 table-header text-center" v-show="currentSession.currentlyPlaying">Init</div>
             <div class="column col-2 table-header">Name</div>
             <div class="column col-2 table-header">HP / AC / +Hit</div>
             <div class="column col-3 table-header">Weapons &nbsp;
@@ -155,11 +156,13 @@
                                     title="This is a singular player or monster. Changes to it will be reflected in all instances.">
                                 <i class="form-icon"></i>
                         </div>
-                        <div class="column col-1">
+                        <div class="column col-1 text-center">
                             <input class="form-input small-num init-num" type="text" v-model.number="line.initiative"
                                 @change="saveData" aria-label="Initiative" v-focus autocomplete="off"
                                 placeholder="Init." />
-                            <input class="form-input small-num init-num" type="number" v-model.number="line.initmod"
+                            <input class="form-input small-num init-num" type="number" 
+                                v-if="!currentSession.currentlyPlaying"
+                                v-model.number="line.initmod"
                                 @change="saveData" aria-label="Init mod" v-focus placeholder="Init +" />
                         </div>
                         <div class="column col-2">
