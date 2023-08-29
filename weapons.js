@@ -48,7 +48,8 @@ DoRounds.Weapons = (function () {
         Categories: [
             "Simple",
             "Martial",
-            "Spell"
+            "Spell",
+            "Custom"
         ],
         Properties: [
             {
@@ -817,11 +818,12 @@ DoRounds.Weapons = (function () {
         if (!foundCategory) {
             savedWeapons.Categories.push(categoryName);
             foundCategory = {
-                name: categoryName,
-                items: []
+                id: categoryName,
+                label: categoryName,
+                children: []
             };
             savedWeapons.Items.push(foundCategory);
-            doAutoSave();
+            savedWeapons.doAutoSave();
         }
 
         return foundCategory;
@@ -843,6 +845,10 @@ DoRounds.Weapons = (function () {
     savedWeapons.AddWeapon = function (categoryId, weapon) {
         let categoryName = savedWeapons.Categories[categoryId];
         let category = savedWeapons.findItemCategory(categoryName);
+        if (!category) {
+            // This may be the first item in a new category
+            category = savedWeapons.AddCategory(categoryName);
+        }
         // weapon.properties will contain an array of objects here, but we
         // need it to be an array of integers that are indices to the 
         // savedWeapons.Properties array.
