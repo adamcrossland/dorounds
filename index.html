@@ -142,7 +142,7 @@
             <div class="column col-1 table-header text-center" v-show="!currentSession.currentlyPlaying">Init / +Init</div>
             <div class="column col-1 table-header text-center" v-show="currentSession.currentlyPlaying">Init</div>
             <div class="column col-2 table-header">Name</div>
-            <div class="column col-2 table-header">HP / AC / +Hit</div>
+            <div class="column col-2 table-header text-center">HP / AC</div>
             <div class="column col-3 table-header">Weapons &nbsp;
                 <button type="button" class="btn btn-sm edit-weapons" @click="toggleEditWeapons">
                     Edit
@@ -171,14 +171,12 @@
                             <input class="form-input" type="text" v-model="line.name" @change="saveData"
                                 aria-label="Name" autocomplete="off" placeholder="Name" />
                         </div>
-                        <div class="column col-2">
+                        <div class="column col-2 text-center">
                             <input class="form-input hp-num small-num" type="number" ref="hitpoints"
                                 v-model.number="line.hp" @change="hitPointsChanged(index)" aria-label="Hit Points"
                                 autocomplete="off" placeholder="HP" :id="`line-${index}`" />
                             <input class="form-input ac-num small-num" type="number" v-model="line.ac"
                                 @change="saveData" aria-label="Armor Class" autocomplete="off" placeholder="AC" />
-                            <input class="form-input th-num small-num" type="number" v-model="line.hitbonus"
-                                @change="saveData" aria-label="To Hit Bonus" autocomplete="off" placeholder="+hit" />
                         </div>
                         <div class="column col-3" v-if="!currentSession.currentlyPlaying">
                             <treeselect :disable-branch-nodes="true" placeholder="Select weapons..."
