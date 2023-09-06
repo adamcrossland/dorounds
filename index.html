@@ -184,7 +184,7 @@
                             <treeselect :disable-branch-nodes="true" placeholder="Select weapons..."
                                 value="node" value-format="object" value-consists-of="LEAF_PRIORITY"
                                 v-model="line.weapons" :multiple="true" :options="weapons.Items"
-                                @select="saveData" @deselect="saveData"
+                                @select="afterAvailableWeaponAdd" @deselect="saveData"
                                 :normalize="normalizeWeaponNode" />
                         </div>
                         <div class="column col-3" v-if="currentSession.currentlyPlaying">
