@@ -458,6 +458,15 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                 this.weapons.save();
                 persistAll();
             },
+            afterAvailableWeaponAdd: function () {
+                Vue.nextTick(() => {
+                    this.currentSession.lines.forEach(l => {
+                        for (let i = 0; i < l.weapons.length; i++) {
+                            Vue.set(l.weapons, i, DoRounds.Weapons.Weapon(l.weapons[i]));
+                        }
+                    });
+                });
+            },
             deleteCurrentSession: function () {
                 this.deleteSessionDialogOpen = true;
             },
