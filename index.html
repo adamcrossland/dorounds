@@ -103,16 +103,22 @@
                     <i class="icon icon-refresh"></i>
                 </button>
             </div>
-            <div class="column col-2" v-if="currentSession.currentlyPlaying">
+            <div class="column col-3" v-if="currentSession.currentlyPlaying">
                 <div class="form-horizontal round-number">
                     <div class="form-group">
                         <span v-if="currentSession.currentlyPlaying">Round&nbsp;</span>
-                        <span class="round-number"
-                            v-if="currentSession.currentlyPlaying && !currentSession.currentlyEditingRound">{{
+                        <span v-if="currentSession.currentlyPlaying && !currentSession.currentlyEditingRound">{{
                             currentSession.currentRound }}</span>
                         <input class="form-input round-number" type="number" min="1" aria-label="Round Number"
                             v-if="currentSession.currentlyPlaying && currentSession.currentlyEditingRound"
                             v-model="currentSession.currentRound" v-focus
+                            @keyup.enter="currentSession.toggleRoundEditing" />
+                        <span v-if="currentSession.currentlyPlaying">;&nbsp;Minute&nbsp;</span>
+                        <span v-if="currentSession.currentlyPlaying && !currentSession.currentlyEditingRound">{{
+                            currentSession.currentMinute }}</span>
+                        <input class="form-input round-number" type="number" min="1" aria-label="Minute Number"
+                            v-if="currentSession.currentlyPlaying && currentSession.currentlyEditingRound"
+                            v-model="currentSession.currentMinute" v-focus
                             @keyup.enter="currentSession.toggleRoundEditing" />
                         <button class="btn"
                             v-if="currentSession.currentlyPlaying && !currentSession.currentlyEditingRound"

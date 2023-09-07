@@ -44,15 +44,13 @@ div.line-enabled > div > select > option {
     color: white;
 }
 
-input.round-number {
+.round-number input {
     width: 3em;
-}
-
-span.round-number {
-    width: 3em;
+    margin-left: 1em;
 }
 
 div.round-number > div > button {
+    margin-left: 1em;
     margin-top: -.4rem;
 }
 
@@ -61,7 +59,9 @@ div.round-number > div > input {
 }
 
 div.round-number > div > span {
+    min-width: 1.2em;
     margin-top: -.25rem;
+    text-align: right;
 }
 
 body.about {
