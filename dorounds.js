@@ -224,6 +224,7 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
             persistAll();
         };
         self.currentRound = 1;
+        self.currentMinute = 1;
         self.toggleLinedisabled = function (index) {
             self.lines[index].disabled = !self.lines[index].disabled;
             console.log("Weapons: " + self.lines[index].weapons);
@@ -301,6 +302,14 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                 }
             });
         }
+        self.incrementRound = function () {
+            if (self.currentRound == 10) {
+                self.currentMinute++;
+                self.currentRound = 1;
+            } else {
+                self.currentRound++;
+            }
+        }
         return self;
     }
 
@@ -314,6 +323,7 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                 var newSession = Session(ss.id, ss.name, false);
                 newSession.currentlyPlaying = ss.currentlyPlaying || false;
                 newSession.currentRound = ss.currentRound || 1;
+                newSession.currentMinute = ss.currentMinute || 1;
                 newSession.activeLine = ss.activeLine || 0;
                 ss.lines.forEach((sl) => {
                     var eachNewLine = Line(sl);
@@ -439,7 +449,7 @@ Vue.component('treeselect', VueTreeselect.Treeselect);
                                 this.currentSession.activeLine++;
                                 if (this.currentSession.activeLine == this.currentSession.lines.length) {
                                     this.currentSession.activeLine = 0;
-                                    this.currentSession.currentRound++;
+                                    this.currentSession.incrementRound();
                                 }
                             } while (this.currentSession.anyLinesActive() &&
                                 this.currentSession.lines[this.currentSession.activeLine].disabled);
